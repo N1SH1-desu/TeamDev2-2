@@ -18,7 +18,7 @@ void Graphics::Initialize(HWND hWnd)
 
 	// デバイス＆スワップチェーンの生成
 	{
-		UINT createDeviceFlags = 0;
+		UINT createDeviceFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 #if defined(DEBUG) || defined(_DEBUG)
 		createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
@@ -39,7 +39,8 @@ void Graphics::Initialize(HWND hWnd)
 			swapchainDesc.BufferDesc.Height = screenHeight;
 			swapchainDesc.BufferDesc.RefreshRate.Numerator = 60;
 			swapchainDesc.BufferDesc.RefreshRate.Denominator = 1;
-			swapchainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+			//swapchainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+			swapchainDesc.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
 			swapchainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 			swapchainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 			swapchainDesc.SampleDesc.Count = 1;
@@ -129,6 +130,8 @@ void Graphics::Initialize(HWND hWnd)
 	primitiveRenderer = std::make_unique<PrimitiveRenderer>(device.Get());
 	shapeRenderer = std::make_unique<ShapeRenderer>(device.Get());
 	modelRenderer = std::make_unique<ModelRenderer>(device.Get());
+
+	d2dGraphics = std::make_unique<Graphics2D>(device.Get());
 
 }
 

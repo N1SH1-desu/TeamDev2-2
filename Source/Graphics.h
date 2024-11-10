@@ -7,6 +7,7 @@
 #include "PrimitiveRenderer.h"
 #include "ShapeRenderer.h"
 #include "ModelRenderer.h"
+#include "Gfx2D.h"
 
 // グラフィックス
 class Graphics
@@ -70,6 +71,8 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView>	renderTargetView;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView>	depthStencilView;
 	D3D11_VIEWPORT									viewport;
+
+	std::unique_ptr<Graphics2D>						d2dGraphics;
 
 	float	screenWidth = 0;
 	float	screenHeight = 0;
