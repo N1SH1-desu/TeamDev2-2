@@ -16,6 +16,7 @@
 #include "Scene/MoveFloorScene.h"
 #include "Scene/TerrainAlignScene.h"
 #include "Scene/ResourceManagementScene.h"
+#include "Scene/stage.h"
 
 // 垂直同期間隔設定
 static const int syncInterval = 1;
@@ -123,6 +124,7 @@ void Framework::SceneSelectGUI()
 		ChangeSceneButtonGUI<MoveFloorScene>(u8"09.移動床");
 		ChangeSceneButtonGUI<TerrainAlignScene>(u8"10.地形に沿う姿勢制御");
 		ChangeSceneButtonGUI<ResourceManagementScene>(u8"11.リソース管理");
+		ChangeSceneButtonGUI<Stage>(u8"ゲームシーン");
 	}
 	ImGui::End();
 }

@@ -55,6 +55,9 @@
     <Filter Include="Source\08_UI演出">
       <UniqueIdentifier>{e6e03555-d04a-4588-b021-29b31e28b278}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\チーム制作_ゲームシーン">
+      <UniqueIdentifier>{d2e35430-c9d7-433f-8d36-f07f03eefa31}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Framework.h">
@@ -207,6 +210,12 @@
     <ClInclude Include="Source\Scene\LandWalkScene.h">
       <Filter>Source\02_地上歩行</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Scene\stage.h">
+      <Filter>Source\チーム制作_ゲームシーン</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\fogs.h">
+      <Filter>Source\チーム制作_ゲームシーン</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Framework.cpp">
@@ -337,6 +346,12 @@
     </ClCompile>
     <ClCompile Include="Source\Scene\LandWalkScene.cpp">
       <Filter>Source\02_地上歩行</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\stage.cpp">
+      <Filter>Source\チーム制作_ゲームシーン</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\fogs.cpp">
+      <Filter>Source\チーム制作_ゲームシーン</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
