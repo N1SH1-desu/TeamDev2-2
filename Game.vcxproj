@@ -131,7 +131,8 @@
     <ClInclude Include="Source\Framework.h" />
     <ClInclude Include="Source\FreeCameraController.h" />
     <ClInclude Include="Source\Gfx2D.h" />
-    <ClInclude Include="Source\Gfx2DRenderer.h" />
+    <ClInclude Include="Source\Gfx2DSandbox.h" />
+    <ClInclude Include="Source\Grid2DRenderer.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\ModelRenderer.h" />
     <ClInclude Include="Source\LambertShader.h" />
@@ -182,7 +183,8 @@
     <ClCompile Include="Source\Framework.cpp" />
     <ClCompile Include="Source\FreeCameraController.cpp" />
     <ClCompile Include="Source\Gfx2D.cpp" />
-    <ClCompile Include="Source\Gfx2DRenderer.cpp" />
+    <ClCompile Include="Source\Gfx2DSandbox.cpp" />
+    <ClCompile Include="Source\Grid2DRenderer.cpp" />
     <ClCompile Include="Source\ModelRenderer.cpp" />
     <ClCompile Include="Source\LambertShader.cpp" />
     <ClCompile Include="Source\ModelResource.cpp" />

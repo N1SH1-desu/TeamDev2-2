@@ -76,6 +76,7 @@ void ProjectScreenScene::Render(float elapsedTime)
 	ID3D11DeviceContext* dc = Graphics::Instance().GetDeviceContext();
 	RenderState* renderState = Graphics::Instance().GetRenderState();
 	ModelRenderer* modelRenderer = Graphics::Instance().GetModelRenderer();
+	Graphics2D* d2dGraphics = Graphics::Instance().GetGraphics2D();
 
 	// ƒ‚ƒfƒ‹•`‰æ
 	RenderContext rc;

@@ -133,6 +133,8 @@ void Graphics::Initialize(HWND hWnd)
 
 	d2dGraphics = std::make_unique<Graphics2D>(device.Get());
 
+	Microsoft::WRL::ComPtr<IDXGISurface> dxgiBackBuffer;
+	swapchain->GetBuffer(0, IID_PPV_ARGS(&dxgiBackBuffer));
 }
 
 // ÉNÉäÉA

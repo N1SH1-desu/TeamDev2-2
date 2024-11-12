@@ -210,7 +210,10 @@
     <ClInclude Include="Source\Gfx2D.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Gfx2DRenderer.h">
+    <ClInclude Include="Source\Gfx2DSandbox.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Grid2DRenderer.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
@@ -347,7 +350,10 @@
     <ClCompile Include="Source\Gfx2D.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Gfx2DRenderer.cpp">
+    <ClCompile Include="Source\Gfx2DSandbox.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Grid2DRenderer.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

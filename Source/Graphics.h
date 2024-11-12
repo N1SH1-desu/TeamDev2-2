@@ -8,6 +8,7 @@
 #include "ShapeRenderer.h"
 #include "ModelRenderer.h"
 #include "Gfx2D.h"
+#include "Gfx2DSandbox.h"
 
 // グラフィックス
 class Graphics
@@ -62,6 +63,8 @@ public:
 
 	// モデルレンダラ取得
 	ModelRenderer* GetModelRenderer() const { return modelRenderer.get(); }
+
+	Graphics2D* GetGraphics2D() const { return d2dGraphics.get(); }
 
 private:
 	HWND											hWnd = nullptr;
