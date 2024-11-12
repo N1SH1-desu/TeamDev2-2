@@ -9,7 +9,6 @@ public:
     virtual ~Gfx2DSandbox() = default;
     void Draw(ID2D1DeviceContext* context);
      virtual void Excecute(ID2D1DeviceContext* context) = 0;
-private:
+protected:
     Microsoft::WRL::ComPtr<ID2D1Bitmap1> targetBitmap;
-    Microsoft::WRL::ComPtr<ID2D1SolidColorBrush> brush;
 };

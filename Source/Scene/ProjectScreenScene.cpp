@@ -77,13 +77,14 @@ void ProjectScreenScene::Render(float elapsedTime)
 	RenderState* renderState = Graphics::Instance().GetRenderState();
 	ModelRenderer* modelRenderer = Graphics::Instance().GetModelRenderer();
 	Graphics2D* d2dGraphics = Graphics::Instance().GetGraphics2D();
+	Grid2DRenderer* gridRenderer = Graphics::Instance().GetGridRenderer();
 
 	// モデル描画
 	RenderContext rc;
 	rc.deviceContext = dc;
 	rc.renderState = renderState;
 	rc.camera = &camera;
-	modelRenderer->Render(rc, stage.transform, stage.model.get(), ShaderId::Lambert);
+	//modelRenderer->Render(rc, stage.transform, stage.model.get(), ShaderId::Lambert);
 
 	// スクリーンサイズ取得
 	float screenWidth = Graphics::Instance().GetScreenWidth();
@@ -95,8 +96,10 @@ void ProjectScreenScene::Render(float elapsedTime)
 
 	for (const Object& obj : objs)
 	{
-		modelRenderer->Render(rc, obj.transform, obj.model.get(), ShaderId::Lambert);
+		//modelRenderer->Render(rc, obj.transform, obj.model.get(), ShaderId::Lambert);
 	}
+
+	gridRenderer->Draw(d2dGraphics->GetContext());
 }
 
 // GUI描画処理
