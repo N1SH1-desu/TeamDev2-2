@@ -18,8 +18,6 @@ Stage::Stage(int selector)
 
 void Stage::Update(float elapsedTime)
 {
-	// ƒJƒƒ‰XVˆ—
-
 
 	stage_[now_stage].get()->UpdateTransform();
 }
@@ -41,12 +39,10 @@ void Stage::Render(float elapsedTime, RenderContext *rc)
 	myRc.deviceContext = rc->deviceContext;
 	myRc.renderState = rc->renderState;
 
-	modelRenderer->Render(myRc,
-		{ 0.0075, 0, 0, 0
-		, 0, 0.0075, 0, 0
-		, 0, 0, 0.0075, 0
-		, 6.f, 5, 10.f, 1 }
-	, stage_[now_stage].get(), ShaderId::Lambert);
+
+	modelRenderer->Render(myRc
+		, stage_transform[now_stage]
+		, stage_[now_stage].get(), ShaderId::Lambert);
 
 	
 }
@@ -74,18 +70,6 @@ void Stage::DrawGUI()
 
 void Stage::SelectStage(int selector)
 {
-	if (selector < const_number::stage_num)now_stage = selector;
+	if (selector < stage_number::stage_max_num)now_stage = selector;
 
-	//switch (selector)
-	//{
-	//case 1:
-	//	stage_ = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_1\\stage_1.mdl");
-	//	break;
-	//case 2:
-	//	stage_ = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_2\\stage_2.mdl");
-	//	break;
-	//case 3:
-	//	stage_ = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_3\\stage_3.mdl");
-	//	break;
-	//}
 }

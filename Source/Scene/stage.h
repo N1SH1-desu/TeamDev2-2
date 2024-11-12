@@ -6,9 +6,11 @@
 #include"Model.h"
 #include"RenderContext.h"
 
-namespace const_number
+namespace stage_number
 {
-	const int stage_num = 7;
+	const int stage_max_num = 7;
+
+	
 }
 
 class Stage 
@@ -28,9 +30,33 @@ public:
 	void SelectStage(int selector);
 
 private:
-	std::unique_ptr<Model>				stage_[const_number::stage_num];
+	std::unique_ptr<Model>				stage_[stage_number::stage_max_num];
 	int now_stage;
 
-
+	DirectX::XMFLOAT4X4 stage_transform[stage_number::stage_max_num]
+	{
+		{
+		0.0075, 0, 0, 0
+		, 0, 0.0075, 0, 0
+		, 0, 0, 0.0075, 0
+		, 0, 5, 0, 1
+		},
+		{
+		0.0075, 0, 0, 0
+		, 0, 0.0075, 0, 0
+		, 0, 0, 0.0075, 0
+		, 0, 7.5, 0, 1
+		},
+		{
+		0.0075, 0, 0, 0
+		, 0, 0.0075, 0, 0
+		, 0, 0, 0.0075, 0
+		, 6.f, 5, 10.f, 1
+		},
+		{},
+		{},
+		{},
+		{},
+	};
 };
 
