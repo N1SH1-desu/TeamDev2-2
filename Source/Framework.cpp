@@ -1,6 +1,7 @@
 #include <memory>
 #include <sstream>
 #include <imgui.h>
+#include <windowsx.h>
 
 #include "Framework.h"
 #include "Graphics.h"
@@ -219,6 +220,26 @@ LRESULT CALLBACK Framework::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LP
 		// WM_EXITSIZEMOVE is sent when the user releases the resize bars.
 		// Here we reset everything based on the new window dimensions.
 		timer.Start();
+		break;
+	case WM_MOUSEMOVE:
+		short x = GET_X_LPARAM(lParam);
+		short y = GET_Y_LPARAM(lParam);
+
+		if (mouse)
+
+		mouse.MouseMove(x, y);
+		break;
+	case WM_LBUTTONDOWN:
+		mouse.MouseDownLeft();
+		break;
+	case WM_RBUTTONDOWN:
+		mouse.MouseDownRight();
+		break;
+	case WM_LBUTTONUP:
+		mouse.MouseUpLeft();
+		break;
+	case WM_RBUTTONUP:
+		mouse.MouseUpRight();
 		break;
 	default:
 		return DefWindowProc(hWnd, msg, wParam, lParam);
