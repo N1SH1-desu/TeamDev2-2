@@ -135,6 +135,7 @@ void Graphics::Initialize(HWND hWnd)
 
 	Microsoft::WRL::ComPtr<IDXGISurface> dxgiBackBuffer;
 	swapchain->GetBuffer(0, IID_PPV_ARGS(&dxgiBackBuffer));
+	grid2DRenderer = std::make_unique<Grid2DRenderer>(d2dGraphics->GetContext(), dxgiBackBuffer.Get());
 }
 
 // ÉNÉäÉA

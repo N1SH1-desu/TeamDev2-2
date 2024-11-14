@@ -11,5 +11,4 @@ public:
      virtual void Excecute(ID2D1DeviceContext* context) = 0;
 private:
     Microsoft::WRL::ComPtr<ID2D1Bitmap1> targetBitmap;
-    Microsoft::WRL::ComPtr<ID2D1SolidColorBrush> brush;
 };

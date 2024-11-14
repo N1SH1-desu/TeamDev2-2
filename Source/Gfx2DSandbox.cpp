@@ -25,18 +25,13 @@ Gfx2DSandbox::Gfx2DSandbox(ID2D1DeviceContext* context, IDXGISurface* targetSurf
     {
         assert(false && "Failed to create bitmap");
     }
-
-    context->CreateSolidColorBrush(
-        D2D1::ColorF(D2D1::ColorF::Black),
-        &brush
-    );
 }
 
 void Gfx2DSandbox::Draw(ID2D1DeviceContext* context)
 {
+    context->SetTarget(targetBitmap.Get());
+
     context->BeginDraw();
-
     Excecute(context);
-
     context->EndDraw();
 }
