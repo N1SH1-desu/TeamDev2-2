@@ -113,6 +113,10 @@ void ProjectScreenScene::DrawGUI()
 	if (ImGui::Begin(u8"スクリーン座標変換", nullptr, ImGuiWindowFlags_NoNavInputs))
 	{
 		ImGui::Text(u8"クリック：キャラ配置");
+
+		POINTS pos = refInputMouse->GetPosition();
+		int v[2] = { pos.x, pos.y };
+		ImGui::InputInt2("Mouse Position", v);
 	}
 	ImGui::End();
 }

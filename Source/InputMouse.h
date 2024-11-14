@@ -1,11 +1,11 @@
 #pragma once
 #include <Windows.h>
-#include <array>
+#include <queue>
 #include <optional>
 
 struct MouseCommand
 {
-	enum Command
+	enum CommandName
 	{
 		M_MOVE,
 		M_LBUTTON_DOWN,
@@ -14,7 +14,13 @@ struct MouseCommand
 		M_RBUTTON_UP
 	};
 
-	Command command;
+	MouseCommand(CommandName commandName, POINTS p = {})
+	{
+		name = commandName;
+		position = p;
+	}
+
+	CommandName name;
 	std::optional<POINTS> position;
 };
 
@@ -26,26 +32,25 @@ public:
 	InputMouse& operator=(InputMouse&) = delete;
 	InputMouse& operator=(InputMouse&&) = delete;
 
-
-
 public:
-	InputMouse();
+	InputMouse(HWND hWnd);
 
-	void MouseMove(short x, short y);
-	void MouseDownLeft();
-	void MouseDownRight();
-	void MouseUpLeft();
-	void MouseUpRight();
+	void InQueueCommand(MouseCommand&& mouseCmd) { commandList.push(std::move(mouseCmd)); }
 
-	bool IsOnLeft() const { return isOnLeft; }
-	bool IsOnRight() const { return isOnRight; }
+	void ProcessCommand();
+
+	POINTS GetPosition() const { return mousePosition; }
+
+	bool IsLBottonDowned() const { return isLBottonDown; }
+	bool IsRBottonDowned() const { return isRBottonDown; }
 
 private:
+	HWND hWnd;
 	POINTS mousePosition;
 
-	bool isOnLeft = false;
-	bool isOnRight = false;
+	bool isLBottonDown = false;
+	bool isRBottonDown = false;
 
-	
+	std::queue<MouseCommand> commandList;
 };
  

@@ -23,7 +23,8 @@ static const int syncInterval = 1;
 
 // コンストラクタ
 Framework::Framework(HWND hWnd)
-	: hWnd(hWnd)
+	: hWnd(hWnd),
+	mouse(hWnd)
 {
 	// グラフィックス初期化
 	Graphics::Instance().Initialize(hWnd);
@@ -57,6 +58,10 @@ void Framework::Update(float elapsedTime)
 {
 	// IMGUIフレーム開始処理	
 	ImGuiRenderer::NewFrame();
+
+	mouse.ProcessCommand();
+
+	scene->SetInputMouse(&mouse);
 
 	// シーン更新処理
 	scene->Update(elapsedTime);
@@ -178,6 +183,7 @@ int Framework::Run()
 				? timer.TimeInterval()
 				: syncInterval / static_cast<float>(GetDeviceCaps(hDC, VREFRESH))
 				;
+			
 			Update(elapsedTime);
 			Render(elapsedTime);
 		}
@@ -222,24 +228,19 @@ LRESULT CALLBACK Framework::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LP
 		timer.Start();
 		break;
 	case WM_MOUSEMOVE:
-		short x = GET_X_LPARAM(lParam);
-		short y = GET_Y_LPARAM(lParam);
-
-		if (mouse)
-
-		mouse.MouseMove(x, y);
+		mouse.InQueueCommand({ MouseCommand::M_MOVE, MAKEPOINTS(lParam) });
 		break;
 	case WM_LBUTTONDOWN:
-		mouse.MouseDownLeft();
+		mouse.InQueueCommand({ MouseCommand::M_LBUTTON_DOWN });
 		break;
 	case WM_RBUTTONDOWN:
-		mouse.MouseDownRight();
+		mouse.InQueueCommand({ MouseCommand::M_RBUTTON_DOWN });
 		break;
 	case WM_LBUTTONUP:
-		mouse.MouseUpLeft();
+		mouse.InQueueCommand({ MouseCommand::M_LBUTTON_UP });
 		break;
 	case WM_RBUTTONUP:
-		mouse.MouseUpRight();
+		mouse.InQueueCommand({ MouseCommand::M_RBUTTON_UP });
 		break;
 	default:
 		return DefWindowProc(hWnd, msg, wParam, lParam);

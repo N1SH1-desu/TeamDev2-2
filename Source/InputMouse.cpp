@@ -1,35 +1,38 @@
 #include "InputMouse.h"
 #include "Graphics.h"
 
-InputMouse::InputMouse() :
+InputMouse::InputMouse(HWND hWnd) :
+	hWnd(hWnd),
 	mousePosition(),
-	isOnLeft(),
-	isOnRight()
+	isLBottonDown(),
+	isRBottonDown()
 {
 }
 
-void InputMouse::MouseMove(short x, short y)
+void InputMouse::ProcessCommand()
 {
-	mousePosition.x = x;
-	mousePosition.y = y;
-}
+	for (size_t i = 0u; i < commandList.size(); i++)
+	{
+		MouseCommand& command = commandList.front();
+		switch (command.name)
+		{
+		case MouseCommand::CommandName::M_MOVE:
+			mousePosition = *command.position;
+			break;
+		case MouseCommand::CommandName::M_LBUTTON_DOWN:
+			isLBottonDown = true;
+			break;
+		case MouseCommand::CommandName::M_LBUTTON_UP:
+			isLBottonDown = false;
+			break;
+		case MouseCommand::CommandName::M_RBUTTON_DOWN:
+			isRBottonDown = true;
+			break;
+		case MouseCommand::CommandName::M_RBUTTON_UP:
+			isRBottonDown = false;
+			break;
+		}
 
-void InputMouse::MouseDownLeft()
-{
-	isOnLeft = true;
-}
-
-void InputMouse::MouseDownRight()
-{
-	isOnRight = true;
-}
-
-void InputMouse::MouseUpLeft()
-{
-	isOnLeft = false;
-}
-
-void InputMouse::MouseUpRight()
-{
-	isOnRight = false;
+		commandList.pop();
+	}
 }
