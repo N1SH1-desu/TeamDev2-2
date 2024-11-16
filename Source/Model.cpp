@@ -33,6 +33,14 @@ Model::Model(const char* filename)
 	UpdateTransform();
 }
 
+Model::Model(Model::Node&& node, ModelResource::Mesh&& mesh)
+{
+	resource = std::make_shared<ModelResource>();
+
+	nodes.emplace_back(node);
+	resource->AddMesh(std::move(mesh));
+}
+
 // •ÏŠ·s—ñŒvZ
 void Model::UpdateTransform()
 {

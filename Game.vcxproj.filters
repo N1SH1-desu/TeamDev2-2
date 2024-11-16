@@ -219,6 +219,9 @@
     <ClInclude Include="Source\InputMouse.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\FetchModelFromSceneAsset.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Framework.cpp">
@@ -360,6 +363,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\InputMouse.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FetchModelFromSceneAsset.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

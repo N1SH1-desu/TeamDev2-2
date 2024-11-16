@@ -24,6 +24,7 @@ public:
 
 		std::vector<Node*>	children;
 	};
+	Model(Model::Node&&, ModelResource::Mesh&&);
 
 	// s—ñŒvZ
 	void UpdateTransform();

@@ -28,6 +28,8 @@ ProjectScreenScene::ProjectScreenScene()
 
 	sprite = std::make_unique<Sprite>(device);
 	stage.model = std::make_unique<Model>("Data/Model/Stage/ExampleStage.mdl");
+
+	sceneModels = std::make_unique<SceneModel>("Data/Model/TetrisBlock/scene.mdl");
 }
 
 // XVˆ—
