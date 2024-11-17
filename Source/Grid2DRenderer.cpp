@@ -13,8 +13,6 @@ Grid2DRenderer::Grid2DRenderer(ID2D1DeviceContext* context, IDXGISurface* target
 
 void Grid2DRenderer::Excecute(ID2D1DeviceContext* context)
 {
-	static constexpr float grid_size = 80.0f;
-
 	float screen_width = Graphics::Instance().GetScreenWidth();
 	float screen_height = Graphics::Instance().GetScreenHeight();
 

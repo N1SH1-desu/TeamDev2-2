@@ -4,6 +4,7 @@
 #include "Graphics.h"
 #include "Collision.h"
 #include "Scene/ProjectScreenScene.h"
+#include "ControlTetrisBlock.h"
 
 // コンストラクタ
 ProjectScreenScene::ProjectScreenScene()
@@ -20,7 +21,7 @@ ProjectScreenScene::ProjectScreenScene()
 		1000.0f								// ファークリップ
 	);
 	camera.SetLookAt(
-		{ 0, 30, 30 },		// 視点
+		{ 0, 0, 30 },		// 視点
 		{ 0, 0, 0 },		// 注視点
 		{ 0, 1, 0 }			// 上ベクトル
 	);
@@ -30,6 +31,8 @@ ProjectScreenScene::ProjectScreenScene()
 	stage.model = std::make_unique<Model>("Data/Model/Stage/ExampleStage.mdl");
 
 	sceneModels = std::make_unique<SceneModel>("Data/Model/TetrisBlock/scene.mdl");
+
+	stage.scale = { 0.22f, 0.22f, 0.22f };
 }
 
 // 更新処理
@@ -53,6 +56,13 @@ void ProjectScreenScene::Update(float elapsedTime)
 
 	}
 
+	DirectX::XMMATRIX Projection = DirectX::XMLoadFloat4x4(&camera.GetProjection());
+	DirectX::XMMATRIX View = DirectX::XMLoadFloat4x4(&camera.GetView());
+	DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();
+
+	RECT viewport = { 0, 0, static_cast<LONG>(Graphics::Instance().GetScreenWidth()), static_cast<LONG>(Graphics::Instance().GetScreenHeight()) };
+
+	stage.position = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size, viewport, Projection, View, World);
 
 	// ステージ行列更新処理
 	{
@@ -101,6 +111,8 @@ void ProjectScreenScene::Render(float elapsedTime)
 		modelRenderer->Render(rc, obj.transform, obj.model.get(), ShaderId::Lambert);
 	}
 
+	sceneModels->SelectedBlockRender(rc, modelRenderer, stage.transform, 0u);
+
 	gridRenderer->Draw(d2dGraphics->GetContext());
 }
 
@@ -119,6 +131,8 @@ void ProjectScreenScene::DrawGUI()
 		POINTS pos = refInputMouse->GetPosition();
 		int v[2] = { pos.x, pos.y };
 		ImGui::InputInt2("Mouse Position", v);
+
+		ImGui::InputFloat3("Block Position", &stage.position.x);
 	}
 	ImGui::End();
 }

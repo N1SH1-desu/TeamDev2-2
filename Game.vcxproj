@@ -127,6 +127,7 @@
     <ClInclude Include="Source\BasicShader.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Collision.h" />
+    <ClInclude Include="Source\ControlTetrisBlock.h" />
     <ClInclude Include="Source\Dialog.h" />
     <ClInclude Include="Source\FetchModelFromSceneAsset.h" />
     <ClInclude Include="Source\Framework.h" />
