@@ -71,6 +71,67 @@ void SlideMoveScene::Update(float elapsedTime)
 		// 壁ずり移動処理
 		if (moveLength > 0)
 		{
+			//レイの始点と終点を求める
+			DirectX::XMFLOAT3 s = {
+			   player.position.x,
+			   player.position.y + 1.0f,
+			   player.position.z
+			};
+
+			DirectX::XMFLOAT3 e = {
+			   player.position.x,
+			   player.position.y - 1.0f,
+			   player.position.z
+			};
+
+			DirectX::XMFLOAT3 p, n;
+			//ステージとレイキャストを行い、交点と法線を求める
+			if (Collision::RayCast(s, e, stage.transform, stage.model.get(), p, n)) {
+				//交点から終点へのベクトルを求める
+				DirectX::XMVECTOR P = DirectX::XMLoadFloat3(&p);
+				DirectX::XMVECTOR E = DirectX::XMLoadFloat3(&e);
+				DirectX::XMVECTOR PE = DirectX::XMVectorSubtract(E, P);
+
+				//三角関数から終点へのベクトルを求める
+				DirectX::XMVECTOR N = DirectX::XMLoadFloat3(&n);
+				DirectX::XMVECTOR A = DirectX::XMVector3Normalize(N);
+				//壁までの長さを少しだけ長くなるように補正する
+				float a = DirectX::XMVectorGetX(A) + 0.001f;
+
+				//壁ずりベクトルを求める
+				DirectX::XMVECTOR R = DirectX::XMVectorAdd(PE, DirectX::XMVectorScale(A, a));
+
+				//壁ずり後の位置を求める
+				DirectX::XMVECTOR Q = DirectX::XMVectorAdd(P, R);
+				DirectX::XMFLOAT3 q;
+				DirectX::XMStoreFloat3(&q, Q);
+
+				//壁際で壁ずり後の位置がめり込んでいないかレイキャストでチェックする
+				if (Collision::RayCast(s, q, stage.transform, stage.model.get(), p, n)) {
+					//めり込んでいた場合はプレイヤーの位置に今回レイキャストした交点を設定する
+					//※プレイヤーの位置が壁にピッタリくっつかないように補正する
+					P = DirectX::XMLoadFloat3(&p);
+					DirectX::XMVECTOR S = DirectX::XMLoadFloat3(&s);
+					DirectX::XMVECTOR PS = DirectX::XMVectorSubtract(S, P);
+					DirectX::XMVECTOR V = DirectX::XMVector3Normalize(PS);
+					P = DirectX::XMVectorAdd(P, DirectX::XMVectorScale(V, 0.001f));
+					DirectX::XMStoreFloat3(&p, P);
+					player.position.x = p.x;
+					player.position.z = p.z;
+				}
+				else {
+					//めり込んでいない場合は壁ずり後の位置をプレイヤーの位置に設定する
+					player.position.x = q.x;
+					player.position.z = q.z;
+				}
+			}
+			else {
+				//壁に当たらなかったので普通に移動
+				player.position.x += moveX;
+				player.position.z += moveZ;
+			}
+
+
 			player.position.x += moveX;
 			player.position.z += moveZ;
 
@@ -95,7 +156,7 @@ void SlideMoveScene::Update(float elapsedTime)
 				player.position.y = p.y;
 			}
 		}
-		
+
 	}
 
 	// プレイヤー行列更新処理
@@ -103,7 +164,7 @@ void SlideMoveScene::Update(float elapsedTime)
 		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(player.scale.x, player.scale.y, player.scale.z);
 		DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(player.angle.x, player.angle.y, player.angle.z);
 		DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(player.position.x, player.position.y, player.position.z);
-		DirectX::XMStoreFloat4x4(&player.transform, S * R * T);
+		DirectX::XMStoreFloat4x4(&player.transform, S* R* T);
 	}
 }
 
