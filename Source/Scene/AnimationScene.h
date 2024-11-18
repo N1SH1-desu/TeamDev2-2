@@ -22,7 +22,7 @@ public:
 
 
 	// GUI描画処理
-	//void DrawGUI() override;
+	void DrawGUI() override;
 
 private:
 	// アニメーション再生

@@ -150,22 +150,23 @@ void AnimationScene::Render(float elapsedTime)
 
 
 //// GUI描画処理
-//void AnimationScene::DrawGUI()
-//{
-//
-//	if (ImGui::Begin(u8"アニメーション", nullptr, ImGuiWindowFlags_None))
-//	{
-//		ImGui::Text(u8"移動操作：WASD");
-//		ImGui::Text(u8"ジャンプ操作：Space");
-//		ImGui::Spacing();
-//
-//		const char* stateName = "";
-//		ImGui::LabelText("State", stateName);
-//		ImGui::InputFloat("velocity",);
-//
-//		ImGui::End();
-//	}
-//}
+void AnimationScene::DrawGUI()
+{
+
+	if (ImGui::Begin(u8"アニメーション", nullptr, ImGuiWindowFlags_None))
+	{
+		ImGui::Text(u8"移動操作：WASD");
+		ImGui::Text(u8"ジャンプ操作：Space");
+		ImGui::Spacing();
+
+		//const char* stateName = "";
+		//ImGui::LabelText("State", stateName);
+		//ImGui::InputFloat("velocity",);
+	}
+		stage->DrawGUI();
+
+		ImGui::End();
+}
 
 //// アニメーション再生
 //void AnimationScene::PlayAnimation(int index, bool loop)
