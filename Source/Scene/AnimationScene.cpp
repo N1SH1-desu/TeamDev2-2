@@ -74,7 +74,7 @@ void AnimationScene::Update(float elapsedTime)
 		if (Collision::InteresectCylinderVsCylinder(player->GetPosition(), 2.0f, 2.0f, cube.position, 2.0f, 2.0f, outPosition))
 		{
 			//player->turn();
-			player->HitP();
+			//player->HitP();
 
 			player->PlayAnimation("Jump", false);
 			player->state = Player::State::Jump;
