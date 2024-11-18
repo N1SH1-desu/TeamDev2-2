@@ -210,11 +210,28 @@
     <ClInclude Include="Source\Scene\LandWalkScene.h">
       <Filter>Source\02_地上歩行</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Source\Scene\stage.h">
       <Filter>Source\チーム制作_ゲームシーン</Filter>
     </ClInclude>
     <ClInclude Include="Source\fogs.h">
       <Filter>Source\チーム制作_ゲームシーン</Filter>
+=======
+    <ClInclude Include="Source\player.h">
+      <Filter>Source\04_アニメーション</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Mathf.h">
+      <Filter>Source\04_アニメーション</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Stage.h">
+      <Filter>Source\04_アニメーション</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StageManager.h">
+      <Filter>Source\04_アニメーション</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlayerManager.h">
+      <Filter>Source\04_アニメーション</Filter>
+>>>>>>> d4bdab88892274223179e9fde26de4dcafd4c579
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -347,11 +364,22 @@
     <ClCompile Include="Source\Scene\LandWalkScene.cpp">
       <Filter>Source\02_地上歩行</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Source\Scene\stage.cpp">
       <Filter>Source\チーム制作_ゲームシーン</Filter>
     </ClCompile>
     <ClCompile Include="Source\fogs.cpp">
       <Filter>Source\チーム制作_ゲームシーン</Filter>
+=======
+    <ClCompile Include="Source\player.cpp">
+      <Filter>Source\04_アニメーション</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Mathf.cpp">
+      <Filter>Source\04_アニメーション</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PlayerManager.cpp">
+      <Filter>Source\04_アニメーション</Filter>
+>>>>>>> d4bdab88892274223179e9fde26de4dcafd4c579
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
