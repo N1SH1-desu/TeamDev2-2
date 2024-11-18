@@ -33,6 +33,7 @@ void PlayerManager::Render(ModelRenderer* modelRenderer,RenderContext& rc, Shade
 	ImGui::End();
 }
 
+
 void PlayerManager::Register(Player* player) {
 	players.emplace_back(player);
 }

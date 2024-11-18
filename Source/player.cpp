@@ -3,6 +3,7 @@
 #include"Camera.h"
 #include"Graphics.h"
 #include"Collision.h"
+#include"PlayerManager.h"
 
  Player::Player(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale, DirectX::XMFLOAT3 angle) {
 
@@ -12,6 +13,7 @@
 	this->scale = scale;
 	this->angle = angle;
 	this->state = State::Idle;
+	this->HP = 10;
 	PlayAnimation("Jump", false);
 }
 
@@ -340,3 +342,9 @@ void Player::turn() {
 		angle.y *= -1.0f;
 		moveSpeed *= -1.0f;
 }
+
+void Player::Death()
+{
+	PlayerManager::Instance().Remove(this);
+}
+

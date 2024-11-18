@@ -44,6 +44,8 @@ public:
 
 	void turn();
 
+	void Death();
+
 
 public:
 	Model* model = nullptr;
@@ -91,9 +93,11 @@ public:
 	float								moveVecX = 0.0f;
 	float								moveVecZ = 0.0f;
 
-	bool hitWall = false;
+	bool								hitWall = false;
 
-	float moveSpeed = 5.0f;
+	float								moveSpeed = 5.0f;
 
-	bool jumpC = false;
+	bool								jumpC = false;
+
+	int									HP = 10;
 };

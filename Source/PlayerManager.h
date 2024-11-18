@@ -37,6 +37,7 @@ public:
 	void Render(ModelRenderer* modelRenderer,RenderContext& rc, ShaderId ID);
 
 
+
 private:
 	std::vector<Player*> players;
 	std::set<Player*> remove;
