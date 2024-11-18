@@ -29,7 +29,7 @@ AnimationScene::AnimationScene()
 
 	timer = 0;
 	cube.model = std::make_unique<Model>("Data/Model/Cube/Cube.mdl");
-	cube.position = { -5,1, 0 };
+	cube.position = { -8,1, 0 };
 	cube.angle = { 0, 0, 0 };
 	cube.scale = { 2, 2, 2 };
 
@@ -37,6 +37,8 @@ AnimationScene::AnimationScene()
 	cube2.position = { 5,1, 0 };
 	cube2.angle = { 0, 0, 0 };
 	cube2.scale = { 2, 2, 2 };
+
+	stage = std::make_unique<Stage>(0);
 }
 
 AnimationScene::~AnimationScene() {
@@ -100,6 +102,9 @@ void AnimationScene::Update(float elapsedTime)
 		}
 	}
 
+	//stage‚Ì’Ç‰Á
+	stage.get()->Update(elapsedTime);
+
 	PlayerManager::Instance().Update(elapsedTime);
 	cube.UpdateTransform();
 	cube2.UpdateTransform();
@@ -139,6 +144,8 @@ void AnimationScene::Render(float elapsedTime)
 	// ƒOƒŠƒbƒh•`‰æ
 	primitiveRenderer->DrawGrid(20, 1);
 	primitiveRenderer->Render(dc, camera.GetView(), camera.GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+
+	stage->Render(elapsedTime,&rc);
 }
 
 
