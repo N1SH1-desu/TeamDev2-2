@@ -34,9 +34,6 @@
     <Filter Include="Source\07_ヒットストップ">
       <UniqueIdentifier>{dbc5131a-4742-4901-a1fc-5613aabcadbc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\06_アタッチメント">
-      <UniqueIdentifier>{b034a89d-348b-48cb-b06b-f93ebb2abac6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\05_スクリーン座標変換">
       <UniqueIdentifier>{1516a6b5-4626-4f8a-8789-334db1edcb9f}</UniqueIdentifier>
     </Filter>
@@ -187,7 +184,7 @@
       <Filter>Source\04_アニメーション</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene\AttachWeaponScene.h">
-      <Filter>Source\06_アタッチメント</Filter>
+      <Filter>Source\09_移動床\06_アタッチメント</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene\ProjectScreenScene.h">
       <Filter>Source\05_スクリーン座標変換</Filter>
@@ -209,6 +206,24 @@
     </ClInclude>
     <ClInclude Include="Source\Scene\LandWalkScene.h">
       <Filter>Source\02_地上歩行</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Gfx2D.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Gfx2DSandbox.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Grid2DRenderer.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InputMouse.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FetchModelFromSceneAsset.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ControlTetrisBlock.h">
+      <Filter>Source</Filter>
     </ClInclude>
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -354,7 +369,7 @@
       <Filter>Source\04_アニメーション</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene\AttachWeaponScene.cpp">
-      <Filter>Source\06_アタッチメント</Filter>
+      <Filter>Source\09_移動床\06_アタッチメント</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene\ProjectScreenScene.cpp">
       <Filter>Source\05_スクリーン座標変換</Filter>
@@ -376,6 +391,21 @@
     </ClCompile>
     <ClCompile Include="Source\Scene\LandWalkScene.cpp">
       <Filter>Source\02_地上歩行</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Gfx2D.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Gfx2DSandbox.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Grid2DRenderer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InputMouse.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FetchModelFromSceneAsset.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
 <<<<<<< HEAD
 <<<<<<< HEAD

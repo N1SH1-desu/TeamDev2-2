@@ -1,4 +1,5 @@
 #pragma once
+#include "InputMouse.h"
 
 // ƒV[ƒ“Šî’ê
 class Scene
@@ -15,4 +16,9 @@ public:
 
 	// GUI•`‰æˆ—
 	virtual void DrawGUI() {}
+
+	void SetInputMouse(InputMouse* ref) { refInputMouse = ref; }
+	
+protected:
+	InputMouse* refInputMouse;
 };

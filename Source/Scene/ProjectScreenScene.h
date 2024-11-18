@@ -6,6 +6,7 @@
 #include "FreeCameraController.h"
 #include "Model.h"
 #include "Sprite.h"
+#include "FetchModelFromSceneAsset.h"
 
 class ProjectScreenScene : public Scene
 {
@@ -37,4 +38,5 @@ private:
 	std::unique_ptr<Sprite>				sprite;
 	Object								stage;
 	std::vector<Object>					objs;
+	std::unique_ptr<SceneModel>			sceneModels;
 };
