@@ -4,7 +4,6 @@
 #include "Graphics.h"
 #include "Collision.h"
 #include "Scene/ProjectScreenScene.h"
-#include "ControlTetrisBlock.h"
 
 // コンストラクタ
 ProjectScreenScene::ProjectScreenScene()
@@ -62,7 +61,7 @@ void ProjectScreenScene::Update(float elapsedTime)
 
 	RECT viewport = { 0, 0, static_cast<LONG>(Graphics::Instance().GetScreenWidth()), static_cast<LONG>(Graphics::Instance().GetScreenHeight()) };
 
-	stage.position = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size, viewport, Projection, View, World);
+	//stage.position = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size, viewport, Projection, View, World);
 
 	// ステージ行列更新処理
 	{
