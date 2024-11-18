@@ -8,18 +8,32 @@
 Stage::Stage(int selector)
 	:now_stage{0}
 {
-	stage_[0] = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_1\\stage_1.mdl");
-	stage_[1] = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_2\\stage_2.mdl");
-	stage_[2] = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_3\\stage_3.mdl");
+	stage_[0].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_2\\stage_2.mdl");
+	stage_[1].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_3\\stage_3.mdl");
+	stage_collision_[0].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_2\\stage_2_collision.mdl");
+	stage_collision_[1].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_3\\stage_3_collision.mdl");
+
+	stage_[0].transform = stage_transform[0];
+	stage_[1].transform = stage_transform[1];
+	stage_collision_[0].transform = stage_collision_transform[0];
+	stage_collision_[1].transform = stage_collision_transform[1];
+	stage_[0].model.get()->UpdateTransform();
+	stage_[1].model.get()->UpdateTransform();
+	stage_collision_[0].model.get()->UpdateTransform();
+	stage_collision_[1].model.get()->UpdateTransform();
 
 	SelectStage(selector);
-	
 }
 
 void Stage::Update(float elapsedTime)
 {
-
-	stage_[now_stage].get()->UpdateTransform();
+	stage_[now_stage].position =
+	{
+		stage_transform[now_stage]._41,
+		stage_transform[now_stage]._42,
+		stage_transform[now_stage]._43
+	};
+	stage_[now_stage].UpdateTransform();
 }
 
 void Stage::Render(float elapsedTime, RenderContext *rc)
@@ -41,10 +55,11 @@ void Stage::Render(float elapsedTime, RenderContext *rc)
 
 
 	modelRenderer->Render(myRc
-		, stage_transform[now_stage]
-		, stage_[now_stage].get(), ShaderId::Lambert);
+		, stage_[now_stage].transform
+		, stage_[now_stage].model.get(), ShaderId::Lambert);
 
 	
+
 }
 
 void Stage::DrawGUI()
@@ -62,7 +77,7 @@ void Stage::DrawGUI()
 	{
 		if (ImGui::Button("0"))SelectStage(0);
 		if (ImGui::Button("1"))SelectStage(1);
-		if (ImGui::Button("2"))SelectStage(2);
+
 	}
 	ImGui::End();
 #endif
@@ -71,5 +86,5 @@ void Stage::DrawGUI()
 void Stage::SelectStage(int selector)
 {
 	if (selector < stage_number::stage_max_num)now_stage = selector;
-
 }
+
