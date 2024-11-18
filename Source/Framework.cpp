@@ -16,6 +16,8 @@
 #include "Scene/MoveFloorScene.h"
 #include "Scene/TerrainAlignScene.h"
 #include "Scene/ResourceManagementScene.h"
+#include"player.h"
+#include "PlayerManager.h"
 
 // 垂直同期間隔設定
 static const int syncInterval = 1;
@@ -31,12 +33,13 @@ Framework::Framework(HWND hWnd)
 	ImGuiRenderer::Initialize(hWnd, Graphics::Instance().GetDevice(), Graphics::Instance().GetDeviceContext());
 
 	// シーン初期化
-	scene = std::make_unique<RayCastScene>();
+	//scene = std::make_unique<RayCastScene>();
 	//scene = std::make_unique<LandWalkScene>();
 	//scene = std::make_unique<SlideMoveScene>();
 	//scene = std::make_unique<MoveFloorScene>();
 	//scene = std::make_unique<TerrainAlignScene>();
-	//scene = std::make_unique<AnimationScene>();
+	scene = std::make_unique<AnimationScene>();
+	//scene = std::make_unique<Player>();
 	//scene = std::make_unique<AttachWeaponScene>();
 	//scene = std::make_unique<ProjectScreenScene>();
 	//scene = std::make_unique<ResourceManagementScene>();
@@ -49,6 +52,8 @@ Framework::~Framework()
 {
 	// IMGUI終了化
 	ImGuiRenderer::Finalize();
+
+	PlayerManager::Instance().AllDelete();
 }
 
 // 更新処理
@@ -96,6 +101,10 @@ void Framework::ChangeSceneButtonGUI(const char* name)
 {
 	if (ImGui::Button(name))
 	{
+		if (scene)
+		{
+			scene.reset();
+		}
 		scene = std::make_unique<T>();
 	}
 }

@@ -132,17 +132,52 @@ void LandWalkScene::Update(float elapsedTime)
 		float moveX = player.velocity.x * elapsedTime;
 		float moveY = player.velocity.y * elapsedTime;
 		float moveZ = player.velocity.z * elapsedTime;
-		
+
 		// 接地処理
 		{
+			//設置状態の制御
+			bool onGround = player.onGround;
+			player.onGround = false;
 
+			//落下中に接地処理をする
+			if (player.velocity.y < 0.0f) {
+				//レイとの始点と終点を求める
+				DirectX::XMFLOAT3 start, end;
+				//start = player.position;
+				//start.y += 1.0f;
+				//end = player.position;
+				//end.y += moveY;
+
+				start = end = player.position;
+				start.y = 0.5f;
+				end.y = moveY;
+
+				//前フレームで接地していた場合はレイキャストの長さを調整
+				float downhillOffset = this->downhillOffset * elapsedTime;
+				if (player.onGround) {
+					//player.position.y += downhillOffset;
+					end.y -= downhillOffset;
+				}
+
+				//レイキャストを行い、交点を求める
+				DirectX::XMFLOAT3 hitPosition, hitNormal;
+				if (Collision::RayCast(start, end, stage.transform, stage.model.get(), hitPosition, hitNormal))
+				{
+					//交点のY座標をプレイヤーの位置に設置する
+					player.position.y = hitPosition.y;
+					player.velocity.y = 0.0f;
+					moveY = 0.0f;
+					player.onGround = true;
+				}
+
+			}
 		}
 
 		// 移動
 		player.position.x += moveX;
 		player.position.y += moveY;
 		player.position.z += moveZ;
-		
+
 	}
 
 	// プレイヤー行列更新処理
@@ -150,7 +185,7 @@ void LandWalkScene::Update(float elapsedTime)
 		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(player.scale.x, player.scale.y, player.scale.z);
 		DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(player.angle.x, player.angle.y, player.angle.z);
 		DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(player.position.x, player.position.y, player.position.z);
-		DirectX::XMStoreFloat4x4(&player.transform, S * R * T);
+		DirectX::XMStoreFloat4x4(&player.transform, S* R* T);
 	}
 }
 
