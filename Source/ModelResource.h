@@ -125,6 +125,8 @@ public:
 	// 読み込み
 	void Load(ID3D11Device* device, const char* filename);
 
+	void AddMesh(ModelResource::Mesh&& mesh) { meshes.emplace_back(mesh); }
+
 protected:
 	// モデルセットアップ
 	void BuildModel(ID3D11Device* device, const char* dirname);
