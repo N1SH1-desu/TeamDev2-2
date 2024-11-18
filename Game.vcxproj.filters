@@ -211,6 +211,15 @@
       <Filter>Source\02_地上歩行</Filter>
     </ClInclude>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    <ClInclude Include="Source\Scene\stage.h">
+      <Filter>Source\チーム制作_ゲームシーン</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\fogs.h">
+      <Filter>Source\チーム制作_ゲームシーン</Filter>
+=======
+>>>>>>> ce7a451f39a8100717c1112796019b0046d30690
     <ClInclude Include="Source\player.h">
       <Filter>Source\04_アニメーション</Filter>
     </ClInclude>
@@ -225,6 +234,7 @@
     </ClInclude>
     <ClInclude Include="Source\PlayerManager.h">
       <Filter>Source\04_アニメーション</Filter>
+<<<<<<< HEAD
 =======
     <ClInclude Include="Source\Scene\stage.h">
       <Filter>Source\チーム制作_ゲームシーン</Filter>
@@ -232,6 +242,9 @@
     <ClInclude Include="Source\fogs.h">
       <Filter>Source\チーム制作_ゲームシーン</Filter>
 >>>>>>> origin/stage
+=======
+>>>>>>> d4bdab88892274223179e9fde26de4dcafd4c579
+>>>>>>> ce7a451f39a8100717c1112796019b0046d30690
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -365,6 +378,15 @@
       <Filter>Source\02_地上歩行</Filter>
     </ClCompile>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    <ClCompile Include="Source\Scene\stage.cpp">
+      <Filter>Source\チーム制作_ゲームシーン</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\fogs.cpp">
+      <Filter>Source\チーム制作_ゲームシーン</Filter>
+=======
+>>>>>>> ce7a451f39a8100717c1112796019b0046d30690
     <ClCompile Include="Source\player.cpp">
       <Filter>Source\04_アニメーション</Filter>
     </ClCompile>
@@ -373,6 +395,7 @@
     </ClCompile>
     <ClCompile Include="Source\PlayerManager.cpp">
       <Filter>Source\04_アニメーション</Filter>
+<<<<<<< HEAD
 =======
     <ClCompile Include="Source\Scene\stage.cpp">
       <Filter>Source\チーム制作_ゲームシーン</Filter>
@@ -380,6 +403,9 @@
     <ClCompile Include="Source\fogs.cpp">
       <Filter>Source\チーム制作_ゲームシーン</Filter>
 >>>>>>> origin/stage
+=======
+>>>>>>> d4bdab88892274223179e9fde26de4dcafd4c579
+>>>>>>> ce7a451f39a8100717c1112796019b0046d30690
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
