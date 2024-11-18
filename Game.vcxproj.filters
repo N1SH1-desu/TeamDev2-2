@@ -207,6 +207,21 @@
     <ClInclude Include="Source\Scene\LandWalkScene.h">
       <Filter>Source\02_地上歩行</Filter>
     </ClInclude>
+    <ClInclude Include="Source\player.h">
+      <Filter>Source\04_アニメーション</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Mathf.h">
+      <Filter>Source\04_アニメーション</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Stage.h">
+      <Filter>Source\04_アニメーション</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StageManager.h">
+      <Filter>Source\04_アニメーション</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlayerManager.h">
+      <Filter>Source\04_アニメーション</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Framework.cpp">
@@ -337,6 +352,15 @@
     </ClCompile>
     <ClCompile Include="Source\Scene\LandWalkScene.cpp">
       <Filter>Source\02_地上歩行</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\player.cpp">
+      <Filter>Source\04_アニメーション</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Mathf.cpp">
+      <Filter>Source\04_アニメーション</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PlayerManager.cpp">
+      <Filter>Source\04_アニメーション</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
