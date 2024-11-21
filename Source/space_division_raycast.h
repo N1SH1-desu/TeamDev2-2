@@ -11,7 +11,7 @@ using namespace std;
 using namespace DirectX;
 
 //空間分割レイキャスト用クラス
-class SpaceDivisionRaycast
+class SpaceDivisionRayCast
 {
 private:
     vector<Model*> models_;
@@ -34,23 +34,25 @@ private:
 	};
 	map<Model*, CollisionMesh> model_divisions_;
 
-	const int cell_size_ = 4;
+	const int cell_size_ = 2;
+	int draw_box_=0;
 
 public:
-    SpaceDivisionRaycast();
-	~SpaceDivisionRaycast() { models_.clear(); model_divisions_.clear(); }
+    SpaceDivisionRayCast();
+	~SpaceDivisionRayCast() { models_.clear(); model_divisions_.clear(); }
 
     //空間分割したいモデルを登録する。
     void Load(Model* model,DirectX::XMFLOAT4X4 world_transform);
 
     //空間分割したモデルでレイキャストする
 	bool RayCast(
-		Model* model,
 		const DirectX::XMFLOAT3& start,
 		const DirectX::XMFLOAT3& end,
+		Model* model,
 		DirectX::XMFLOAT3& hit_position,
 		DirectX::XMFLOAT3& hit_normal);
 
 	//確認
 	void DebugDraw(RenderContext& rc ,Model*model);
+	void DrowImgui();
 };

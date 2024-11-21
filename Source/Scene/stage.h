@@ -41,19 +41,23 @@ private:
 	int now_stage;
 	DirectX::XMFLOAT4X4 stage_transform[stage_number::stage_max_num] =
 	{
-		{
-		1, 0, 0, 0
-		, 0, 1, 0, 0
-		, 0, 0, 1, 0
-		, 0, 7.5f, 0, 1
-		},
-		{
-		1, 0, 0, 0
-		, 0, 1, 0, 0
-		, 0, 0, 1, 0
-		, 6, 5.5, 10, 1
-		},	
-
+	{
+	1, 0, 0, 0
+	, 0, 1, 0, 0
+	, 0, 0, 1, 0
+	, 0, 7.5f, 0, 1
+	},
+	{
+	1, 0, 0, 0
+	, 0, 1, 0, 0
+	, 0, 0, 1, 0
+	, 6, 5.5, 10, 1
+	},
+	{
+	1,0,0,0,
+	0,1,0,0,
+	0,0,1,0
+	,0,0,0,1},
 		{},
 		{},
 		{},
@@ -67,17 +71,11 @@ private:
 , 0, 0, 1, 0
 , 0, 0, 0, 1
 },
-//{
-//1, 0, 0, 0
-//, 0, 1, 0, 0
-//, 0, 0, 1, 0
-//, 6, 6, 10, 1
-//},	
 {
 	1, 0, 0, 0
 	, 0, 1, 0, 0
 	, 0, 0, 1, 0
-	, 0, 0, 1.5, 1
+	, 0, 0, 0, 1
 	},
 	{},
 	{},
@@ -92,7 +90,7 @@ public:
 	void Update(float elapsedTime);
 
 	// ï`âÊèàóù
-	void Render(float elapsedTime, RenderContext* rc);
+	void Render(float elapsedTime, RenderContext& rc);
 
 	// GUIï`âÊèàóù
 	void DrawGUI();
