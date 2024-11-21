@@ -25,3 +25,11 @@ void SceneModel::SelectedBlockRender(RenderContext& rc, ModelRenderer* renderer,
 {
     renderer->Render(rc, worldTransform, sceneModels.at(index).get(), id);
 }
+
+void SceneModel::RenderCommitedBlocks(RenderContext& rc, ModelRenderer* renderer, ShaderId id)
+{
+    for (std::pair<UINT, DirectX::XMFLOAT4X4>& blockData : commitedBlocks)
+    {
+        renderer->Render(rc, blockData.second, sceneModels.at(blockData.first).get(), id);
+    }
+}

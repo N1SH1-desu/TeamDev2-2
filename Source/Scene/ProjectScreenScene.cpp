@@ -21,7 +21,7 @@ ProjectScreenScene::ProjectScreenScene()
 		1000.0f								// ファークリップ
 	);
 	camera.SetLookAt(
-		{ 0, 0, 30 },		// 視点
+		{ 0, 0, -30 },		// 視点
 		{ 0, 0, 0 },		// 注視点
 		{ 0, 1, 0 }			// 上ベクトル
 	);
@@ -32,7 +32,7 @@ ProjectScreenScene::ProjectScreenScene()
 
 	sceneModels = std::make_unique<SceneModel>("Data/Model/TetrisBlock/scene.mdl");
 
-	stage.scale = { 0.22f, 0.22f, 0.22f };
+	stage.scale = { 0.1f, 0.1f, 0.1f };
 }
 
 // 更新処理
@@ -56,7 +56,7 @@ void ProjectScreenScene::Update(float elapsedTime)
 
 	}
 
-	DirectX::XMMATRIX Projection = DirectX::XMLoadFloat4x4(&camera.GetProjection());
+	DirectX::XMMATRIX Projection = DirectX::XMLoadFloat4x4(&camera.GetProjection());	
 	DirectX::XMMATRIX View = DirectX::XMLoadFloat4x4(&camera.GetView());
 	DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();
 
@@ -111,7 +111,7 @@ void ProjectScreenScene::Render(float elapsedTime)
 		modelRenderer->Render(rc, obj.transform, obj.model.get(), ShaderId::Lambert);
 	}
 
-	sceneModels->SelectedBlockRender(rc, modelRenderer, stage.transform, 0u);
+	sceneModels->SelectedBlockRender(rc, modelRenderer, stage.transform, 0u, ShaderId::Lambert);
 
 	gridRenderer->Draw(d2dGraphics->GetContext());
 }
@@ -133,6 +133,8 @@ void ProjectScreenScene::DrawGUI()
 		ImGui::InputInt2("Mouse Position", v);
 
 		ImGui::InputFloat3("Block Position", &stage.position.x);
+		ImGui::InputFloat3("Block Scale", &stage.scale.x);
+		ImGui::InputFloat3("Block Rotate", &stage.angle.x);
 	}
 	ImGui::End();
 }
