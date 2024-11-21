@@ -21,7 +21,7 @@ ProjectScreenScene::ProjectScreenScene()
 		1000.0f								// ファークリップ
 	);
 	camera.SetLookAt(
-		{ 0, 0, -30 },		// 視点
+		{ 0, 0, -40 },		// 視点
 		{ 0, 0, 0 },		// 注視点
 		{ 0, 1, 0 }			// 上ベクトル
 	);
@@ -30,9 +30,9 @@ ProjectScreenScene::ProjectScreenScene()
 	sprite = std::make_unique<Sprite>(device);
 	stage.model = std::make_unique<Model>("Data/Model/Stage/ExampleStage.mdl");
 
-	sceneModels = std::make_unique<SceneModel>("Data/Model/TetrisBlock/scene.mdl");
+	sceneModels = std::make_unique<SceneModel>("Data/Model/TetrisBlock/fixedScene.mdl");
 
-	stage.scale = { 0.1f, 0.1f, 0.1f };
+	stage.scale = { 0.125f, 0.125f, 0.125f };
 }
 
 // 更新処理
@@ -62,7 +62,7 @@ void ProjectScreenScene::Update(float elapsedTime)
 
 	RECT viewport = { 0, 0, static_cast<LONG>(Graphics::Instance().GetScreenWidth()), static_cast<LONG>(Graphics::Instance().GetScreenHeight()) };
 
-	stage.position = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size, viewport, Projection, View, World);
+	//stage.position = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size, viewport, Projection, View, World);
 
 	// ステージ行列更新処理
 	{
@@ -90,6 +90,8 @@ void ProjectScreenScene::Render(float elapsedTime)
 	ModelRenderer* modelRenderer = Graphics::Instance().GetModelRenderer();
 	Graphics2D* d2dGraphics = Graphics::Instance().GetGraphics2D();
 	Grid2DRenderer* gridRenderer = Graphics::Instance().GetGrid2DRenderer();
+	PrimitiveRenderer* primitiveRenderer = Graphics::Instance().GetPrimitiveRenderer();
+	ShapeRenderer* shapeRenderer = Graphics::Instance().GetShapeRenderer();
 
 	// モデル描画
 	RenderContext rc;
@@ -113,7 +115,12 @@ void ProjectScreenScene::Render(float elapsedTime)
 
 	sceneModels->SelectedBlockRender(rc, modelRenderer, stage.transform, 0u, ShaderId::Lambert);
 
-	gridRenderer->Draw(d2dGraphics->GetContext());
+	//gridRenderer->Draw(d2dGraphics->GetContext());
+
+	// グリッド描画
+	primitiveRenderer->DrawGrid(20, 1);
+	primitiveRenderer->Render(dc, camera.GetView(), camera.GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+
 }
 
 // GUI描画処理
