@@ -21,7 +21,7 @@ ProjectScreenScene::ProjectScreenScene()
 		1000.0f								// ファークリップ
 	);
 	camera.SetLookAt(
-		{ 0, 0, -40 },		// 視点
+		{ 0, 0, -3 },		// 視点
 		{ 0, 0, 0 },		// 注視点
 		{ 0, 1, 0 }			// 上ベクトル
 	);
@@ -88,10 +88,9 @@ void ProjectScreenScene::Render(float elapsedTime)
 	ID3D11DeviceContext* dc = Graphics::Instance().GetDeviceContext();
 	RenderState* renderState = Graphics::Instance().GetRenderState();
 	ModelRenderer* modelRenderer = Graphics::Instance().GetModelRenderer();
-	Graphics2D* d2dGraphics = Graphics::Instance().GetGraphics2D();
-	Grid2DRenderer* gridRenderer = Graphics::Instance().GetGrid2DRenderer();
 	PrimitiveRenderer* primitiveRenderer = Graphics::Instance().GetPrimitiveRenderer();
 	ShapeRenderer* shapeRenderer = Graphics::Instance().GetShapeRenderer();
+	EndlessGridRenderer* gridRenderer = Graphics::Instance().GetEndlessGridRenderer();
 
 	// モデル描画
 	RenderContext rc;
@@ -115,12 +114,16 @@ void ProjectScreenScene::Render(float elapsedTime)
 
 	//sceneModels->SelectedBlockRender(rc, modelRenderer, stage.transform, 0u, ShaderId::Lambert);
 
-	//gridRenderer->Draw(d2dGraphics->GetContext());
-
 	// グリッド描画
 	primitiveRenderer->DrawGrid(20, 1);
 	primitiveRenderer->Render(dc, camera.GetView(), camera.GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
+	{
+		DirectX::XMMATRIX view = DirectX::XMLoadFloat4x4(&camera.GetView());
+		DirectX::XMMATRIX proj = DirectX::XMLoadFloat4x4(&camera.GetProjection());
+		DirectX::XMFLOAT4X4 viewProj; DirectX::XMStoreFloat4x4(&viewProj, view * proj);
+		gridRenderer->Draw(dc, camera.GetView(), camera.GetProjection());
+	}
 }
 
 // GUI描画処理

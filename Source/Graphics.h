@@ -7,8 +7,7 @@
 #include "PrimitiveRenderer.h"
 #include "ShapeRenderer.h"
 #include "ModelRenderer.h"
-#include "Gfx2D.h"
-#include "Grid2DRenderer.h"
+#include "EndlessGridRenderer.h"
 
 // グラフィックス
 class Graphics
@@ -64,10 +63,7 @@ public:
 	// モデルレンダラ取得
 	ModelRenderer* GetModelRenderer() const { return modelRenderer.get(); }
 
-	Graphics2D* GetGraphics2D() const { return d2dGraphics.get(); }
-
-	Grid2DRenderer* GetGrid2DRenderer() const { return grid2DRenderer.get(); }
-
+	EndlessGridRenderer* GetEndlessGridRenderer() const { return endlessGridRenderer.get(); }
 private:
 	HWND											hWnd = nullptr;
 	Microsoft::WRL::ComPtr<ID3D11Device>			device;
@@ -77,9 +73,6 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView>	depthStencilView;
 	D3D11_VIEWPORT									viewport;
 
-	std::unique_ptr<Graphics2D>						d2dGraphics;
-	std::unique_ptr<Grid2DRenderer>					grid2DRenderer;
-
 	float	screenWidth = 0;
 	float	screenHeight = 0;
 
@@ -87,4 +80,5 @@ private:
 	std::unique_ptr<PrimitiveRenderer>				primitiveRenderer;
 	std::unique_ptr<ShapeRenderer>					shapeRenderer;
 	std::unique_ptr<ModelRenderer>					modelRenderer;
+	std::unique_ptr<EndlessGridRenderer>			endlessGridRenderer;
 };

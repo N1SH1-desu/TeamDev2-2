@@ -129,6 +129,7 @@
     <ClInclude Include="Source\Collision.h" />
     <ClInclude Include="Source\ControlTetrisBlock.h" />
     <ClInclude Include="Source\Dialog.h" />
+    <ClInclude Include="Source\EndlessGridRenderer.h" />
     <ClInclude Include="Source\FetchModelFromSceneAsset.h" />
     <ClInclude Include="Source\Framework.h" />
     <ClInclude Include="Source\FreeCameraController.h" />
@@ -183,6 +184,7 @@
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\Dialog.cpp" />
+    <ClCompile Include="Source\EndlessGridRenderer.cpp" />
     <ClCompile Include="Source\FetchModelFromSceneAsset.cpp" />
     <ClCompile Include="Source\Framework.cpp" />
     <ClCompile Include="Source\FreeCameraController.cpp" />
@@ -220,6 +222,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\Basic.hlsli" />
+    <None Include="Shader\Grid.hlsli" />
     <None Include="Shader\Lambert.hlsli" />
     <None Include="Shader\Scene.hlsli" />
     <None Include="Shader\ShapeRenderer.hlsli" />
@@ -233,6 +236,14 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="Shader\BasicVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\GridPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\GridVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>

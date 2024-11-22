@@ -225,6 +225,9 @@
     <ClInclude Include="Source\ControlTetrisBlock.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\EndlessGridRenderer.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Framework.cpp">
@@ -371,6 +374,9 @@
     <ClCompile Include="Source\FetchModelFromSceneAsset.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\EndlessGridRenderer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\Sprite.hlsli">
@@ -392,6 +398,9 @@
       <Filter>Shader</Filter>
     </None>
     <None Include="Shader\Scene.hlsli">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\Grid.hlsli">
       <Filter>Shader</Filter>
     </None>
   </ItemGroup>
@@ -424,6 +433,12 @@
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="Shader\LambertVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\GridVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\GridPS.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>
