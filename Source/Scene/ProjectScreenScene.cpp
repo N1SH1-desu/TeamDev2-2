@@ -113,7 +113,7 @@ void ProjectScreenScene::Render(float elapsedTime)
 		modelRenderer->Render(rc, obj.transform, obj.model.get(), ShaderId::Lambert);
 	}
 
-	sceneModels->SelectedBlockRender(rc, modelRenderer, stage.transform, 0u, ShaderId::Lambert);
+	//sceneModels->SelectedBlockRender(rc, modelRenderer, stage.transform, 0u, ShaderId::Lambert);
 
 	//gridRenderer->Draw(d2dGraphics->GetContext());
 
