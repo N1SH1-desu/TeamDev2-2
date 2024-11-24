@@ -1,8 +1,11 @@
 #include "EndlessGridRenderer.h"
 #include "GpuResourceUtils.h"
 #include "Misc.h"
+#include "imgui.h"
 
 EndlessGridRenderer::EndlessGridRenderer(ID3D11Device* device)
+	:
+	data()
 {
 	HRESULT hr{};
 
@@ -29,29 +32,38 @@ EndlessGridRenderer::EndlessGridRenderer(ID3D11Device* device)
 	bufDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	bufDesc.MiscFlags = 0u;
 	bufDesc.StructureByteStride = 0u;
-	bufDesc.ByteWidth = sizeof(EndlessGridRenderer::cbFrame);
+	bufDesc.ByteWidth = sizeof(EndlessGridRenderer::cbFrameData);
 
 	hr = device->CreateBuffer(&bufDesc, nullptr, &cbPerFrame);
 	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 }
 
-void EndlessGridRenderer::Draw(ID3D11DeviceContext* dc, DirectX::XMFLOAT4X4 view, DirectX::XMFLOAT4X4 proj)
+void EndlessGridRenderer::DrawGUI()
+{
+	if(ImGui::Begin("Grid Property"))
+	{
+		//ImGui::SliderFloat("GridCellSize", &data.gridCellSize, 0.001f, 0.5f);
+	}
+	ImGui::End();
+}
+
+void EndlessGridRenderer::Draw(ID3D11DeviceContext* dc, DirectX::XMFLOAT4X4 viewProj)
 {
 	HRESULT hr{};
 
-	DirectX::XMMATRIX ViewProj = DirectX::XMLoadFloat4x4(&view) * DirectX::XMLoadFloat4x4(&proj);
+	DrawGUI();
 
-	cbFrame frame{};
-	DirectX::XMStoreFloat4x4(&frame.viewProjMat, ViewProj);
-	DirectX::XMStoreFloat4x4(&frame.invViewProjMat, DirectX::XMMatrixInverse(nullptr, ViewProj));
+	data.viewProjMat = viewProj;
+	DirectX::XMStoreFloat4x4(&data.inverseViewProj, DirectX::XMMatrixInverse(nullptr, DirectX::XMLoadFloat4x4(&viewProj)));
 
 	D3D11_MAPPED_SUBRESOURCE mapped{};
 	hr = dc->Map(cbPerFrame.Get(), 0u, D3D11_MAP_WRITE_DISCARD, 0u, &mapped);
 	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-	memcpy(mapped.pData, &frame, sizeof(frame));
+	memcpy(mapped.pData, &data, sizeof(data));
 	dc->Unmap(cbPerFrame.Get(), 0);
 
 	dc->VSSetConstantBuffers(0u, 1u, cbPerFrame.GetAddressOf());
+	//dc->PSSetConstantBuffers(0u, 1u, cbPerFrame.GetAddressOf());
 
 	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 

@@ -21,8 +21,8 @@ ProjectScreenScene::ProjectScreenScene()
 		1000.0f								// ファークリップ
 	);
 	camera.SetLookAt(
-		{ 0, 0, -3 },		// 視点
-		{ 0, 0, 0 },		// 注視点
+		{ 0, 5, -3 },		// 視点
+		{ 0, 1, 0 },		// 注視点
 		{ 0, 1, 0 }			// 上ベクトル
 	);
 	cameraController.SyncCameraToController(camera);
@@ -109,20 +109,23 @@ void ProjectScreenScene::Render(float elapsedTime)
 
 	for (const Object& obj : objs)
 	{
-		modelRenderer->Render(rc, obj.transform, obj.model.get(), ShaderId::Lambert);
+		//modelRenderer->Render(rc, obj.transform, obj.model.get(), ShaderId::Lambert);
 	}
 
 	//sceneModels->SelectedBlockRender(rc, modelRenderer, stage.transform, 0u, ShaderId::Lambert);
 
 	// グリッド描画
-	primitiveRenderer->DrawGrid(20, 1);
-	primitiveRenderer->Render(dc, camera.GetView(), camera.GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	//primitiveRenderer->DrawGrid(20, 1);
+	//primitiveRenderer->Render(dc, camera.GetView(), camera.GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
 	{
+		dc->RSSetState(renderState->GetRasterizerState(RasterizerState::SolidCullNone));
+
 		DirectX::XMMATRIX view = DirectX::XMLoadFloat4x4(&camera.GetView());
 		DirectX::XMMATRIX proj = DirectX::XMLoadFloat4x4(&camera.GetProjection());
 		DirectX::XMFLOAT4X4 viewProj; DirectX::XMStoreFloat4x4(&viewProj, view * proj);
-		gridRenderer->Draw(dc, camera.GetView(), camera.GetProjection());
+		gridRenderer->Draw(dc, viewProj);
+
 	}
 }
 

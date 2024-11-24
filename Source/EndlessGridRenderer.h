@@ -6,19 +6,23 @@
 class EndlessGridRenderer
 {
 public:
-	struct cbFrame
+	struct cbFrameData
 	{
 		DirectX::XMFLOAT4X4 viewProjMat;
-		DirectX::XMFLOAT4X4 invViewProjMat;
+		DirectX::XMFLOAT4X4 inverseViewProj;
 	};
 public:
 	EndlessGridRenderer(ID3D11Device* device);
 
-	void Draw(ID3D11DeviceContext* dc, DirectX::XMFLOAT4X4 view, DirectX::XMFLOAT4X4 proj);
+	void DrawGUI();
+
+	void Draw(ID3D11DeviceContext* dc, DirectX::XMFLOAT4X4 viewProj);
 
 private:
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> vertexShader;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> pixelShader;
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> inputLayout;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> cbPerFrame;
+
+	cbFrameData data;
 };
