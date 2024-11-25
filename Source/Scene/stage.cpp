@@ -5,7 +5,7 @@
 
 #include"Graphics.h"
 
-Stage::Stage(int selector)
+Stage::Stage()
 	:now_stage{0}
 {
 	stage_[0].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_2\\stage_2.mdl");
@@ -22,7 +22,7 @@ Stage::Stage(int selector)
 	stage_collision_[0].model.get()->UpdateTransform();
 	stage_collision_[1].model.get()->UpdateTransform();
 
-	SelectStage(selector);
+	SelectStage(0);
 }
 
 void Stage::Update(float elapsedTime)
@@ -55,8 +55,8 @@ void Stage::Render(float elapsedTime, RenderContext *rc)
 
 
 	modelRenderer->Render(myRc
-		, stage_[now_stage].transform
-		, stage_[now_stage].model.get(), ShaderId::Lambert);
+		, stage_collision_[now_stage].transform
+		, stage_collision_[now_stage].model.get(), ShaderId::Lambert);
 
 	
 

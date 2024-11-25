@@ -35,7 +35,7 @@ RayCastScene::RayCastScene()
 	DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(-1, 0, -1);
 	DirectX::XMStoreFloat4x4(&worldTransform, S * R * T);
 
-	stage = std::make_unique<Stage>(0);
+	stage = std::make_unique<Stage>();
 }
 
 // XVˆ—

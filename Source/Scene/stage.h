@@ -15,7 +15,13 @@ namespace stage_number
 
 class Stage
 {
-private:
+public:
+	static Stage& Instance() {
+		static Stage instance;
+		return instance;
+	}
+
+
 	struct Object
 	{
 		bool					onGround = false;
@@ -86,7 +92,8 @@ private:
 	};
 
 public:
-	Stage(int selecter);
+
+	Stage();
 	~Stage() = default;
 
 	void Update(float elapsedTime);
@@ -100,6 +107,8 @@ public:
 	void SelectStage(int selector);
 
 	Model* GetModel() { return stage_[now_stage].model.get(); }
+
+	Model* GetCollisionModel() { return stage_collision_[now_stage].model.get(); }
 
 	int GetNumber() { return now_stage; }
 

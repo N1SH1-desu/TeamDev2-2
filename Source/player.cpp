@@ -4,6 +4,7 @@
 #include"Graphics.h"
 #include"Collision.h"
 #include"PlayerManager.h"
+#include"Scene/stage.h"
 
  Player::Player(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale, DirectX::XMFLOAT3 angle) {
 
@@ -74,7 +75,7 @@ void Player::Update(float elapsedTime)
 	case State::Idle:
 		position.y -= velocity.y;
 
-		if (onGround)
+		if (Ray(Stage::Instance().GetTransform(), Stage::Instance().GetCollisionModel()))
 		{
 			//Animation_Reset();
 			PlayAnimation("Running", true);
@@ -91,10 +92,10 @@ void Player::Update(float elapsedTime)
 		break;
 	}
 
-	if (position.y <= 0.0f)
-		onGround = true;
-	else
-		onGround = false;
+	//if (position.y <= 0.0f)
+	//	onGround = true;
+	//else
+	//	onGround = false;
 
 	// トランスフォーム更新処理
 	UpdateTransform(elapsedTime);
@@ -322,6 +323,8 @@ bool Player::InputMove()
 		moveVecZ = cameraFrontZ * axisY + cameraRightZ * axisX;
 		float vecLength = sqrtf(moveVecX * moveVecX + moveVecZ * moveVecZ);
 
+
+		
 	return true;
 }
 
@@ -354,5 +357,21 @@ void Player::HitP()
 	if (HP < 0) {
 		Death();
 	}
+}
+
+bool Player::Ray(DirectX::XMFLOAT4X4 transform, Model* model)
+{
+	const DirectX::XMFLOAT3 s = { position.x,position.y + 0.5f,position.z };
+	const DirectX::XMFLOAT3 e = { position.x,position.y - 0.3f,position.z };
+
+	DirectX::XMFLOAT3 p, n;
+
+	if (Collision::RayCast(s, e, transform, model, p, n))
+	{
+		// 交点のY座標をプレイヤーに位置に設定する
+		position.y = p.y;
+		return onGround = true;
+	}
+	return false;
 }
 

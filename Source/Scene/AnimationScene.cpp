@@ -38,7 +38,7 @@ AnimationScene::AnimationScene()
 	cube2.angle = { 0, 0, 0 };
 	cube2.scale = { 2, 2, 2 };
 
-	stage = std::make_unique<Stage>(0);
+	stage = std::make_unique<Stage>();
 }
 
 AnimationScene::~AnimationScene() {

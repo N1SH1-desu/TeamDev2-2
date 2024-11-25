@@ -48,6 +48,8 @@ public:
 
 	void HitP();
 
+	bool Ray(DirectX::XMFLOAT4X4 transform, Model* model);
+
 public:
 	Model* model = nullptr;
 	bool								onGround = false;
