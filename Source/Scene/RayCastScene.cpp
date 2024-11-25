@@ -37,7 +37,7 @@ RayCastScene::RayCastScene()
 
 	stage = std::make_unique<Stage>();
 	space_division_raycast = std::make_unique<SpaceDivisionRayCast>();
-	space_division_raycast->Load(stage.get()->GetCollisionModel(), stage.get()->GetCollisionTransform());
+	space_division_raycast->Load(stage.get()->GetModel(), stage.get()->GetTransform());
 }
 
 // 更新処理
@@ -52,7 +52,7 @@ void RayCastScene::Update(float elapsedTime)
 	static int cur_num = stage->GetNumber();
 	if (cur_num != stage.get()->GetNumber())
 	{
-		space_division_raycast->Load(stage->GetCollisionModel(), stage->GetCollisionTransform());
+		space_division_raycast->Load(stage->GetModel(), stage->GetTransform());
 		cur_num = stage->GetNumber();
 	}
 }
@@ -81,8 +81,8 @@ void RayCastScene::Render(float elapsedTime)
 	{
 		DirectX::XMFLOAT3 s;
 		DirectX::XMFLOAT3 e;
-		float size_x = 10.f;
-		float size_z = 10.f;
+		float size_x = 1.f;
+		float size_z = 1.f;
 		float add_size = 2.f;
 		for (float x = -size_x; x < size_x; x+=add_size)
 		{
@@ -94,7 +94,7 @@ void RayCastScene::Render(float elapsedTime)
 
 				DirectX::XMFLOAT3 hitPosition, hitNormal;
 
-				if (Collision::RayCast(s, e, stage->GetCollisionTransform(), stage->GetCollisionModel(), hitPosition, hitNormal))
+				if (Collision::RayCast(s, e, stage->GetTransform(),stage.get()->GetModel(), hitPosition, hitNormal))
 				//if ( space_division_raycast->RayCast(s, e,  stage->GetCollisionModel(), hitPosition, hitNormal))
 				{
 					// 交差した位置と法線を表示
@@ -125,7 +125,7 @@ void RayCastScene::Render(float elapsedTime)
 	rc.renderState = renderState;
 	rc.camera = &camera;
 	stage.get()->Render(elapsedTime,rc);
-	space_division_raycast->DebugDraw(rc,stage->GetCollisionModel());
+	space_division_raycast->DebugDraw(rc,stage->GetModel());
 }
 
 // GUI描画処理

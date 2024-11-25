@@ -3,6 +3,7 @@
 #include<imgui.h>
 
 #include<sstream>
+#include<algorithm>
 
 #include"Graphics.h"
 #include"ShapeRenderer.h"
@@ -29,6 +30,7 @@ void SpaceDivisionRayCast::Load(Model* model,DirectX::XMFLOAT4X4 world_transform
     //モデルの全体AABB格納用変数
     DirectX::XMVECTOR VolumeMin = DirectX::XMVectorReplicate(FLT_MAX);
     DirectX::XMVECTOR VolumeMax = DirectX::XMVectorReplicate(-FLT_MAX);
+
 
     //頂点データをワールド空間変換し、三角形データを作成
     int meshes_size = model->GetResource()->GetMeshes().size();
@@ -132,13 +134,18 @@ void SpaceDivisionRayCast::Load(Model* model,DirectX::XMFLOAT4X4 world_transform
                 DirectX::XMVECTOR b = DirectX::XMLoadFloat3(&triangle[i].positions[1]);
                 DirectX::XMVECTOR c = DirectX::XMLoadFloat3(&triangle[i].positions[2]);
                 //if (area.boundingBox.Intersects(a, b, c))
-                DirectX::XMVECTOR vec_tri_min = DirectX::XMVectorReplicate(FLT_MAX);
-                DirectX::XMVECTOR vec_tri_max = DirectX::XMVectorReplicate(-FLT_MAX);
-                vec_tri_min = DirectX::XMVectorMin(DirectX::XMVectorMin(a, b), c);
-                vec_tri_max = DirectX::XMVectorMax(DirectX::XMVectorMax(a, b), c);
-                DirectX::XMFLOAT3 tri_min, tri_max;
-                DirectX::XMStoreFloat3(&tri_min, vec_tri_min);
-                DirectX::XMStoreFloat3(&tri_max, vec_tri_max);
+                DirectX::XMFLOAT3 tri_min,tri_max;
+                tri_min = {
+                    (std::min)((std::min)(triangle[i].positions[0].x,triangle[i].positions[1].x),triangle[i].positions[2].x),
+                    (std::min)((std::min)(triangle[i].positions[0].y,triangle[i].positions[1].y),triangle[i].positions[2].y),
+                    (std::min)((std::min)(triangle[i].positions[0].z,triangle[i].positions[1].z),triangle[i].positions[2].z)
+                };
+                tri_max = {
+                    (std::max)((std::max)(triangle[i].positions[0].x,triangle[i].positions[1].x),triangle[i].positions[2].x),
+                    (std::max)((std::max)(triangle[i].positions[0].y,triangle[i].positions[1].y),triangle[i].positions[2].y),
+                    (std::max)((std::max)(triangle[i].positions[0].z,triangle[i].positions[1].z),triangle[i].positions[2].z)
+                };
+
                 if (area.boundingBox.Center.x - area.boundingBox.Extents.x > tri_max.x)continue;
                 if(area.boundingBox.Center.x + area.boundingBox.Extents.x < tri_min.x)continue;
                 if (area.boundingBox.Center.z - area.boundingBox.Extents.z > tri_max.z)continue;
@@ -297,28 +304,37 @@ void SpaceDivisionRayCast::DebugDraw(RenderContext&rc,Model*model)
             polygonColor = { 0, 0, 1, 0.5f };
         }
         //エリアに保存されているトライアングル情報を出す
-        int triangles_size = area[i].triangleIndices.size();
-        const CollisionMesh::Triangle* triangle = model_divisions_[model].triangles.data();
-        for (int triangle_i = 0; triangle_i < triangles_size; triangle_i++)
+        if (!all_draw_)
         {
-            //primitiveRenderer->AddVertex(triangle[triangle_i].positions[0], polygonColor);
-            //primitiveRenderer->AddVertex(triangle[triangle_i].positions[1], polygonColor);
-            //primitiveRenderer->AddVertex(triangle[triangle_i].positions[2], polygonColor);
+            int triangles_size = area[i].triangleIndices.size();
+            const CollisionMesh::Triangle* triangle = model_divisions_[model].triangles.data();
+            for (int triangle_i = 0; triangle_i < triangles_size; triangle_i++)
+            {
+                primitiveRenderer->AddVertex(triangle[triangle_i].positions[0], polygonColor);
+                primitiveRenderer->AddVertex(triangle[triangle_i].positions[1], polygonColor);
+                primitiveRenderer->AddVertex(triangle[triangle_i].positions[2], polygonColor);
+            }
         }
 
         shape_renderer->DrawBox(area[i].boundingBox.Center, boxAngle, area[i].boundingBox.Extents, boxColor);
     }
 
+    polygonColor = { 1,1,1,1 };
     ////コチラはモデルから取り出した全ての三角形を描画する
     //// 三角形ポリゴン描画
-    for (CollisionMesh::Triangle& triangle : model_divisions_[model].triangles)
+    if (all_draw_)
     {
-        primitiveRenderer->AddVertex(triangle.positions[0], polygonColor);
-        primitiveRenderer->AddVertex(triangle.positions[1], polygonColor);
-        primitiveRenderer->AddVertex(triangle.positions[2], polygonColor);
+        size_t size = model_divisions_[model].triangles.size();
+        CollisionMesh::Triangle* triangle = model_divisions_[model].triangles.data();
+        for (size_t i = 0; i < size; i++)
+        {
+            primitiveRenderer->AddVertex(triangle[i].positions[0], polygonColor);
+            primitiveRenderer->AddVertex(triangle[i].positions[1], polygonColor);
+            primitiveRenderer->AddVertex(triangle[i].positions[2], polygonColor);
+        }
     }
 
-     primitiveRenderer->Render(dc, rc.camera->GetView(), rc.camera->GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+    primitiveRenderer->Render(dc, rc.camera->GetView(), rc.camera->GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
     shape_renderer->Render(dc, rc.camera->GetView(), rc.camera->GetProjection());
 }
 
@@ -330,11 +346,18 @@ void SpaceDivisionRayCast::DrowImgui()
     std::ostringstream outs;
     outs.precision(2);
 
+    ImVec2 pos = ImGui::GetMainViewport()->GetWorkPos();
+    ImGui::SetNextWindowPos({ pos.x + 300,pos.y + 500 });
+    ImGui::SetNextWindowSize({ 980,220 });
     float window_alpha = 0.5f;
     ImGui::SetNextWindowBgAlpha(window_alpha);
 
     if (ImGui::Begin("SpaceDivision"))
     {
+        if (ImGui::Button("all_draw_"))all_draw_ = !all_draw_;
+        
+        ImGui::InputInt("draw_box", &draw_box_);
+
         size_t size = models_.size();
         for (int i = 0; i < size; i++)
         {
@@ -346,7 +369,6 @@ void SpaceDivisionRayCast::DrowImgui()
             int area_triangle_size = collision_mesh.triangles.size();
             ImGui::InputInt("area_triangle_size", &area_triangle_size);
 
-            ImGui::InputInt("draw_box", &draw_box_);
             if (draw_box_ >= area_size)draw_box_ = draw_box_ - area_size;
             
             int triangle_parsent = 0;

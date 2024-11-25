@@ -36,6 +36,7 @@ private:
 
 	const int cell_size_ = 2;
 	int draw_box_=0;
+	bool all_draw_ = false;
 
 public:
     SpaceDivisionRayCast();
