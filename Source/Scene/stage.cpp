@@ -6,31 +6,35 @@
 #include"Graphics.h"
 
 
-#define collision_map true;
+#define collision_map false
 
-Stage::Stage(int selector)
+Stage::Stage()
 	:now_stage{0}
 {
 #if collision_map
 	stage_[0].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_2\\stage_2_collision.mdl");
 	stage_[1].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_3\\stage_3_collision.mdl");
-	stage_[2].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_4\\stage_4.mdl");
+	stage_[2].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_4\\stage_4_collision.mdl");
 	stage_[0].transform = stage_collision_transform[0];
 	stage_[1].transform = stage_collision_transform[1];
 	stage_[2].transform = stage_collision_transform[2];
 #else
 	stage_[0].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_2\\stage_2.mdl");
 	stage_[1].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_3\\stage_3.mdl");
+	stage_[2].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_4\\stage_4.mdl");
+
 	stage_[0].transform = stage_transform[0];
 	stage_[1].transform = stage_transform[1];
+	stage_[1].transform = stage_transform[2];
 #endif
 
 	stage_collision_[0].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_2\\stage_2_collision.mdl");
 	stage_collision_[1].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_3\\stage_3_collision.mdl");
+	stage_collision_[2].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_4\\stage_4_collision.mdl");
 	stage_collision_[0].transform = stage_collision_transform[0];
 	stage_collision_[1].transform = stage_collision_transform[1];
+	stage_collision_[2].transform = stage_collision_transform[2];
 
-	SelectStage(selector);
 }
 
 void Stage::Update(float elapsedTime)

@@ -301,9 +301,9 @@ void SpaceDivisionRayCast::DebugDraw(RenderContext&rc,Model*model)
         const CollisionMesh::Triangle* triangle = model_divisions_[model].triangles.data();
         for (int triangle_i = 0; triangle_i < triangles_size; triangle_i++)
         {
-            primitiveRenderer->AddVertex(triangle[triangle_i].positions[0], polygonColor);
-            primitiveRenderer->AddVertex(triangle[triangle_i].positions[1], polygonColor);
-            primitiveRenderer->AddVertex(triangle[triangle_i].positions[2], polygonColor);
+            //primitiveRenderer->AddVertex(triangle[triangle_i].positions[0], polygonColor);
+            //primitiveRenderer->AddVertex(triangle[triangle_i].positions[1], polygonColor);
+            //primitiveRenderer->AddVertex(triangle[triangle_i].positions[2], polygonColor);
         }
 
         shape_renderer->DrawBox(area[i].boundingBox.Center, boxAngle, area[i].boundingBox.Extents, boxColor);
@@ -311,13 +311,12 @@ void SpaceDivisionRayCast::DebugDraw(RenderContext&rc,Model*model)
 
     ////ƒRƒ`ƒ‰‚Íƒ‚ƒfƒ‹‚©‚çŽæ‚èo‚µ‚½‘S‚Ä‚ÌŽOŠpŒ`‚ð•`‰æ‚·‚é
     //// ŽOŠpŒ`ƒ|ƒŠƒSƒ“•`‰æ
-  /*  for (CollisionMesh::Triangle& triangle : model_divisions_[model].triangles)
+    for (CollisionMesh::Triangle& triangle : model_divisions_[model].triangles)
     {
         primitiveRenderer->AddVertex(triangle.positions[0], polygonColor);
         primitiveRenderer->AddVertex(triangle.positions[1], polygonColor);
         primitiveRenderer->AddVertex(triangle.positions[2], polygonColor);
     }
-    primitiveRenderer->Render(dc, rc.camera->GetView(), rc.camera->GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);*/
 
      primitiveRenderer->Render(dc, rc.camera->GetView(), rc.camera->GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
     shape_renderer->Render(dc, rc.camera->GetView(), rc.camera->GetProjection());

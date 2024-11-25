@@ -45,13 +45,13 @@ private:
 	1, 0, 0, 0
 	, 0, 1, 0, 0
 	, 0, 0, 1, 0
-	, 0, 7.5f, 0, 1
+	, 0, 0, 0, 1
 	},
 	{
 	1, 0, 0, 0
 	, 0, 1, 0, 0
 	, 0, 0, 1, 0
-	, 6, 5.5, 10, 1
+	, 0, 0, 0, 1
 	},
 	{
 	1,0,0,0,
@@ -66,12 +66,18 @@ private:
 	DirectX::XMFLOAT4X4 stage_collision_transform[stage_number::stage_max_num] =
 	{
 {
-1, 0, 0, 0
-, 0, 1, 0, 0
-, 0, 0, 1, 0
+1.33, 0, 0, 0
+, 0, 1.33, 0, 0
+, 0, 0, 1.33, 0
 , 0, 0, 0, 1
 },
 {
+	1.33, 0, 0, 0
+	, 0, 1.33, 0, 0
+	, 0, 0, 1.33, 0
+	, 0, 0, 1.33, 1
+	},
+	{
 	1, 0, 0, 0
 	, 0, 1, 0, 0
 	, 0, 0, 1, 0
@@ -80,11 +86,10 @@ private:
 	{},
 	{},
 	{},
-	{},
 	};
 
 public:
-	Stage(int selecter);
+	Stage();
 	~Stage() = default;
 
 	void Update(float elapsedTime);
@@ -105,7 +110,7 @@ public:
 	DirectX::XMFLOAT4X4 GetCollisionTransform() { return stage_collision_[now_stage].transform; }
 
 	//モデルを覆うように似たような地形の簡易マップを呼び出す
-	Model* GetCollisionMap() { return stage_collision_[now_stage].model.get(); }
+	Model* GetCollisionModel() { return stage_collision_[now_stage].model.get(); }
 	
 
 };

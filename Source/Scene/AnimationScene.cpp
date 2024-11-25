@@ -151,7 +151,6 @@ void AnimationScene::DrawGUI()
 }
 
 
-<<<<<<< Updated upstream
 // アニメーション再生
 void AnimationScene::PlayAnimation(int index, bool loop)
 {
@@ -159,27 +158,8 @@ void AnimationScene::PlayAnimation(int index, bool loop)
 	animationLoop = loop;
 	animationIndex = index;
 	animationSeconds = 0.0f;
-=======
-//// GUI描画処理
-void AnimationScene::DrawGUI()
-{
-
-	if (ImGui::Begin(u8"アニメーション", nullptr, ImGuiWindowFlags_None))
-	{
-		//ImGui::Text(u8"移動操作：WASD");
-		//ImGui::Text(u8"ジャンプ操作：Space");
-		//ImGui::Spacing();
-
-		//const char* stateName = "";
-		//ImGui::LabelText("State", stateName);
-		//ImGui::InputFloat("velocity",);
-
-	}
-
-	stage->DrawGUI();
-		ImGui::End();
->>>>>>> Stashed changes
 }
+
 
 void AnimationScene::PlayAnimation(const char* name, bool loop)
 {
