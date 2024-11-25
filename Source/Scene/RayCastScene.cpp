@@ -22,7 +22,7 @@ RayCastScene::RayCastScene()
 	);
 	camera.SetLookAt(
 		{ 0, 5, -20 },		// 視点
-		{ 0, 5, 0 },		// 注視点
+		{ 0, 0, 0 },		// 注視点
 		{ 0, 1, 0 }			// 上ベクトル
 	);
 	cameraController.SyncCameraToController(camera);
@@ -36,6 +36,8 @@ RayCastScene::RayCastScene()
 	DirectX::XMStoreFloat4x4(&worldTransform, S * R * T);
 
 	stage = std::make_unique<Stage>();
+	space_division_raycast = std::make_unique<SpaceDivisionRayCast>();
+	space_division_raycast->Load(stage.get()->GetCollisionModel(), stage.get()->GetCollisionTransform());
 }
 
 // 更新処理
@@ -46,6 +48,13 @@ void RayCastScene::Update(float elapsedTime)
 	cameraController.SyncControllerToCamera(camera);
 
 	stage.get()->Update(elapsedTime);
+
+	static int cur_num = stage->GetNumber();
+	if (cur_num != stage.get()->GetNumber())
+	{
+		space_division_raycast->Load(stage->GetCollisionModel(), stage->GetCollisionTransform());
+		cur_num = stage->GetNumber();
+	}
 }
 
 // 描画処理
@@ -68,19 +77,65 @@ void RayCastScene::Render(float elapsedTime)
 	primitiveRenderer->DrawGrid(20, 1);
 	primitiveRenderer->Render(dc, camera.GetView(), camera.GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 #endif
+	//当たり判定の確認用　消すな
+	{
+		DirectX::XMFLOAT3 s;
+		DirectX::XMFLOAT3 e;
+		float size_x = 2.f;
+		float size_z = 2.f;
+		float add_size = 2.f;
+		for (float x = -size_x; x < size_x; x+=add_size)
+		{
+			for (float z = -size_z; z < size_z; z+=add_size)
+			{
+
+				s = { x,10.f,-4.f+z };
+				e = { x,-10.f,4.f+z };
+
+				DirectX::XMFLOAT3 hitPosition, hitNormal;
+
+				//if (Collision::RayCast(s, e, stage->GetTransform(), stage->GetModel(), hitPosition, hitNormal))
+				if ( space_division_raycast->RayCast(s, e,  stage->GetCollisionModel(), hitPosition, hitNormal))
+				{
+					// 交差した位置と法線を表示
+					shapeRenderer->DrawSphere(hitPosition, 0.2f, { 1, 0, 0, 1 });
+
+					DirectX::XMFLOAT3 p = hitPosition;
+					p.x += hitNormal.x * 1.0f;
+					p.y += hitNormal.y * 1.0f;
+					p.z += hitNormal.z * 1.0f;
+					primitiveRenderer->AddVertex(hitPosition, { 1, 0, 0, 1 });
+					primitiveRenderer->AddVertex(p, { 1, 0, 0, 1 });
+
+				}
+
+				{	// レイ描画
+					primitiveRenderer->AddVertex(s, { 0, 1, 1, 1 });
+					primitiveRenderer->AddVertex(e, { 0, 1, 1, 1 });
+				}
+			}
+		}
+
+		//ray描画
+		primitiveRenderer->Render(dc, camera.GetView(), camera.GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+			// シェイプ描画
+		shapeRenderer->Render(dc, camera.GetView(), camera.GetProjection());
+	}
 
 	// モデル描画
 	RenderContext rc;
 	rc.deviceContext = dc;
 	rc.renderState = renderState;
 	rc.camera = &camera;
-	stage.get()->Render(elapsedTime,&rc);
+	stage.get()->Render(elapsedTime,rc);
+	space_division_raycast->DebugDraw(rc,stage->GetCollisionModel());
 }
 
 // GUI描画処理
 void RayCastScene::DrawGUI()
 {
 	stage.get()->DrawGUI();
+	space_division_raycast->DrowImgui();
 }
 
 // レイキャスト
