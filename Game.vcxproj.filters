@@ -43,9 +43,6 @@
     <Filter Include="Source\04_アニメーション">
       <UniqueIdentifier>{8565d43b-5df1-4905-ac0f-7204d1ee4c40}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\03_壁ずり移動">
-      <UniqueIdentifier>{6ef3f08f-c694-4021-87b1-3f90ef292bbd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\02_地上歩行">
       <UniqueIdentifier>{5aa72adc-7d83-4b85-8bbe-58e2b60bdbb1}</UniqueIdentifier>
     </Filter>
@@ -57,6 +54,9 @@
     </Filter>
     <Filter Include="Source\チーム制作_ゲームシーン">
       <UniqueIdentifier>{d2e35430-c9d7-433f-8d36-f07f03eefa31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\03_壁ずり移動">
+      <UniqueIdentifier>{6ef3f08f-c694-4021-87b1-3f90ef292bbd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -246,6 +246,9 @@
 >>>>>>> d4bdab88892274223179e9fde26de4dcafd4c579
 >>>>>>> ce7a451f39a8100717c1112796019b0046d30690
     </ClInclude>
+    <ClInclude Include="Source\space_division_raycast.h">
+      <Filter>Source\チーム制作_ゲームシーン</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Framework.cpp">
@@ -406,6 +409,9 @@
 =======
 >>>>>>> d4bdab88892274223179e9fde26de4dcafd4c579
 >>>>>>> ce7a451f39a8100717c1112796019b0046d30690
+    </ClCompile>
+    <ClCompile Include="Source\space_division_raycast.cpp">
+      <Filter>Source\チーム制作_ゲームシーン</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

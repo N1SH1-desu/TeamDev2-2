@@ -5,38 +5,44 @@
 
 #include"Graphics.h"
 
-Stage::Stage(int selector)
+
+#define collision_map false
+
+Stage::Stage()
 	:now_stage{0}
 {
+#if collision_map
+	stage_[0].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_2\\stage_2_collision.mdl");
+	stage_[1].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_3\\stage_3_collision.mdl");
+	stage_[2].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_4\\stage_4_collision.mdl");
+	stage_[0].transform = stage_collision_transform[0];
+	stage_[1].transform = stage_collision_transform[1];
+	stage_[2].transform = stage_collision_transform[2];
+#else
 	stage_[0].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_2\\stage_2.mdl");
 	stage_[1].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_3\\stage_3.mdl");
-	stage_collision_[0].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_2\\stage_2_collision.mdl");
-	stage_collision_[1].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_3\\stage_3_collision.mdl");
+	stage_[2].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_4\\stage_4.mdl");
 
 	stage_[0].transform = stage_transform[0];
 	stage_[1].transform = stage_transform[1];
+	stage_[1].transform = stage_transform[2];
+#endif
+
+	stage_collision_[0].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_2\\stage_2_collision.mdl");
+	stage_collision_[1].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_3\\stage_3_collision.mdl");
+	stage_collision_[2].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_4\\stage_4_collision.mdl");
 	stage_collision_[0].transform = stage_collision_transform[0];
 	stage_collision_[1].transform = stage_collision_transform[1];
-	stage_[0].model.get()->UpdateTransform();
-	stage_[1].model.get()->UpdateTransform();
-	stage_collision_[0].model.get()->UpdateTransform();
-	stage_collision_[1].model.get()->UpdateTransform();
+	stage_collision_[2].transform = stage_collision_transform[2];
 
-	SelectStage(selector);
 }
 
 void Stage::Update(float elapsedTime)
 {
-	stage_[now_stage].position =
-	{
-		stage_transform[now_stage]._41,
-		stage_transform[now_stage]._42,
-		stage_transform[now_stage]._43
-	};
 	stage_[now_stage].UpdateTransform();
 }
 
-void Stage::Render(float elapsedTime, RenderContext *rc)
+void Stage::Render(float elapsedTime, RenderContext &rc)
 {
 	ID3D11DeviceContext* dc = Graphics::Instance().GetDeviceContext();
 	RenderState* renderState = Graphics::Instance().GetRenderState();
@@ -48,17 +54,10 @@ void Stage::Render(float elapsedTime, RenderContext *rc)
 
 	ModelRenderer* modelRenderer = Graphics::Instance().GetModelRenderer();
 	// ƒ‚ƒfƒ‹•`‰æ
-	RenderContext myRc;
-	myRc.camera = rc->camera;
-	myRc.deviceContext = rc->deviceContext;
-	myRc.renderState = rc->renderState;
 
-
-	modelRenderer->Render(myRc
+	modelRenderer->Render(rc
 		, stage_[now_stage].transform
 		, stage_[now_stage].model.get(), ShaderId::Lambert);
-
-	
 
 }
 
@@ -77,7 +76,16 @@ void Stage::DrawGUI()
 	{
 		if (ImGui::Button("0"))SelectStage(0);
 		if (ImGui::Button("1"))SelectStage(1);
+		if (ImGui::Button("2"))SelectStage(2);
 
+		ImGui::Spacing();
+		{
+			DirectX::XMFLOAT3 pos = stage_[now_stage].position;
+			if (ImGui::InputFloat3("position", &pos.x))
+			{
+				stage_[now_stage].position = pos;
+			}
+		}
 	}
 	ImGui::End();
 #endif
