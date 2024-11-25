@@ -4,6 +4,8 @@
 #include "Scene/AnimationScene.h"
 #include"PlayerManager.h"
 #include "Collision.h"
+#include "Grid2DRenderer.h"
+#include "ControlTetrisBlock.h"
 
 // コンストラクタ
 AnimationScene::AnimationScene()
@@ -20,7 +22,7 @@ AnimationScene::AnimationScene()
 		1000.0f								// ファークリップ
 	);
 	camera.SetLookAt(
-		{ 0, 5, 27 },		// 視点
+		{ 0, 0, 27 },		// 視点
 		{ 0, 1, 0 },		// 注視点
 		{ 0, 1, 0 }			// 上ベクトル
 	);
@@ -39,6 +41,9 @@ AnimationScene::AnimationScene()
 	cube2.scale = { 2, 2, 2 };
 
 	stage = std::make_unique<Stage>(0);
+
+	sceneModel = std::make_unique<SceneModel>("Data/Model/TetrisBlock/scene.mdl");
+	sceneScale = { 0.1f, 0.1f, 0.1f };
 }
 
 AnimationScene::~AnimationScene() {
@@ -105,6 +110,21 @@ void AnimationScene::Update(float elapsedTime)
 	//stageの追加
 	stage.get()->Update(elapsedTime);
 
+	DirectX::XMMATRIX Projection = DirectX::XMLoadFloat4x4(&camera.GetProjection());
+	DirectX::XMMATRIX View = DirectX::XMLoadFloat4x4(&camera.GetView());
+	DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();
+
+	RECT viewport = { 0, 0, static_cast<LONG>(Graphics::Instance().GetScreenWidth()), static_cast<LONG>(Graphics::Instance().GetScreenHeight()) };
+	
+	scenePosition = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size, viewport, Projection, View, World);
+
+	{
+		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(sceneScale.x, sceneScale.y, sceneScale.z);
+		DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f);
+		DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(scenePosition.x, scenePosition.y, scenePosition.z);
+		DirectX::XMStoreFloat4x4(&sceneTransform, S * R * T);
+	}
+
 	PlayerManager::Instance().Update(elapsedTime);
 	cube.UpdateTransform();
 	cube2.UpdateTransform();
@@ -123,6 +143,8 @@ void AnimationScene::Render(float elapsedTime)
 	RenderState* renderState = Graphics::Instance().GetRenderState();
 	PrimitiveRenderer* primitiveRenderer = Graphics::Instance().GetPrimitiveRenderer();
 	ModelRenderer* modelRenderer = Graphics::Instance().GetModelRenderer();
+	Grid2DRenderer* grid2dRenderer = Graphics::Instance().GetGrid2DRenderer();
+	Graphics2D* gfx2D = Graphics::Instance().GetGraphics2D();
 
 	//// モデル描画
 	RenderContext rc;
@@ -146,26 +168,31 @@ void AnimationScene::Render(float elapsedTime)
 	primitiveRenderer->Render(dc, camera.GetView(), camera.GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
 	stage->Render(elapsedTime,&rc);
+
+	sceneModel->SelectedBlockRender(rc, modelRenderer, sceneTransform, 0u, ShaderId::Lambert);
+
+	grid2dRenderer->Draw(gfx2D->GetContext());
 }
 
 
 //// GUI描画処理
-//void AnimationScene::DrawGUI()
-//{
-//
-//	if (ImGui::Begin(u8"アニメーション", nullptr, ImGuiWindowFlags_None))
-//	{
-//		ImGui::Text(u8"移動操作：WASD");
-//		ImGui::Text(u8"ジャンプ操作：Space");
-//		ImGui::Spacing();
-//
-//		const char* stateName = "";
-//		ImGui::LabelText("State", stateName);
-//		ImGui::InputFloat("velocity",);
-//
-//		ImGui::End();
-//	}
-//}
+void AnimationScene::DrawGUI()
+{
+
+	if (ImGui::Begin(u8"アニメーション", nullptr, ImGuiWindowFlags_None))
+	{
+		ImGui::Text(u8"移動操作：WASD");
+		ImGui::Text(u8"ジャンプ操作：Space");
+		ImGui::Spacing();
+
+		//const char* stateName = "";
+		//ImGui::LabelText("State", stateName);
+		//ImGui::InputFloat("velocity",);
+	}
+		stage->DrawGUI();
+
+		ImGui::End();
+}
 
 //// アニメーション再生
 //void AnimationScene::PlayAnimation(int index, bool loop)

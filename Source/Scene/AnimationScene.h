@@ -7,6 +7,7 @@
 #include "Model.h"
 #include"player.h"
 #include"stage.h"
+#include "FetchModelFromSceneAsset.h"
 
 class AnimationScene : public Scene
 {
@@ -22,7 +23,7 @@ public:
 
 
 	// GUI描画処理
-	//void DrawGUI() override;
+	void DrawGUI() override;
 
 private:
 	// アニメーション再生
@@ -77,6 +78,11 @@ private:
 	//bool								animationLoop = false;
 	//bool								animationPlaying = false;
 	//float								animationBlendSecondsLength = 0.2f;
+
+	std::unique_ptr<SceneModel> sceneModel;
+	DirectX::XMFLOAT3 scenePosition = { 0.0f, 0.0f, 0.0f };
+	DirectX::XMFLOAT3 sceneScale = { 0.0f, 0.0f, 0.0f };
+	DirectX::XMFLOAT4X4 sceneTransform = { 1.0f,0.0f,0.0f,1.0f, 0.0f,1.0f,0.0f,1.0f, 0.0f,0.0f,1.0f,1.0f, 0.0f,0.0f,0.0f,1.0f };
 
 	//enum class State
 	//{
