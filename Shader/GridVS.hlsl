@@ -18,13 +18,13 @@ float3 UnprojectPoint(float x, float y, float z, float4x4 viewProjInverse)
     return unprojectedPoint.xyz / unprojectedPoint.w;
 }
 
-
-
 VertexOut main(uint vertexId : SV_VertexID)
 {
     VertexOut vout;
     
     float3 p = gridPlane[vertexId].xyz;
+    
+    vout.viewProj = gViewProj;
     
     vout.nearPoint = UnprojectPoint(p.x, p.y, 0.0f, gViewProjInverse).xyz;
     vout.farPoint = UnprojectPoint(p.x, p.y, 1.0f, gViewProjInverse).xyz;
