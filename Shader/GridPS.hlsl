@@ -67,7 +67,7 @@ PixelOut main(VertexOut vin) : SV_TARGET
     
     if (t > 0.0)
     {
-        pout.color = (Grid(fragPos3D, 10, true) + (Grid(fragPos3D, 1, true)) * 1.0f);
+        pout.color = (Grid(fragPos3D, 10, true) + (Grid(fragPos3D, 1, true))) * 1.0f;
     }
     else
     {
