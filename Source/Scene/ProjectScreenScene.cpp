@@ -21,9 +21,9 @@ ProjectScreenScene::ProjectScreenScene()
 		1000.0f								// ファークリップ
 	);
 	camera.SetLookAt(
-		{ 0, 5, -3 },		// 視点
+		{ 0, 5, 0 },		// 視点
 		{ 0, 1, 0 },		// 注視点
-		{ 0, 1, 0 }			// 上ベクトル
+		{ 0, 0, 1 }			// 上ベクトル
 	);
 	cameraController.SyncCameraToController(camera);
 
@@ -113,10 +113,6 @@ void ProjectScreenScene::Render(float elapsedTime)
 	}
 
 	//sceneModels->SelectedBlockRender(rc, modelRenderer, stage.transform, 0u, ShaderId::Lambert);
-
-	// グリッド描画
-	//primitiveRenderer->DrawGrid(20, 1);
-	//primitiveRenderer->Render(dc, camera.GetView(), camera.GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
 	{
 		dc->RSSetState(renderState->GetRasterizerState(RasterizerState::SolidCullNone));
