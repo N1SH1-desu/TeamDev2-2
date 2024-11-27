@@ -23,7 +23,7 @@ SceneModel::SceneModel(const char* sceneFile)
 
 void SceneModel::SelectedBlockRender(RenderContext& rc, ModelRenderer* renderer, DirectX::XMFLOAT4X4 worldTransform, UINT index, ShaderId id)
 {
-    renderer->Render(rc, worldTransform, sceneModels.at(index).get(), id);
+    renderer->Render(rc, worldTransform, sceneModels.at(index).get(), id, true);
 }
 
 void SceneModel::RenderCommitedBlocks(RenderContext& rc, ModelRenderer* renderer, ShaderId id)

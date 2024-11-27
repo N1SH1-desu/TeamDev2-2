@@ -13,6 +13,8 @@ public:
 	// XVˆ—
 	void Update();
 
+	void DrawGUI();
+
 private:
 	DirectX::XMFLOAT3		eye;
 	DirectX::XMFLOAT3		focus;

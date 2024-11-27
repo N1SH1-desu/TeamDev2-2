@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "imgui.h"
 
 // コンストラクタ
 Camera::Camera()
@@ -9,6 +10,12 @@ Camera::Camera()
 		1280.0f / 720.0f,					// 画面アスペクト比
 		0.1f,								// ニアクリップ
 		1000.0f								// ファークリップ
+	);
+	SetOrthoGraphic(
+		1280.0f,
+		720.0f,
+		0.1f,
+		100.0f
 	);
 	SetLookAt(
 		{ 0, 0, -5 },		// 視点
@@ -56,4 +63,11 @@ void Camera::SetPerspectiveFov(float fovY, float aspect, float nearZ, float farZ
 	// 画角、画面比率、クリップ距離からプロジェクション行列を作成
 	DirectX::XMMATRIX Projection = DirectX::XMMatrixPerspectiveFovLH(fovY, aspect, nearZ, farZ);
 	DirectX::XMStoreFloat4x4(&projection, Projection);
+}
+
+void Camera::SetOrthoGraphic(float viewWidth, float viewHeight, float nearZ, float farZ)
+{
+	// 正投影行列
+	DirectX::XMMATRIX Projection = DirectX::XMMatrixOrthographicLH(viewWidth, viewHeight, nearZ, farZ);
+	DirectX::XMStoreFloat4x4(&projectionOrtho, Projection);
 }

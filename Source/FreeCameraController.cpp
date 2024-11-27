@@ -136,4 +136,16 @@ void FreeCameraController::Update()
 	DirectX::XMStoreFloat3(&eye, Eye);
 	DirectX::XMStoreFloat3(&up, Up);
 	DirectX::XMStoreFloat3(&right, Right);
+
+	DrawGUI();
+}
+
+void FreeCameraController::DrawGUI()
+{
+	if (ImGui::Begin("Camera GUI", nullptr))
+	{
+		ImGui::SliderFloat3("Camera Eye", &eye.x, -200.0f, 200.0f);
+		ImGui::SliderFloat3("Camera Focus", &focus.x, -200.0f, 200.0f);
+	}
+	ImGui::End();
 }

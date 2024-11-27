@@ -21,8 +21,8 @@ ProjectScreenScene::ProjectScreenScene()
 		1000.0f								// ファークリップ
 	);
 	camera.SetLookAt(
-		{ 0, 5, 0 },		// 視点
-		{ 0, 1, 0 },		// 注視点
+		{ 0, 1, 0 },		// 視点
+		{ 0, 0, 0 },		// 注視点
 		{ 0, 0, 1 }			// 上ベクトル
 	);
 	cameraController.SyncCameraToController(camera);
@@ -32,7 +32,9 @@ ProjectScreenScene::ProjectScreenScene()
 
 	sceneModels = std::make_unique<SceneModel>("Data/Model/TetrisBlock/fixedScene.mdl");
 
-	stage.scale = { 0.125f, 0.125f, 0.125f };
+	stage.scale = { 1.0f, 1.0f, 1.0f };
+	stage.position = { 0.0f, 0.0f, 0.0f };
+	stage.angle = { DirectX::XMConvertToRadians(90.0f), 0.0f, 0.0f };
 }
 
 // 更新処理
@@ -112,15 +114,15 @@ void ProjectScreenScene::Render(float elapsedTime)
 		//modelRenderer->Render(rc, obj.transform, obj.model.get(), ShaderId::Lambert);
 	}
 
-	//sceneModels->SelectedBlockRender(rc, modelRenderer, stage.transform, 0u, ShaderId::Lambert);
+	sceneModels->SelectedBlockRender(rc, modelRenderer, stage.transform, 0u, ShaderId::Lambert);
 
 	{
-		dc->RSSetState(renderState->GetRasterizerState(RasterizerState::SolidCullNone));
+		//dc->RSSetState(renderState->GetRasterizerState(RasterizerState::SolidCullNone));
 
 		DirectX::XMMATRIX view = DirectX::XMLoadFloat4x4(&camera.GetView());
-		DirectX::XMMATRIX proj = DirectX::XMLoadFloat4x4(&camera.GetProjection());
+		DirectX::XMMATRIX proj = DirectX::XMLoadFloat4x4(&camera.GetProjection(false));
 		DirectX::XMFLOAT4X4 viewProj; DirectX::XMStoreFloat4x4(&viewProj, view * proj);
-		gridRenderer->Draw(dc, viewProj);
+		//gridRenderer->Draw(dc, viewProj);
 
 	}
 }
@@ -141,9 +143,9 @@ void ProjectScreenScene::DrawGUI()
 		int v[2] = { pos.x, pos.y };
 		ImGui::InputInt2("Mouse Position", v);
 
-		ImGui::InputFloat3("Block Position", &stage.position.x);
-		ImGui::InputFloat3("Block Scale", &stage.scale.x);
-		ImGui::InputFloat3("Block Rotate", &stage.angle.x);
+		ImGui::SliderFloat3("Block Position", &stage.position.x, -200.0f, 200.0f);
+		ImGui::SliderFloat3("Block Scale", &stage.scale.x, 0.01f, 10.0f);
+		ImGui::SliderFloat3("Block Rotate", &stage.angle.x, 0.0f, 20.0f);
 	}
 	ImGui::End();
 }
