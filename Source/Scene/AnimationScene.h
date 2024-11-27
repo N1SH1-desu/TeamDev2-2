@@ -6,7 +6,7 @@
 #include "FreeCameraController.h"
 #include "Model.h"
 #include"player.h"
-#include"stage.h"
+#include "stage.h"
 
 class AnimationScene : public Scene
 {
@@ -70,7 +70,7 @@ private:
 	Object								cube;
 	Object								cube2;
 
-	std::unique_ptr<Stage> stage = nullptr;
+	//std::unique_ptr<Stage> stage = nullptr;
 
 	//int									animationIndex = -1;
 	//float								animationSeconds = 0.0f;

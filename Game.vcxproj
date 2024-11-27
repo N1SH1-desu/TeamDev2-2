@@ -60,7 +60,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\Source;.\External\imgui-docking;.\External\ImGuizmo;.\External\cereal\include;.\External\SphereCast\Include;.\External\DirectXTex;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Source;.\External\imgui-docking;.\External\ImGuizmo;.\External\cereal\include;.\External\SphereCast\Include;.\External\DirectXTex;.\External\Effekseer170b\include\EffekseerRendererDX11;.\External\Effekseer170b\include\Effekseer;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -68,8 +68,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;xinput.lib;xaudio2.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>.\External\SphereCast\lib\vs2019\$(PlatformTarget)\MD\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;xinput.lib;xaudio2.lib;winmm.lib;Effekseer.lib;EffekseerRendererDX11.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\External\SphereCast\lib\vs2019\$(PlatformTarget)\MD\$(Configuration);.\External\Effekseer170b\lib\vs2019\MT\x64\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -89,7 +89,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\Source;.\External\imgui-docking;.\External\ImGuizmo;.\External\cereal\include;.\External\SphereCast\Include;.\External\DirectXTex;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Source;.\External\imgui-docking;.\External\ImGuizmo;.\External\cereal\include;.\External\SphereCast\Include;.\External\DirectXTex;.\External\Effekseer170b\include\EffekseerRendererDX11;.\External\Effekseer170b\include\Effekseer;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -99,8 +99,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;xinput.lib;xaudio2.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>.\External\SphereCast\lib\vs2019\$(PlatformTarget)\MD\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;xinput.lib;xaudio2.lib;winmm.lib;Effekseer.lib;EffekseerRendererDX11.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\External\SphereCast\lib\vs2019\$(PlatformTarget)\MD\$(Configuration);.\External\Effekseer170b\lib\vs2019\MT\x64\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -125,9 +125,12 @@
     <ClInclude Include="External\ImGuizmo\ImSequencer.h" />
     <ClInclude Include="External\SphereCast\Include\SphereCast.h" />
     <ClInclude Include="Source\BasicShader.h" />
+    <ClInclude Include="Source\Cage.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Collision.h" />
     <ClInclude Include="Source\Dialog.h" />
+    <ClInclude Include="Source\Effect.h" />
+    <ClInclude Include="Source\EffectManager.h" />
     <ClInclude Include="Source\fogs.h" />
     <ClInclude Include="Source\Framework.h" />
     <ClInclude Include="Source\FreeCameraController.h" />
@@ -136,18 +139,19 @@
     <ClInclude Include="Source\ModelRenderer.h" />
     <ClInclude Include="Source\LambertShader.h" />
     <ClInclude Include="Source\ModelResource.h" />
+    <ClInclude Include="Source\Object.h" />
     <ClInclude Include="Source\player.h" />
     <ClInclude Include="Source\PlayerManager.h" />
+    <ClInclude Include="Source\PoisonGus.h" />
     <ClInclude Include="Source\ResourceManager.h" />
+    <ClInclude Include="Source\Rock.h" />
     <ClInclude Include="Source\Scene\AnimationScene.h" />
     <ClInclude Include="Source\Scene\AttachWeaponScene.h" />
     <ClInclude Include="Source\Scene\HitStopScene.h" />
     <ClInclude Include="Source\Scene\SlideMoveScene.h" />
     <ClInclude Include="Source\Scene\MoveFloorScene.h" />
-    <ClInclude Include="Source\Scene\RayCastScene.h" />
     <ClInclude Include="Source\Scene\ResourceManagementScene.h" />
     <ClInclude Include="Source\Scene\LandWalkScene.h" />
-    <ClInclude Include="Source\Scene\stage.h" />
     <ClInclude Include="Source\Scene\TerrainAlignScene.h" />
     <ClInclude Include="Source\Scene\ProjectScreenScene.h" />
     <ClInclude Include="Source\Scene\UIAnimScene.h" />
@@ -165,9 +169,13 @@
     <ClInclude Include="Source\Shader.h" />
     <ClInclude Include="Source\Sprite.h" />
     <ClInclude Include="Source\Stage.h" />
+    <ClInclude Include="Source\Stage1.h" />
+    <ClInclude Include="Source\Stage2.h" />
     <ClInclude Include="Source\StageManager.h" />
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\TransformUtils.h" />
+    <ClInclude Include="Source\Trap.h" />
+    <ClInclude Include="Source\TrapManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui-docking\imgui.cpp" />
@@ -181,9 +189,12 @@
     <ClCompile Include="External\ImGuizmo\ImGuizmo.cpp" />
     <ClCompile Include="External\ImGuizmo\ImSequencer.cpp" />
     <ClCompile Include="Source\BasicShader.cpp" />
+    <ClCompile Include="Source\Cage.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\Dialog.cpp" />
+    <ClCompile Include="Source\Effect.cpp" />
+    <ClCompile Include="Source\EffectManager.cpp" />
     <ClCompile Include="Source\fogs.cpp" />
     <ClCompile Include="Source\Framework.cpp" />
     <ClCompile Include="Source\FreeCameraController.cpp" />
@@ -191,18 +202,19 @@
     <ClCompile Include="Source\ModelRenderer.cpp" />
     <ClCompile Include="Source\LambertShader.cpp" />
     <ClCompile Include="Source\ModelResource.cpp" />
+    <ClCompile Include="Source\Object.cpp" />
     <ClCompile Include="Source\player.cpp" />
     <ClCompile Include="Source\PlayerManager.cpp" />
+    <ClCompile Include="Source\PoisonGus.cpp" />
     <ClCompile Include="Source\ResourceManager.cpp" />
+    <ClCompile Include="Source\Rock.cpp" />
     <ClCompile Include="Source\Scene\AnimationScene.cpp" />
     <ClCompile Include="Source\Scene\AttachWeaponScene.cpp" />
     <ClCompile Include="Source\Scene\HitStopScene.cpp" />
     <ClCompile Include="Source\Scene\SlideMoveScene.cpp" />
     <ClCompile Include="Source\Scene\MoveFloorScene.cpp" />
-    <ClCompile Include="Source\Scene\RayCastScene.cpp" />
     <ClCompile Include="Source\Scene\ResourceManagementScene.cpp" />
     <ClCompile Include="Source\Scene\LandWalkScene.cpp" />
-    <ClCompile Include="Source\Scene\stage.cpp" />
     <ClCompile Include="Source\Scene\TerrainAlignScene.cpp" />
     <ClCompile Include="Source\Scene\ProjectScreenScene.cpp" />
     <ClCompile Include="Source\Scene\UIAnimScene.cpp" />
@@ -216,8 +228,12 @@
     <ClCompile Include="Source\RenderState.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\Sprite.cpp" />
+    <ClCompile Include="Source\Stage2.cpp" />
+    <ClCompile Include="Source\Stage1.cpp" />
+    <ClCompile Include="Source\StageManager.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\TransformUtils.cpp" />
+    <ClCompile Include="Source\TrapManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\Basic.hlsli" />

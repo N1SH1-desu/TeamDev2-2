@@ -2,8 +2,11 @@
 #include <ImGuizmo.h>
 #include "Graphics.h"
 #include "Scene/AnimationScene.h"
-#include"PlayerManager.h"
+#include "PlayerManager.h"
 #include "Collision.h"
+#include "StageManager.h"
+#include "TrapManager.h"
+#include "EffectManager.h"
 
 // コンストラクタ
 AnimationScene::AnimationScene()
@@ -38,7 +41,11 @@ AnimationScene::AnimationScene()
 	cube2.angle = { 0, 0, 0 };
 	cube2.scale = { 2, 2, 2 };
 
-	stage = std::make_unique<Stage>(0);
+	//stage = std::make_unique<Stage>(0);
+
+	EffectManager::instance().Initialize();
+	StageManager::Instance().Initialize();
+	TrapManager::Instance().Initialize();
 }
 
 AnimationScene::~AnimationScene() {
@@ -103,7 +110,7 @@ void AnimationScene::Update(float elapsedTime)
 	}
 
 	//stageの追加
-	stage.get()->Update(elapsedTime);
+	//stage.get()->Update(elapsedTime);
 
 	PlayerManager::Instance().Update(elapsedTime);
 	cube.UpdateTransform();
@@ -112,6 +119,9 @@ void AnimationScene::Update(float elapsedTime)
 	// アニメーション更新処理
 	//UpdateAnimation(elapsedTime);
 	timer += elapsedTime;
+
+	StageManager::Instance().Update(elapsedTime);
+	TrapManager::Instance().Update(elapsedTime);
 }
 
 // 描画処理
@@ -145,7 +155,8 @@ void AnimationScene::Render(float elapsedTime)
 	primitiveRenderer->DrawGrid(20, 1);
 	primitiveRenderer->Render(dc, camera.GetView(), camera.GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
-	stage->Render(elapsedTime,&rc);
+	StageManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
+	TrapManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
 }
 
 

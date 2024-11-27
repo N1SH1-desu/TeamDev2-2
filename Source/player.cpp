@@ -5,9 +5,8 @@
 #include"Collision.h"
 #include"PlayerManager.h"
 
- Player::Player(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale, DirectX::XMFLOAT3 angle) {
-
-
+ Player::Player(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale, DirectX::XMFLOAT3 angle) 
+ {
 	model = new Model("./Data/Model/Jammo/Jammo.mdl");
 	this->position = position;
 	this->scale = scale;

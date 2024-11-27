@@ -5,11 +5,12 @@
 
 #include"Graphics.h"
 
-Stage::Stage(int selector)
+stage::stage(int selector)
 	:now_stage{0}
 {
 	stage_[0].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_2\\stage_2.mdl");
 	stage_[1].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_3\\stage_3.mdl");
+
 	stage_collision_[0].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_2\\stage_2_collision.mdl");
 	stage_collision_[1].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_3\\stage_3_collision.mdl");
 
@@ -25,7 +26,7 @@ Stage::Stage(int selector)
 	SelectStage(selector);
 }
 
-void Stage::Update(float elapsedTime)
+void stage::Update(float elapsedTime)
 {
 	stage_[now_stage].position =
 	{
@@ -36,7 +37,7 @@ void Stage::Update(float elapsedTime)
 	stage_[now_stage].UpdateTransform();
 }
 
-void Stage::Render(float elapsedTime, RenderContext *rc)
+void stage::Render(float elapsedTime, RenderContext *rc)
 {
 	ID3D11DeviceContext* dc = Graphics::Instance().GetDeviceContext();
 	RenderState* renderState = Graphics::Instance().GetRenderState();
@@ -62,7 +63,7 @@ void Stage::Render(float elapsedTime, RenderContext *rc)
 
 }
 
-void Stage::DrawGUI()
+void stage::DrawGUI()
 {
 #if _DEBUG
 	Graphics* graphics = &Graphics::Instance();
@@ -83,7 +84,7 @@ void Stage::DrawGUI()
 #endif
 }
 
-void Stage::SelectStage(int selector)
+void stage::SelectStage(int selector)
 {
 	if (selector < stage_number::stage_max_num)now_stage = selector;
 }
