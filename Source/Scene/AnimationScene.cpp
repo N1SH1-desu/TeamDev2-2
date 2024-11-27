@@ -203,6 +203,58 @@ void AnimationScene::Render(float elapsedTime)
 //}
 
 
+				if (animationIndex == index)
+				{
+					nodeFlags |= ImGuiTreeNodeFlags_Selected;
+				}
+
+				ImGui::TreeNodeEx(&animation, nodeFlags, animation.name.c_str());
+
+				// クリックでアニメーション再生
+				if (ImGui::IsItemClicked())
+				{
+					if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+					{
+						PlayAnimation(index, animationLoop);
+					}
+				}
+
+				ImGui::TreePop();
+
+				index++;
+			}
+		}
+	}
+	ImGui::End();
+}
+
+
+// アニメーション再生
+void AnimationScene::PlayAnimation(int index, bool loop)
+{
+	animationPlaying = true;
+	animationLoop = loop;
+	animationIndex = index;
+	animationSeconds = 0.0f;
+}
+
+
+void AnimationScene::PlayAnimation(const char* name, bool loop)
+{
+	int index = 0;
+	const std::vector<ModelResource::Animation>& animations = model->GetResource()->GetAnimations();
+	for (const ModelResource::Animation& animation : animations)
+	{
+		if (animation.name == name)
+		{
+			PlayAnimation(index, loop);
+			return;
+		}
+		++index;
+	}
+}
+
+
 // アニメーション更新処理
 //void AnimationScene::UpdateAnimation(float elapsedTime)
 //{

@@ -5,7 +5,8 @@
 #include "Camera.h"
 #include "Model.h"
 #include "FreeCameraController.h"
-#include "stage.h"
+#include"stage.h"
+#include"space_division_raycast.h"
 
 class RayCastScene : public Scene
 {
@@ -39,5 +40,6 @@ private:
 	std::unique_ptr<Model>				model;
 	DirectX::XMFLOAT4X4					worldTransform = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 
-	std::unique_ptr<stage> stage;
+	std::unique_ptr<Stage> stage;
+	std::unique_ptr<SpaceDivisionRayCast> space_division_raycast;
 };
