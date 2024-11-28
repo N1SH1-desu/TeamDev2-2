@@ -10,10 +10,15 @@ DirectX::XMFLOAT3 SetBlockPosFromMousePos(InputMouse* input, float grid_size, RE
 
     UINT xGridIndex = pos.x / static_cast<SHORT>(grid_size);
     UINT yGridIndex = pos.y / static_cast<SHORT>(grid_size);
-        
 
-    if (ImGui::Begin("Block Property", nullptr))
-    {
-    }
-    ImGui::End();
+    constexpr float xAxisMax = 60.0f;
+    constexpr float yAxisMax = 32.0f;
+
+    float x = -xAxisMax + (xGridIndex * 8.0f);
+    if (x >= xAxisMax) x = xAxisMax;
+
+    float y = yAxisMax - (yGridIndex * 8.0f);
+    if (y <= -yAxisMax) y = -yAxisMax;
+
+    return { x, y, 0.0f };
 }

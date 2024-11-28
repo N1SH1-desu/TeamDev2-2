@@ -70,7 +70,7 @@ void ProjectScreenScene::Update(float elapsedTime)
 
 	RECT viewport = { 0, 0, static_cast<LONG>(Graphics::Instance().GetScreenWidth()), static_cast<LONG>(Graphics::Instance().GetScreenHeight()) };
 
-	//stage.position = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size, viewport, Projection, View, World);
+	stage.position = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size, viewport, Projection, View, World);
 
 	// ステージ行列更新処理
 	{
@@ -122,7 +122,18 @@ void ProjectScreenScene::Render(float elapsedTime)
 		//modelRenderer->Render(rc, obj.transform, obj.model.get(), ShaderId::Lambert);
 	}
 
-	sceneModels->SelectedBlockRender(rc, modelRenderer, stage.transform, 0u, ShaderId::Lambert, true);
+	{
+		static UINT blockIndex = 0u;
+
+		sceneModels->SelectedBlockRender(rc, modelRenderer, stage.transform, blockIndex, ShaderId::Lambert, true);
+
+		if (GetAsyncKeyState(VK_RETURN) && 0x8000)
+		{
+			sceneModels->CommitBlock({ blockIndex, stage.transform });
+		}
+
+		sceneModels->RenderCommitedBlocks(rc, modelRenderer, ShaderId::Lambert, true);
+	}
 
 	{
 		//dc->RSSetState(renderState->GetRasterizerState(RasterizerState::SolidCullNone));
