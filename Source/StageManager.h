@@ -1,35 +1,16 @@
 #pragma once
+#include "Stage.h"
+#include "Singleton.h"
+#include "Manager.h"
+#include "Collision.h"
 
-#include<vector>
-#include"Stage.h"
+class StageManager : public Manager<Stage>, public Singleton<StageManager>
+{
+	friend class Singleton<StageManager>;
 
-//ステージマネージャー
-class StageManager {
-private:
-	StageManager() {}
-	~StageManager() {}
 public:
-	//唯一のインスタンス取得
-	static StageManager& Instance() {
-		static StageManager instance;
-		return instance;
-	}
+	void Initialize() override;
+	void Render(ModelRenderer* modelRenderer, RenderContext& rc, ShaderId ID);
 
-	//更新処理
-	void Update(float elapsedTime);
-
-	//描画処理
-	void Render(ID3D11DeviceContext* dc, Shader* shader);
-
-	//ステージ登録
-	void Register(Stage* stage);
-
-	//ステージ全削除
-	void Clear();
-
-	//レイキャスト
-	bool RayCast(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult& hit);
-
-private:
-	std::vector<Stage*> stages;
+	bool RayCast(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult hit);
 };

@@ -5,7 +5,7 @@
 #include "Framework.h"
 #include "Graphics.h"
 #include "ImGuiRenderer.h"
-#include "Scene/RayCastScene.h"
+//#include "Scene/RayCastScene.h"
 #include "Scene/LandWalkScene.h"
 #include "Scene/SlideMoveScene.h"
 #include "Scene/AnimationScene.h"
@@ -121,7 +121,7 @@ void Framework::SceneSelectGUI()
 
 	if (ImGui::Begin("Scene"))
 	{
-		ChangeSceneButtonGUI<RayCastScene>(u8"01.レイキャスト");
+		//ChangeSceneButtonGUI<RayCastScene>(u8"01.レイキャスト");
 		ChangeSceneButtonGUI<LandWalkScene>(u8"02.地上歩行");
 		ChangeSceneButtonGUI<SlideMoveScene>(u8"03.壁ずり移動");
 		ChangeSceneButtonGUI<AnimationScene>(u8"04.アニメーション");
