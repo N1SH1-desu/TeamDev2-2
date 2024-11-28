@@ -43,7 +43,7 @@ public:
 	~SpaceDivisionRayCast() { models_.clear(); model_divisions_.clear(); }
 
     //空間分割したいモデルを登録する。
-    void Load(Model* model,DirectX::XMFLOAT4X4 world_transform);
+    void Load(Model* model);
 
     //空間分割したモデルでレイキャストする
 	bool RayCast(

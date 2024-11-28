@@ -37,7 +37,7 @@ RayCastScene::RayCastScene()
 
 	stage = std::make_unique<Stage>();
 	space_division_raycast = std::make_unique<SpaceDivisionRayCast>();
-	space_division_raycast->Load(stage.get()->GetModel(), stage.get()->GetTransform());
+	space_division_raycast->Load(stage.get()->GetModel());
 }
 
 // 更新処理
@@ -52,7 +52,7 @@ void RayCastScene::Update(float elapsedTime)
 	static int cur_num = stage->GetNumber();
 	if (cur_num != stage.get()->GetNumber())
 	{
-		space_division_raycast->Load(stage->GetModel(), stage->GetTransform());
+		space_division_raycast->Load(stage->GetModel());
 		cur_num = stage->GetNumber();
 	}
 }
@@ -94,8 +94,8 @@ void RayCastScene::Render(float elapsedTime)
 
 				DirectX::XMFLOAT3 hitPosition, hitNormal;
 
-				if (Collision::RayCast(s, e, stage->GetTransform(),stage.get()->GetModel(), hitPosition, hitNormal))
-				//if ( space_division_raycast->RayCast(s, e,  stage->GetCollisionModel(), hitPosition, hitNormal))
+				//if (Collision::RayCast(s, e, stage->GetTransform(),stage.get()->GetModel(), hitPosition, hitNormal))
+				if ( space_division_raycast->RayCast(s, e,  stage->GetModel(), hitPosition, hitNormal))
 				{
 					// 交差した位置と法線を表示
 					shapeRenderer->DrawSphere(hitPosition, 0.2f, { 1, 0, 0, 1 });
