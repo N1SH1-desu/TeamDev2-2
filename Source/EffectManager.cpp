@@ -28,8 +28,8 @@ void EffectManager::Initialize()
 	effekseerManager->SetCoordinateSystem(Effekseer::CoordinateSystem::LH);
 
 	//エフェクトの生成
-	effect.emplace_back(std::make_unique<Effect>("Data/Effect/Smoke.efk"));
-	effect.emplace_back(std::make_unique<Effect>("Data/Effect/PoisonGus.efk"));
+	effect.emplace_back(std::make_unique<Effect>("./Data/Effect/Smoke.efk"));
+	effect.emplace_back(std::make_unique<Effect>("./Data/Effect/PoisonGus.efk"));
 }
 
 //終了化

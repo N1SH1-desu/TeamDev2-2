@@ -5,7 +5,7 @@
 
 void Cage::Initialize()
 {
-	Floor = std::make_unique<Object>("Data/Model/Floor.mdl", DirectX::XMFLOAT3(5.0f, 0.0f, 1.0f), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f), DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), 1.0f, 1.0f);
+	Floor = std::make_unique<Object>("Data/Model/Floor.mdl", DirectX::XMFLOAT3(0.0f, 1.0f, 1.0f), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f), DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), 1.0f, 1.0f);
 }
 
 void Cage::Update(float elapsedTime)

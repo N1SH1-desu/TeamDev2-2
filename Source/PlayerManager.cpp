@@ -30,7 +30,7 @@ void PlayerManager::Update(float elapsedTime) {
 
 		if (StageManager::Instance().RayCast(start, end, hit))
 		{
-			Remove(player);
+			//Remove(player);
 		}
 	}
 }

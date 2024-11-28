@@ -122,13 +122,12 @@ void AnimationScene::Update(float elapsedTime)
 
 	StageManager::Instance().Update(elapsedTime);
 	TrapManager::Instance().Update(elapsedTime);
+	EffectManager::instance().Update(elapsedTime);
 }
 
 // ï`âÊèàóù
 void AnimationScene::Render(float elapsedTime)
 {
-
-
 	ID3D11DeviceContext* dc = Graphics::Instance().GetDeviceContext();
 	RenderState* renderState = Graphics::Instance().GetRenderState();
 	PrimitiveRenderer* primitiveRenderer = Graphics::Instance().GetPrimitiveRenderer();
@@ -157,6 +156,7 @@ void AnimationScene::Render(float elapsedTime)
 
 	StageManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
 	TrapManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
+	EffectManager::instance().Render(camera.GetView(), camera.GetProjection());
 }
 
 

@@ -3,7 +3,6 @@
 #include "Stage2.h"
 #include "imgui.h"
 
-
 void StageManager::Initialize()
 {
 	Register(new Stage1);
@@ -15,6 +14,7 @@ void StageManager::Render(ModelRenderer* modelRenderer, RenderContext& rc, Shade
 		stage->Render(modelRenderer, rc, ID);
 
 	ImGui::Begin("Stage");
+
 	if (ImGui::Button("Stage 1"))
 	{
 		Clear();
@@ -32,13 +32,13 @@ void StageManager::Render(ModelRenderer* modelRenderer, RenderContext& rc, Shade
 
 bool StageManager::RayCast(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult hit)
 {
-	//for (int i = 0; i < GetObjectCount(); i++)
-	//{
-	//	auto stage = GetObject_(i)->GetCollisionModel();
+	for (int i = 0; i < GetObjectCount(); i++)
+	{
+		auto stage = GetObject_(i)->GetCollisionModel();
 
-	//	if (Collision::RayCast(start, end, stage->GetTransform(), stage->GetModel(), hit.position, hit.normal))
-	//		return true;
-	//}
+		if (Collision::RayCast(start, end, stage->GetTransform(), stage->GetModel(), hit.position, hit.normal))
+			return true;
+	}
 
 	return false;
 }

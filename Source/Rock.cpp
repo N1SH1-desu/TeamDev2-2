@@ -6,7 +6,7 @@
 
 void Rock::Initialize()
 {
-
+	
 }
 
 void Rock::Update(float elapsedTime)

@@ -28,8 +28,8 @@ void PoisonGus::Sensing(float elapsedTime)
 
 		if (Collision::InteresectCylinderVsCylinder(position, radius, height, player->GetPosition(), player->GetRaidus(), player->GetHeight(), outPosition))
 		{
-			if (!effect.GetEffect(POISON)->IsPlay())
-				effect.GetEffect(POISON)->Play(position, 0.5f);
+			/*if (!effect.GetEffect(POISON)->IsPlay())
+				effect.GetEffect(POISON)->Play(position, 0.5f);*/
 		}
 		else 
 			effect.GetEffect(POISON)->Stop(effect.GetEffect(POISON)->Play(position));
