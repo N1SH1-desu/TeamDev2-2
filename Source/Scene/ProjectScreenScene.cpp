@@ -20,10 +20,16 @@ ProjectScreenScene::ProjectScreenScene()
 		0.1f,								// ニアクリップ
 		1000.0f								// ファークリップ
 	);
+	camera.SetOrthoGraphic(
+		128.0,
+		72.0,
+		0.1f,
+		1000.0f
+	);
 	camera.SetLookAt(
-		{ 0, 1, 0 },		// 視点
+		{ 0, 0, -20 },		// 視点
 		{ 0, 0, 0 },		// 注視点
-		{ 0, 0, 1 }			// 上ベクトル
+		{ 0, 1, 0 }			// 上ベクトル
 	);
 	cameraController.SyncCameraToController(camera);
 
@@ -32,9 +38,9 @@ ProjectScreenScene::ProjectScreenScene()
 
 	sceneModels = std::make_unique<SceneModel>("Data/Model/TetrisBlock/fixedScene.mdl");
 
-	stage.scale = { 1.0f, 1.0f, 1.0f };
+	stage.scale = { 0.4f, 0.4f, 0.4f };
 	stage.position = { 0.0f, 0.0f, 0.0f };
-	stage.angle = { DirectX::XMConvertToRadians(90.0f), 0.0f, 0.0f };
+	stage.angle = { 0.0f, 0.0f, 0.0f };
 }
 
 // 更新処理
@@ -93,6 +99,8 @@ void ProjectScreenScene::Render(float elapsedTime)
 	PrimitiveRenderer* primitiveRenderer = Graphics::Instance().GetPrimitiveRenderer();
 	ShapeRenderer* shapeRenderer = Graphics::Instance().GetShapeRenderer();
 	EndlessGridRenderer* gridRenderer = Graphics::Instance().GetEndlessGridRenderer();
+	ID2D1DeviceContext* d2dContext = Graphics::Instance().GetGfx2D()->GetContext();
+	Grid2DRenderer* grid2DRenderer = Graphics::Instance().GetGridRenderer();
 
 	// モデル描画
 	RenderContext rc;
@@ -114,16 +122,20 @@ void ProjectScreenScene::Render(float elapsedTime)
 		//modelRenderer->Render(rc, obj.transform, obj.model.get(), ShaderId::Lambert);
 	}
 
-	sceneModels->SelectedBlockRender(rc, modelRenderer, stage.transform, 0u, ShaderId::Lambert);
+	sceneModels->SelectedBlockRender(rc, modelRenderer, stage.transform, 0u, ShaderId::Lambert, true);
 
 	{
 		//dc->RSSetState(renderState->GetRasterizerState(RasterizerState::SolidCullNone));
 
-		DirectX::XMMATRIX view = DirectX::XMLoadFloat4x4(&camera.GetView());
-		DirectX::XMMATRIX proj = DirectX::XMLoadFloat4x4(&camera.GetProjection(false));
-		DirectX::XMFLOAT4X4 viewProj; DirectX::XMStoreFloat4x4(&viewProj, view * proj);
+		//DirectX::XMMATRIX view = DirectX::XMLoadFloat4x4(&camera.GetView());
+		//DirectX::XMMATRIX proj = DirectX::XMLoadFloat4x4(&camera.GetProjection(false));
+		//DirectX::XMFLOAT4X4 viewProj; DirectX::XMStoreFloat4x4(&viewProj, view * proj);
 		//gridRenderer->Draw(dc, viewProj);
 
+	}
+
+	{
+		grid2DRenderer->Draw(d2dContext);
 	}
 }
 
@@ -144,6 +156,7 @@ void ProjectScreenScene::DrawGUI()
 		ImGui::InputInt2("Mouse Position", v);
 
 		ImGui::SliderFloat3("Block Position", &stage.position.x, -200.0f, 200.0f);
+		ImGui::InputFloat3("Block Pos Input", &stage.position.x);
 		ImGui::SliderFloat3("Block Scale", &stage.scale.x, 0.01f, 10.0f);
 		ImGui::SliderFloat3("Block Rotate", &stage.angle.x, 0.0f, 20.0f);
 	}

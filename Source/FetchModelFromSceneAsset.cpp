@@ -21,9 +21,9 @@ SceneModel::SceneModel(const char* sceneFile)
     }
 }
 
-void SceneModel::SelectedBlockRender(RenderContext& rc, ModelRenderer* renderer, DirectX::XMFLOAT4X4 worldTransform, UINT index, ShaderId id)
+void SceneModel::SelectedBlockRender(RenderContext& rc, ModelRenderer* renderer, DirectX::XMFLOAT4X4 worldTransform, UINT index, ShaderId id, bool isOrtho)
 {
-    renderer->Render(rc, worldTransform, sceneModels.at(index).get(), id, true);
+    renderer->Render(rc, worldTransform, sceneModels.at(index).get(), id, isOrtho);
 }
 
 void SceneModel::RenderCommitedBlocks(RenderContext& rc, ModelRenderer* renderer, ShaderId id)

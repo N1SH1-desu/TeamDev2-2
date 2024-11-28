@@ -131,6 +131,13 @@ void Graphics::Initialize(HWND hWnd)
 	shapeRenderer = std::make_unique<ShapeRenderer>(device.Get());
 	modelRenderer = std::make_unique<ModelRenderer>(device.Get());
 	endlessGridRenderer = std::make_unique<EndlessGridRenderer>(device.Get());
+
+	graphics2D = std::make_unique<Graphics2D>(device.Get());
+
+	Microsoft::WRL::ComPtr<IDXGISurface> backBuf;
+	swapchain->GetBuffer(0, IID_PPV_ARGS(&backBuf));
+	
+	gridRenderer = std::make_unique<Grid2DRenderer>(graphics2D->GetContext(), backBuf.Get());
 }
 
 // ÉNÉäÉA

@@ -8,6 +8,8 @@
 #include "ShapeRenderer.h"
 #include "ModelRenderer.h"
 #include "EndlessGridRenderer.h"
+#include "Gfx2D.h"
+#include "Grid2DRenderer.h"
 
 // グラフィックス
 class Graphics
@@ -64,6 +66,10 @@ public:
 	ModelRenderer* GetModelRenderer() const { return modelRenderer.get(); }
 
 	EndlessGridRenderer* GetEndlessGridRenderer() const { return endlessGridRenderer.get(); }
+
+	Graphics2D* GetGfx2D() const { return graphics2D.get(); }
+	Grid2DRenderer* GetGridRenderer() const { return gridRenderer.get(); }
+
 private:
 	HWND											hWnd = nullptr;
 	Microsoft::WRL::ComPtr<ID3D11Device>			device;
@@ -81,4 +87,7 @@ private:
 	std::unique_ptr<ShapeRenderer>					shapeRenderer;
 	std::unique_ptr<ModelRenderer>					modelRenderer;
 	std::unique_ptr<EndlessGridRenderer>			endlessGridRenderer;
+
+	std::unique_ptr<Graphics2D>						graphics2D;
+	std::unique_ptr<Grid2DRenderer>					gridRenderer;
 };
