@@ -228,6 +228,9 @@
     <ClInclude Include="Source\EndlessGridRenderer.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Tetromino.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Framework.cpp">
