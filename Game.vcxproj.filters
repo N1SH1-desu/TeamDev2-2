@@ -380,6 +380,9 @@
     <ClCompile Include="Source\EndlessGridRenderer.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Tetromino.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\Sprite.hlsli">
