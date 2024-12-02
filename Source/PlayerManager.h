@@ -6,6 +6,7 @@
 #include "FreeCameraController.h"
 #include "Model.h"
 #include"ModelRenderer.h"
+#include"Sprite.h"
 
 #include"player.h"
 #include<vector>
@@ -14,7 +15,7 @@
 class PlayerManager
 {
 public:
-	PlayerManager(){}
+	PlayerManager();
 	~PlayerManager(){}
 	static PlayerManager& Instance() {
 		static PlayerManager instance;
@@ -41,6 +42,8 @@ public:
 private:
 	std::vector<Player*> players;
 	std::set<Player*> remove;
+
+	std::unique_ptr<Sprite>				sprite;
 
 };
 

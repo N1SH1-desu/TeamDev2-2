@@ -4,6 +4,7 @@
 #include"Graphics.h"
 #include"Collision.h"
 #include"PlayerManager.h"
+#include"Scene/stage.h"
 
  Player::Player(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale, DirectX::XMFLOAT3 angle) {
 
@@ -13,7 +14,7 @@
 	this->scale = scale;
 	this->angle = angle;
 	this->state = State::Idle;
-	this->HP = 10;
+	this->HP = 30;
 	PlayAnimation("Jump", false);
 }
 
@@ -24,57 +25,15 @@
 
 void Player::Update(float elapsedTime)
 {
+	tt = elapsedTime;
 	InputMove();
-	//// ステート処理
-	//switch (state)
-	//{
-	//case State::Idle:
-	//{
-	//	if (onGround==true && InputMove()) {
-	//		state = State::Run;
-	//		PlayAnimation("Running", true);
-	//	}
-	//	break;
-	//}
-
-	//case State::Run:
-	//{
-	//	if (!InputMove()) {
-	//		state = State::Idle;
-	//		PlayAnimation("Idle", true);
-	//	}
-	//	if (InputJump()) {
-	//		state = State::Jump;
-	//		PlayAnimation("Jump", false);
-	//	}
-
-	//	break;
-	//}
-
-	//case State::Jump:
-	//{
-	//	bool move = InputMove();
-
-	//	if (onGround) {
-	//		if (move) {
-	//			state = State::Run;
-	//			PlayAnimation("Running", true);
-	//		}
-	//		else {
-	//			state = State::Idle;
-	//			PlayAnimation("Idle", true);
-	//		}
-	//	}
-	//	break;
-	//}
-	//}
 
 	switch (state)
 	{
 	case State::Idle:
 		position.y -= velocity.y;
 
-		if (onGround)
+		if (RayGround(Stage::Instance().GetCollisionTransform(), Stage::Instance().GetCollisionModel()))
 		{
 			//Animation_Reset();
 			PlayAnimation("Running", true);
@@ -91,10 +50,13 @@ void Player::Update(float elapsedTime)
 		break;
 	}
 
-	if (position.y <= 0.0f)
-		onGround = true;
-	else
-		onGround = false;
+	if (PC)
+	{
+		PoisonC(elapsedTime);
+	}
+	else {
+		//PT = 0;
+	}
 
 	// トランスフォーム更新処理
 	UpdateTransform(elapsedTime);
@@ -218,71 +180,6 @@ void Player::UpdateAnimation(float elapsedTime)
 // トランスフォーム更新処理
 void Player::UpdateTransform(float elapsedTime)
 {
-	//// 加速処理
-	//	float vecLength = sqrtf(moveVecX * moveVecX + moveVecZ * moveVecZ);
-	//	if (vecLength > 0)
-	//	{
-	//		float vecX = moveVecX / vecLength;
-	//		float vecZ = moveVecZ / vecLength;
-
-	//		float acceleration = this->acceleration * elapsedTime;
-	//		if (!onGround) acceleration *= airControl;
-
-	//		velocity.x += vecX * acceleration;
-	//		velocity.z += vecZ * acceleration;
-
-	//		// 最大速度制限
-	//		float velocityLength = sqrtf(velocity.x * velocity.x + velocity.z * velocity.z);
-	//		if (velocityLength > moveSpeed)
-	//		{
-	//			velocity.x = (velocity.x / velocityLength) * moveSpeed;
-	//			velocity.z = (velocity.z / velocityLength) * moveSpeed;
-	//		}
-
-	//		// 進行方向を向くようにする
-	//		{
-	//			// 向いている方向
-	//			float frontX = sinf(angle.y);
-	//			float frontZ = cosf(angle.y);
-
-	//			// 回転量調整
-	//			float dot = frontX * vecX + frontZ * vecZ;
-	//			float rot = (std::min)(1.0f - dot, turnSpeed * elapsedTime);
-
-	//			// 左右判定をして回転処理
-	//			float cross = frontX * vecZ - frontZ * vecX;
-	//			if (cross < 0.0f)
-	//			{
-	//				angle.y += rot;
-	//			}
-	//			else
-	//			{
-	//				angle.y -= rot;
-	//			}
-	//		}
-	//	}
-	//	else
-	//	{
-	//		// 減速処理
-	//		float deceleration = this->deceleration * elapsedTime;
-	//		if (!onGround) deceleration *= airControl;
-
-	//		float velocityLength = sqrtf(velocity.x * velocity.x + velocity.z * velocity.z);
-	//		if (velocityLength > deceleration)
-	//		{
-	//			velocity.x -= (velocity.x / velocityLength) * deceleration;
-	//			velocity.z -= (velocity.z / velocityLength) * deceleration;
-	//		}
-	//		else
-	//		{
-	//			velocity.x = 0.0f;
-	//			velocity.z = 0.0f;
-	//		}
-	//	}
-
-	//	// 位置更新
-	//	position.x += velocity.x * elapsedTime;
-	//	position.z +=velocity.z * elapsedTime;
 	velocity.y = gravity * elapsedTime;
 
 		// 行列計算
@@ -318,10 +215,55 @@ bool Player::InputMove()
 		float cameraRightZ = camemraRight.z / cameraRightLengthXZ;
 
 		// 移動ベクトル
-		moveVecX = cameraFrontX * axisY + cameraRightX * axisX;
-		moveVecZ = cameraFrontZ * axisY + cameraRightZ * axisX;
+		moveVecX = cameraFrontX * axisY + cameraRightX * axisX*tt;
+		moveVecZ = cameraFrontZ * axisY + cameraRightZ * axisX*tt;
 		float vecLength = sqrtf(moveVecX * moveVecX + moveVecZ * moveVecZ);
 
+		// 壁ずり移動処理
+		if (vecLength > 0)
+		{
+			//レイの始点と終点を求める
+			DirectX::XMFLOAT3 s = {
+			   position.x,
+			   position.y + 0.5f,
+			   position.z
+			};
+
+			DirectX::XMFLOAT3 e = {
+			   position.x + moveVecX,
+			   position.y + 0.5f,
+			   position.z + moveVecZ
+			};
+
+			DirectX::XMFLOAT3 p, n;
+			//ステージとレイキャストを行い、交点と法線を求める
+			if (Collision::RayCast(s, e, Stage::Instance().GetCollisionTransform(), Stage::Instance().GetCollisionModel(), p, n)) {
+				//交点から終点へのベクトルを求める
+				DirectX::XMVECTOR P = DirectX::XMLoadFloat3(&p);
+				DirectX::XMVECTOR E = DirectX::XMLoadFloat3(&e);
+				DirectX::XMVECTOR PE = DirectX::XMVectorSubtract(E, P);
+
+				//三角関数から終点へのベクトルを求める
+				DirectX::XMVECTOR N = DirectX::XMLoadFloat3(&n);
+				DirectX::XMVECTOR A = DirectX::XMVector3Dot(N, PE);
+				//壁までの長さを少しだけ長くなるように補正する
+				float a = -DirectX::XMVectorGetX(A) + 0.001f;
+
+				//壁ずりベクトルを求める
+				DirectX::XMVECTOR R = DirectX::XMVectorAdd(PE, DirectX::XMVectorScale(N, a));
+
+				//壁ずり後の位置を求める
+				DirectX::XMVECTOR Q = DirectX::XMVectorAdd(P, R);
+				DirectX::XMFLOAT3 q;
+				DirectX::XMStoreFloat3(&q, Q);
+
+
+				HitP();
+				turn();
+			}
+
+
+		}
 	return true;
 }
 
@@ -354,5 +296,35 @@ void Player::HitP()
 	if (HP < 0) {
 		Death();
 	}
+}
+
+void Player::PoisonC(float elapsedTime)
+{
+	PT += elapsedTime;
+	if (PT / 0.5f >= 1.0f)
+	{
+		HP--;
+		if (HP < 0) {
+			Death();
+		}
+		PT = 0;
+	}
+}
+
+bool Player::RayGround(DirectX::XMFLOAT4X4 transform, Model* model)
+{
+
+	const DirectX::XMFLOAT3 s = { position.x,position.y + 0.5f,position.z };
+	const DirectX::XMFLOAT3 e = { position.x,position.y - 0.3f,position.z };
+
+	DirectX::XMFLOAT3 p, n;
+
+	if (Collision::RayCast(s, e, transform, model, p, n))
+	{
+		// 交点のY座標をプレイヤーに位置に設定する
+		position.y = p.y;
+		return onGround = true;
+	}
+	return onGround=false;
 }
 
