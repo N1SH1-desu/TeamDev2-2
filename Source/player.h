@@ -48,7 +48,9 @@ public:
 
 	void HitP();
 
-	bool Ray(DirectX::XMFLOAT4X4 transform, Model* model);
+	void PoisonC(float elapsedTime);
+
+	bool RayGround(DirectX::XMFLOAT4X4 transform, Model* model);
 
 public:
 	Model* model = nullptr;
@@ -89,7 +91,6 @@ public:
 	float								gravity = 5.0f;
 	float								acceleration = 50.0f;
 	float								deceleration = 20.0f;
-	//float								moveSpeed = 5.0f;
 	float								turnSpeed = DirectX::XMConvertToRadians(720);
 	float								jumpSpeed = 7.0f;
 	float								airControl = 0.3f;
@@ -102,5 +103,9 @@ public:
 
 	bool								jumpC = false;
 
-	int									HP = 10;
+	int									HP = 0;
+	bool PC = true;
+	float PT;
+
+	float								tt;
 };

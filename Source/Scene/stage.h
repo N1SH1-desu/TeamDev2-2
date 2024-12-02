@@ -110,7 +110,6 @@ public:
 
 	Model* GetModel() { return stage_[now_stage].model.get(); }
 
-	Model* GetCollisionModel() { return stage_collision_[now_stage].model.get(); }
 
 	int GetNumber() { return now_stage; }
 

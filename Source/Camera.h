@@ -8,6 +8,12 @@ class Camera
 public:
 	Camera();
 
+	static Camera& Instance() {
+		static Camera instance;
+		return instance;
+	}
+
+
 	// Žw’è•ûŒü‚ðŒü‚­
 	void SetLookAt(const DirectX::XMFLOAT3& eye, const DirectX::XMFLOAT3& focus, const DirectX::XMFLOAT3& up);
 
