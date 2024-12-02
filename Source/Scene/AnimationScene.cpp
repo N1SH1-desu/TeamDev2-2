@@ -4,6 +4,8 @@
 #include "Scene/AnimationScene.h"
 #include "PlayerManager.h"
 #include "Collision.h"
+#include "Grid2DRenderer.h"
+#include "ControlTetrisBlock.h"
 #include "TrapManager.h"
 #include "EffectManager.h"
 
@@ -15,18 +17,18 @@ AnimationScene::AnimationScene()
 	float screenHeight = Graphics::Instance().GetScreenHeight();
 
 	// カメラ設定
-	camera.SetPerspectiveFov(
+	Camera::Instance().SetPerspectiveFov(
 		DirectX::XMConvertToRadians(45),	// 画角
 		screenWidth / screenHeight,			// 画面アスペクト比
 		0.1f,								// ニアクリップ
 		1000.0f								// ファークリップ
 	);
-	camera.SetLookAt(
-		{ 0, 5, 27 },		// 視点
+	Camera::Instance().SetLookAt(
+		{ 0, 0, 27 },		// 視点
 		{ 0, 1, 0 },		// 注視点
 		{ 0, 1, 0 }			// 上ベクトル
 	);
-	cameraController.SyncCameraToController(camera);
+	cameraController.SyncCameraToController(Camera::Instance());
 	PlayerManager::Instance().Register(new Player(DirectX::XMFLOAT3(0, 3, 0), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f), DirectX::XMFLOAT3(0, 180, 0)));
 
 	timer = 0;
@@ -43,6 +45,8 @@ AnimationScene::AnimationScene()
 	stage = std::make_unique<Stage>();
 
 	EffectManager::instance().Initialize();
+	sceneModel = std::make_unique<SceneModel>("Data/Model/TetrisBlock/scene.mdl");
+	sceneScale = { 0.1f, 0.1f, 0.1f };
 }
 
 AnimationScene::~AnimationScene() {
@@ -54,7 +58,7 @@ void AnimationScene::Update(float elapsedTime)
 {
 	// カメラ更新処理
 	cameraController.Update();
-	cameraController.SyncControllerToCamera(camera);
+	cameraController.SyncControllerToCamera(Camera::Instance());
 	//player->Update(elapsedTime);
 
 
@@ -77,17 +81,17 @@ void AnimationScene::Update(float elapsedTime)
 
 		float length = player->position.y - cube.position.y;
 
-		if (Collision::InteresectCylinderVsCylinder(player->GetPosition(), 2.0f, 2.0f, cube.position, 2.0f, 2.0f, outPosition))
-		{
-			player->turn();
-			//player->HitP();
+	//	if (Collision::InteresectCylinderVsCylinder(player->GetPosition(), 2.0f, 2.0f, cube.position, 2.0f, 2.0f, outPosition))
+	//	{
+	//		player->turn();
+	//		//player->HitP();
 
-			//player->PlayAnimation("Jump", false);
-			//player->state = Player::State::Jump;
-		}
+	//		//player->PlayAnimation("Jump", false);
+	//		//player->state = Player::State::Jump;
+	//	}
 
-		else
-		{
+	//	else
+	//	{
 			if (Collision::InteresectCylinderVsCylinder(player->GetPosition(), 2.0f, 2.0f, cube.position, 2.0f, length, outPosition))
 			{
 				player->PlayAnimation("Running", true);
@@ -98,23 +102,35 @@ void AnimationScene::Update(float elapsedTime)
 				player->PlayAnimation("Jump", true);
 				player->state = Player::State::Idle;
 			}
-		}
+	//	}
 
-		if (Collision::InteresectCylinderVsCylinder(player->GetPosition(), 2.0f, 2.0f, cube2.position, 2.0f, 2.0f, outPosition))
-		{
-			player->turn();
-		}
+	//	if (Collision::InteresectCylinderVsCylinder(player->GetPosition(), 2.0f, 2.0f, cube2.position, 2.0f, 2.0f, outPosition))
+	//	{
+	//		player->turn();
+	//	}
 	}
 
 	//stageの追加
 	//stage.get()->Update(elapsedTime);
 
+	DirectX::XMMATRIX Projection = DirectX::XMLoadFloat4x4(&Camera::Instance().GetProjection());
+	DirectX::XMMATRIX View = DirectX::XMLoadFloat4x4(&Camera::Instance().GetView());
+	DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();
+
+	RECT viewport = { 0, 0, static_cast<LONG>(Graphics::Instance().GetScreenWidth()), static_cast<LONG>(Graphics::Instance().GetScreenHeight()) };
+	
+	scenePosition = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size, viewport, Projection, View, World);
+
+	{
+		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(sceneScale.x, sceneScale.y, sceneScale.z);
+		DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f);
+		DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(scenePosition.x, scenePosition.y, scenePosition.z);
+		DirectX::XMStoreFloat4x4(&sceneTransform, S * R * T);
+	}
+
 	PlayerManager::Instance().Update(elapsedTime);
 	cube.UpdateTransform();
 	cube2.UpdateTransform();
-	//player->Update(elapsedTime);
-	// アニメーション更新処理
-	//UpdateAnimation(elapsedTime);
 	timer += elapsedTime;
 
 	TrapManager::Instance().Update(elapsedTime);
@@ -128,15 +144,17 @@ void AnimationScene::Render(float elapsedTime)
 	RenderState* renderState = Graphics::Instance().GetRenderState();
 	PrimitiveRenderer* primitiveRenderer = Graphics::Instance().GetPrimitiveRenderer();
 	ModelRenderer* modelRenderer = Graphics::Instance().GetModelRenderer();
+	Grid2DRenderer* grid2dRenderer = Graphics::Instance().GetGrid2DRenderer();
+	Graphics2D* gfx2D = Graphics::Instance().GetGraphics2D();
 
 	//// モデル描画
 	RenderContext rc;
 	rc.deviceContext = dc;
 	rc.renderState = renderState;
-	rc.camera = &camera;
+	rc.camera = &Camera::Instance();
 	//modelRenderer->Render(rc, player->transform, player->model, ShaderId::Lambert);
-	modelRenderer->Render(rc, cube.transform, cube.model.get(), ShaderId::Lambert);
-	modelRenderer->Render(rc, cube2.transform, cube2.model.get(), ShaderId::Lambert);
+	//modelRenderer->Render(rc, cube.transform, cube.model.get(), ShaderId::Lambert);
+	//modelRenderer->Render(rc, cube2.transform, cube2.model.get(), ShaderId::Lambert);
 
 	PlayerManager::Instance().Render(modelRenderer,rc,ShaderId::Lambert);
 	//player->Render(dc);
@@ -148,12 +166,12 @@ void AnimationScene::Render(float elapsedTime)
 
 	// グリッド描画
 	primitiveRenderer->DrawGrid(20, 1);
-	primitiveRenderer->Render(dc, camera.GetView(), camera.GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	primitiveRenderer->Render(dc, Camera::Instance().GetView(), Camera::Instance().GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
 	EffectManager::instance().Render(camera.GetView(), camera.GetProjection());
 	stage->Render(elapsedTime, rc);
+	sceneModel->SelectedBlockRender(rc, modelRenderer, sceneTransform, 0u, ShaderId::Lambert);
 }
-
 
 //// GUI描画処理
 //void AnimationScene::DrawGUI()
@@ -286,135 +304,9 @@ void AnimationScene::Render(float elapsedTime)
 //	//player->model->UpdateTransform();
 //}
 
-// トランスフォーム更新処理
-//void AnimationScene::UpdateTransform(float elapsedTime)
-//{
-//	// 加速処理
-//	float vecLength = sqrtf(moveVecX * moveVecX + moveVecZ * moveVecZ);
-//	if (vecLength > 0)
-//	{
-//		float vecX = moveVecX / vecLength;
-//		float vecZ = moveVecZ / vecLength;
-//
-//		float acceleration = this->acceleration * elapsedTime;
-//		if (!onGround) acceleration *= airControl;
-//
-//		velocity.x += vecX * acceleration;
-//		velocity.z += vecZ * acceleration;
-//
-//		// 最大速度制限
-//		float velocityLength = sqrtf(velocity.x * velocity.x + velocity.z * velocity.z);
-//		if (velocityLength > moveSpeed)
-//		{
-//			velocity.x = (velocity.x / velocityLength) * moveSpeed;
-//			velocity.z = (velocity.z / velocityLength) * moveSpeed;
-//		}
-//
-//		// 進行方向を向くようにする
-//		{
-//			// 向いている方向
-//			float frontX = sinf(angle.y);
-//			float frontZ = cosf(angle.y);
-//
-//			// 回転量調整
-//			float dot = frontX * vecX + frontZ * vecZ;
-//			float rot = (std::min)(1.0f - dot, turnSpeed * elapsedTime);
-//
-//			// 左右判定をして回転処理
-//			float cross = frontX * vecZ - frontZ * vecX;
-//			if (cross < 0.0f)
-//			{
-//				angle.y += rot;
-//			}
-//			else
-//			{
-//				angle.y -= rot;
-//			}
-//		}
-//	}
-//	else
-//	{
-//		// 減速処理
-//		float deceleration = this->deceleration * elapsedTime;
-//		if (!onGround) deceleration *= airControl;
-//
-//		float velocityLength = sqrtf(velocity.x * velocity.x + velocity.z * velocity.z);
-//		if (velocityLength > deceleration)
-//		{
-//			velocity.x -= (velocity.x / velocityLength) * deceleration;
-//			velocity.z -= (velocity.z / velocityLength) * deceleration;
-//		}
-//		else
-//		{
-//			velocity.x = 0.0f;
-//			velocity.z = 0.0f;
-//		}
-//	}
-//
-//	// 重力処理
-//	velocity.y -= gravity * elapsedTime;
-//
-//	// 位置更新
-//	position.x += velocity.x * elapsedTime;
-//	position.y += velocity.y * elapsedTime;
-//	position.z += velocity.z * elapsedTime;
-//
-//	// 地面判定
-//	if (position.y < 0.0f)
-//	{
-//		position.y = 0.0f;
-//		velocity.y = 0.0f;
-//		onGround = true;
-//	}
-//	else
-//	{
-//		onGround = false;
-//	}
-//
-//
-//	// 行列計算
-//	DirectX::XMMATRIX S = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
-//	DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(angle.x, angle.y, angle.z);
-//	DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(position.x, position.y, position.z);
-//	DirectX::XMStoreFloat4x4(&transform, S * R * T);
-//}
+	//}
+	//	stage->DrawGUI();
 
-// 移動入力処理
-//bool AnimationScene::InputMove()
-//{
-//	// 入力処理
-//	float axisX = 0.0f;
-//	float axisY = 0.0f;
-//	if (GetAsyncKeyState('W') & 0x8000) axisY += 1.0f;
-//	if (GetAsyncKeyState('S') & 0x8000) axisY -= 1.0f;
-//	if (onGround) axisX += 1.0f;
-//	if (GetAsyncKeyState('A') & 0x8000) axisX -= 1.0f;
-//
-//	// カメラの方向
-//	const DirectX::XMFLOAT3& cameraFront = camera.GetFront();
-//	const DirectX::XMFLOAT3& camemraRight = camera.GetRight();
-//	float cameraFrontLengthXZ = sqrtf(cameraFront.x * cameraFront.x + cameraFront.z * cameraFront.z);
-//	float cameraRightLengthXZ = sqrtf(camemraRight.x * camemraRight.x + camemraRight.z * camemraRight.z);
-//	float cameraFrontX = cameraFront.x / cameraFrontLengthXZ;
-//	float cameraFrontZ = cameraFront.z / cameraFrontLengthXZ;
-//	float cameraRightX = camemraRight.x / cameraRightLengthXZ;
-//	float cameraRightZ = camemraRight.z / cameraRightLengthXZ;
-//
-//	// 移動ベクトル
-//	moveVecX = cameraFrontX * axisY + cameraRightX * axisX;
-//	moveVecZ = cameraFrontZ * axisY + cameraRightZ * axisX;
-//	float vecLength = sqrtf(moveVecX * moveVecX + moveVecZ * moveVecZ);
-//
-//	return vecLength > 0.0f;
-//}
+	//	ImGui::End();
+}
 
-// ジャンプ入力処理
-//bool AnimationScene::InputJump()
-//{
-//	if (GetAsyncKeyState(VK_SPACE) & 0x01)
-//	{
-//		velocity.y = jumpSpeed;
-//		return true;
-//	}
-//	return false;
-//}

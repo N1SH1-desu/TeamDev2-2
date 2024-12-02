@@ -1,6 +1,7 @@
 #include <memory>
 #include <sstream>
 #include <imgui.h>
+#include <windowsx.h>
 
 #include "Framework.h"
 #include "Graphics.h"
@@ -24,7 +25,8 @@ static const int syncInterval = 1;
 
 // コンストラクタ
 Framework::Framework(HWND hWnd)
-	: hWnd(hWnd)
+	: hWnd(hWnd),
+	mouse(hWnd)
 {
 	// グラフィックス初期化
 	Graphics::Instance().Initialize(hWnd);
@@ -61,6 +63,10 @@ void Framework::Update(float elapsedTime)
 {
 	// IMGUIフレーム開始処理	
 	ImGuiRenderer::NewFrame();
+
+	mouse.ProcessCommand();
+
+	scene->SetInputMouse(&mouse);
 
 	// シーン更新処理
 	scene->Update(elapsedTime);
@@ -186,6 +192,7 @@ int Framework::Run()
 				? timer.TimeInterval()
 				: syncInterval / static_cast<float>(GetDeviceCaps(hDC, VREFRESH))
 				;
+			
 			Update(elapsedTime);
 			Render(elapsedTime);
 		}
@@ -228,6 +235,21 @@ LRESULT CALLBACK Framework::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LP
 		// WM_EXITSIZEMOVE is sent when the user releases the resize bars.
 		// Here we reset everything based on the new window dimensions.
 		timer.Start();
+		break;
+	case WM_MOUSEMOVE:
+		mouse.InQueueCommand({ MouseCommand::M_MOVE, MAKEPOINTS(lParam) });
+		break;
+	case WM_LBUTTONDOWN:
+		mouse.InQueueCommand({ MouseCommand::M_LBUTTON_DOWN });
+		break;
+	case WM_RBUTTONDOWN:
+		mouse.InQueueCommand({ MouseCommand::M_RBUTTON_DOWN });
+		break;
+	case WM_LBUTTONUP:
+		mouse.InQueueCommand({ MouseCommand::M_LBUTTON_UP });
+		break;
+	case WM_RBUTTONUP:
+		mouse.InQueueCommand({ MouseCommand::M_RBUTTON_UP });
 		break;
 	default:
 		return DefWindowProc(hWnd, msg, wParam, lParam);

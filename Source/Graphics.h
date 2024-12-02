@@ -8,6 +8,8 @@
 #include "PrimitiveRenderer.h"
 #include "ShapeRenderer.h"
 #include "ModelRenderer.h"
+#include "Gfx2D.h"
+#include "Grid2DRenderer.h"
 
 // グラフィックス
 class Graphics
@@ -63,6 +65,10 @@ public:
 	// モデルレンダラ取得
 	ModelRenderer* GetModelRenderer() const { return modelRenderer.get(); }
 
+	Graphics2D* GetGraphics2D() const { return d2dGraphics.get(); }
+
+	Grid2DRenderer* GetGrid2DRenderer() const { return grid2DRenderer.get(); }
+
 	//ミューテックス取得
 	std::mutex& GetMutex() { return mutex; } //排他制御
 
@@ -74,6 +80,9 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView>	renderTargetView;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView>	depthStencilView;
 	D3D11_VIEWPORT									viewport;
+
+	std::unique_ptr<Graphics2D>						d2dGraphics;
+	std::unique_ptr<Grid2DRenderer>					grid2DRenderer;
 
 	float	screenWidth = 0;
 	float	screenHeight = 0;

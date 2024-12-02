@@ -6,6 +6,8 @@
 #include "FreeCameraController.h"
 #include "Model.h"
 #include"player.h"
+#include"stage.h"
+#include "FetchModelFromSceneAsset.h"
 #include "stage.h"
 
 class AnimationScene : public Scene
@@ -22,27 +24,12 @@ public:
 
 
 	// GUI描画処理
-	//void DrawGUI() override;
+	void DrawGUI() override;
 
-private:
-	// アニメーション再生
-
-	// アニメーション更新処理
-	//void UpdateAnimation(float elapsedTime);
-
-	// トランスフォーム更新処理
-	//void UpdateTransform(float elapsedTime);
-
-	// 移動入力処理
-	//bool InputMove();
-
-	// ジャンプ入力処理
-	//bool InputJump();
 
 private:
 	std::unique_ptr<Player> player = nullptr;
 
-	Camera								camera;
 	FreeCameraController				cameraController;
 
 	struct Object
@@ -72,19 +59,12 @@ private:
 
 	//std::unique_ptr<Stage> stage = nullptr;
 
-	//int									animationIndex = -1;
-	//float								animationSeconds = 0.0f;
-	//bool								animationLoop = false;
-	//bool								animationPlaying = false;
-	//float								animationBlendSecondsLength = 0.2f;
 
-	//enum class State
-	//{
-	//	Idle,
-	//	Run,
-	//	Jump,
-	//};
-	//State								state = State::Run;
+	std::unique_ptr<SceneModel> sceneModel;
+	DirectX::XMFLOAT3 scenePosition = { 0.0f, 0.0f, 0.0f };
+	DirectX::XMFLOAT3 sceneScale = { 0.0f, 0.0f, 0.0f };
+	DirectX::XMFLOAT4X4 sceneTransform = { 1.0f,0.0f,0.0f,1.0f, 0.0f,1.0f,0.0f,1.0f, 0.0f,0.0f,1.0f,1.0f, 0.0f,0.0f,0.0f,1.0f };
+
 
 	float									timer = 0;
 	int										Co = 0;
