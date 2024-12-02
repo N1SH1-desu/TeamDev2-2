@@ -5,6 +5,7 @@ class Cage : public Trap
 	Trap::Trap;
 
 public:
+	Cage();
 	~Cage() override {};
 
 	void Initialize() override;

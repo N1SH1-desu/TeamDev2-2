@@ -152,6 +152,7 @@
     <ClInclude Include="Source\Scene\MoveFloorScene.h" />
     <ClInclude Include="Source\Scene\ResourceManagementScene.h" />
     <ClInclude Include="Source\Scene\LandWalkScene.h" />
+    <ClInclude Include="Source\Scene\stage.h" />
     <ClInclude Include="Source\Scene\TerrainAlignScene.h" />
     <ClInclude Include="Source\Scene\ProjectScreenScene.h" />
     <ClInclude Include="Source\Scene\UIAnimScene.h" />
@@ -169,10 +170,6 @@
     <ClInclude Include="Source\Shader.h" />
     <ClInclude Include="Source\space_division_raycast.h" />
     <ClInclude Include="Source\Sprite.h" />
-    <ClInclude Include="Source\Stage.h" />
-    <ClInclude Include="Source\Stage1.h" />
-    <ClInclude Include="Source\Stage2.h" />
-    <ClInclude Include="Source\StageManager.h" />
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\TransformUtils.h" />
     <ClInclude Include="Source\Trap.h" />
@@ -216,6 +213,7 @@
     <ClCompile Include="Source\Scene\MoveFloorScene.cpp" />
     <ClCompile Include="Source\Scene\ResourceManagementScene.cpp" />
     <ClCompile Include="Source\Scene\LandWalkScene.cpp" />
+    <ClCompile Include="Source\Scene\stage.cpp" />
     <ClCompile Include="Source\Scene\TerrainAlignScene.cpp" />
     <ClCompile Include="Source\Scene\ProjectScreenScene.cpp" />
     <ClCompile Include="Source\Scene\UIAnimScene.cpp" />
@@ -230,9 +228,6 @@
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\space_division_raycast.cpp" />
     <ClCompile Include="Source\Sprite.cpp" />
-    <ClCompile Include="Source\Stage2.cpp" />
-    <ClCompile Include="Source\Stage1.cpp" />
-    <ClCompile Include="Source\StageManager.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\TransformUtils.cpp" />
     <ClCompile Include="Source\TrapManager.cpp" />

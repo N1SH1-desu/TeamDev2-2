@@ -1,6 +1,5 @@
 #include"PlayerManager.h"
 #include"Collision.h"
-#include "StageManager.h"
 #include "imgui.h"
 
 void PlayerManager::Update(float elapsedTime) {
@@ -27,11 +26,6 @@ void PlayerManager::Update(float elapsedTime) {
 		HitResult hit;
 		DirectX::XMFLOAT3 start = { player->position.x, player->position.y + 1.0f, player->position.z };
 		DirectX::XMFLOAT3 end = { player->position.x, player->position.y + player->velocity.y - 0.05f, player->position.z };
-
-		if (StageManager::Instance().RayCast(start, end, hit))
-		{
-			//Remove(player);
-		}
 	}
 }
 void PlayerManager::Render(ModelRenderer* modelRenderer,RenderContext& rc, ShaderId ID) 

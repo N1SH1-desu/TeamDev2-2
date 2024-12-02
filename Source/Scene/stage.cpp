@@ -1,15 +1,17 @@
-#include"stage.h"
+#include "stage.h"
 
 #include<imgui.h>
 #include<ImGuizmo.h>
 
 #include"Graphics.h"
-
+#include "TrapManager.h"
+#include "Rock.h"
+#include "Cage.h"
+#include "PoisonGus.h"
 
 #define collision_map false
 
-Stage::Stage()
-	:now_stage{1}
+Stage::Stage() : now_stage{1}
 {
 #if collision_map
 	stage_[0].model = std::make_unique<Model>(".\\Data\\Model\\Stage\\stage_2\\stage_2_collision.mdl");
@@ -61,9 +63,24 @@ Stage::Stage()
 
 }
 
-void stage::Update(float elapsedTime)
+void Stage::Update(float elapsedTime)
 {
 	stage_[now_stage].UpdateTransform();
+	TrapManager::Instance().Update(elapsedTime);
+
+	switch (now_stage)
+	{
+	case 4:
+		static float Interval = 0.0f;
+		Interval += elapsedTime;
+
+		if (Interval > 3.0f)
+		{
+			TrapManager::Instance().Register(new Rock("./Data/Model/Rock.mdl", DirectX::XMFLOAT3(1.0f, 10.0f, 1.0f), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f), DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), 1.0f, 1.0f));
+			Interval = 0.0f;
+		}
+		break;
+	}
 }
 
 void Stage::Render(float elapsedTime, RenderContext &rc)
@@ -83,9 +100,11 @@ void Stage::Render(float elapsedTime, RenderContext &rc)
 		, stage_[now_stage].transform
 		, stage_[now_stage].model.get(), ShaderId::Lambert);
 
+	DrawGUI();
+	TrapManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
 }
 
-void stage::DrawGUI()
+void Stage::DrawGUI()
 {
 #if _DEBUG
 	Graphics* graphics = &Graphics::Instance();
@@ -98,11 +117,19 @@ void stage::DrawGUI()
 
 	if (ImGui::Begin(u8"stage", nullptr, ImGuiWindowFlags_NoNavInputs))
 	{
-		if (ImGui::Button("0"))SelectStage(0);
+		if (ImGui::Button("0"))
+		{
+			TrapManager::Instance().Clear();
+			SelectStage(0);
+		}
 		if (ImGui::Button("1"))SelectStage(1);
 		if (ImGui::Button("2"))SelectStage(2);
 		if (ImGui::Button("3"))SelectStage(3);
-		if (ImGui::Button("4"))SelectStage(4);
+		if (ImGui::Button("4"))
+		{
+			TrapManager::Instance().Clear();
+			SelectStage(4);
+		}
 		if (ImGui::Button("5"))SelectStage(5);
 		if (ImGui::Button("6"))SelectStage(6);
 
@@ -119,7 +146,7 @@ void stage::DrawGUI()
 #endif
 }
 
-void stage::SelectStage(int selector)
+void Stage::SelectStage(int selector)
 {
 	if (selector < stage_number::stage_max_num)now_stage = selector;
 }

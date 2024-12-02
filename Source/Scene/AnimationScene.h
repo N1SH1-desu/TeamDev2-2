@@ -88,4 +88,6 @@ private:
 
 	float									timer = 0;
 	int										Co = 0;
+
+	std::unique_ptr<Stage> stage = nullptr;
 };

@@ -36,6 +36,16 @@ public:
 	//要素数
 	int GetObjectCount() const { return static_cast<int>(objects.size()); }
 
+	//要素をすべて削除
+	void Clear()
+	{
+		if (!objects.empty())
+			objects.clear();
+
+		if (!removes.empty())
+			removes.clear();
+	}
+
 protected:
 	//登録したオブジェクトのの更新処理や削除など
 	virtual void Manage(float elapsedTime)
@@ -52,16 +62,6 @@ protected:
 		}
 
 		removes.clear();
-	}
-
-	//要素をすべて削除
-	void Clear()
-	{
-		if (!objects.empty())
-			objects.clear();
-
-		if (!removes.empty())
-			removes.clear();
 	}
 
 protected:

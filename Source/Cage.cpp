@@ -1,7 +1,11 @@
 #include "Cage.h"
 #include "PlayerManager.h"
 #include "Collision.h"
-#include "StageManager.h"
+
+Cage::Cage()
+{
+	Initialize();
+}
 
 void Cage::Initialize()
 {
@@ -45,9 +49,9 @@ void Cage::UpdateVerticalMove(float elapsedTime)
 	DirectX::XMFLOAT3 end = { position.x, position.y + velocity.y - 0.05f, position.z };
 
 	HitResult hit;
-	if (!StageManager::Instance().RayCast(start, end, hit))
+	/*if (!StageManager::Instance().RayCast(start, end, hit))
 	{
 		velocity.y = gravity * elapsedTime;
 		position.y += velocity.y;
-	}
+	}*/
 }

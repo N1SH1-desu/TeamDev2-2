@@ -13,7 +13,7 @@ namespace stage_number
 	
 }
 
-class stage
+class Stage
 {
 private:
 	struct Object
@@ -107,7 +107,7 @@ private:
 
 public:
 	Stage();
-	~Stage() = default;
+	~Stage() {}
 
 	void Update(float elapsedTime);
 

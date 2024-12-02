@@ -4,7 +4,6 @@
 #include "Scene/AnimationScene.h"
 #include "PlayerManager.h"
 #include "Collision.h"
-#include "StageManager.h"
 #include "TrapManager.h"
 #include "EffectManager.h"
 
@@ -41,11 +40,9 @@ AnimationScene::AnimationScene()
 	cube2.angle = { 0, 0, 0 };
 	cube2.scale = { 2, 2, 2 };
 
-	//stage = std::make_unique<Stage>(0);
+	stage = std::make_unique<Stage>();
 
 	EffectManager::instance().Initialize();
-	StageManager::Instance().Initialize();
-	TrapManager::Instance().Initialize();
 }
 
 AnimationScene::~AnimationScene() {
@@ -120,9 +117,8 @@ void AnimationScene::Update(float elapsedTime)
 	//UpdateAnimation(elapsedTime);
 	timer += elapsedTime;
 
-	StageManager::Instance().Update(elapsedTime);
 	TrapManager::Instance().Update(elapsedTime);
-	EffectManager::instance().Update(elapsedTime);
+	stage->Update(elapsedTime);
 }
 
 // •`‰æˆ—
@@ -154,9 +150,8 @@ void AnimationScene::Render(float elapsedTime)
 	primitiveRenderer->DrawGrid(20, 1);
 	primitiveRenderer->Render(dc, camera.GetView(), camera.GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
-	StageManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
-	TrapManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
 	EffectManager::instance().Render(camera.GetView(), camera.GetProjection());
+	stage->Render(elapsedTime, rc);
 }
 
 
