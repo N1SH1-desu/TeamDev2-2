@@ -258,7 +258,7 @@ bool Player::InputMove()
 				DirectX::XMStoreFloat3(&q, Q);
 
 
-				//HitP();
+				HitP();
 				turn();
 			}
 
