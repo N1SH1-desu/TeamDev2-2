@@ -87,21 +87,83 @@ SpaceDivisionRayCast::SpaceDivisionRayCast()
 
     float box_size_y = volume_max.y - volume_min.y;
 
-    // 空間分割
-    for (float x = volume_min.x; x < volume_max.x; x += cell_size_) {
-        for (float z = volume_min.z; z < volume_max.z; z += cell_size_) {
-            CollisionMesh::Area& area = model_divisions_[model].areas.emplace_back();
-            area.boundingBox.Center =
-            { 
-                x + cell_size_ * 0.5f,
-                volume_min.y + box_size_y * 0.5f,
-                z + cell_size_ * 0.5f 
-            };
-            area.boundingBox.Extents = { cell_size_ * 0.5f, box_size_y * 0.5f, cell_size_ * 0.5f };
+    XMFLOAT2 cell_size = {2,2 };
 
-            //この中でトライアングルの登録のためのfor文を書くと
-            //四回同じfor文を通ることになるのでそれはちょっと…
-        }
+    // 空間分割
+    //for (float x = volume_min.x; x < volume_max.x; x += cell_size.x) {
+    //    for (float z = volume_min.z; z < volume_max.z; z += cell_size.y) {
+    //        CollisionMesh::Area& area = model_divisions_[model].areas.emplace_back();
+    //        area.bounding_box.Center =
+    //        { 
+    //            x + cell_size.x * 0.5f,
+    //            volume_min.y + box_size_y * 0.5f,
+    //            z + cell_size.y * 0.5f 
+    //        };
+    //        area.bounding_box.Extents = { cell_size.x * 0.5f, box_size_y * 0.5f, cell_size.x * 0.5f };
+
+    //        //この中でトライアングルの登録のためのfor文を書くと
+    //        //四回同じfor文を通ることになるのでそれはちょっと…
+    //    }
+    //}
+
+    for (int i = 0; i < node_depth_; i++)
+    {
+        int d = (i==0)
+            ?1
+            :2<<i-1;
+        //const float cell_size_x = (volume_max.x - volume_min.x) / static_cast<float>(d);
+        //const float cell_size_z = (volume_max.z - volume_min.z) / static_cast<float>(d);
+
+        //for (int z = 0; z < d;z+=2)
+        //{
+        //    for (int x = 0; x < d;x++)
+        //    {
+        //        CollisionMesh::Area area;
+        //        //(0,0)
+        //        area.bounding_box.Center =
+        //        {
+        //            x + cell_size_x * 0.5f,
+        //            volume_min.y + box_size_y * 0.5f,
+        //            z + cell_size_z * 0.5f
+        //        };
+        //        area.bounding_box.Extents = { cell_size.x * 0.5f, box_size_y * 0.5f, cell_size.x * 0.5f };
+        //        model_divisions_[model].areas.emplace_back(area);
+        //        //(0,1)
+        //        
+        //        x += 1;
+        //        area.bounding_box.Center =
+        //        {
+        //            x + cell_size_x * 0.5f,
+        //            volume_min.y + box_size_y * 0.5f,
+        //            z + cell_size_z * 0.5f
+        //        };
+        //        area.bounding_box.Extents = { cell_size.x * 0.5f, box_size_y * 0.5f, cell_size.x * 0.5f };
+        //        model_divisions_[model].areas.emplace_back(area);
+        //        //(1,0)
+        //        x -= 1;
+        //        z += 1;
+        //        area.bounding_box.Center =
+        //        {
+        //            x + cell_size_x * 0.5f,
+        //            volume_min.y + box_size_y * 0.5f,
+        //            z + cell_size_z * 0.5f
+        //        };
+        //        area.bounding_box.Extents = { cell_size.x * 0.5f, box_size_y * 0.5f, cell_size.x * 0.5f };
+        //        model_divisions_[model].areas.emplace_back(area);
+        //        //(1,1)
+        //        x += 1;
+        //        area.bounding_box.Center =
+        //        {
+        //            x + cell_size_x * 0.5f,
+        //            volume_min.y + box_size_y * 0.5f,
+        //            z + cell_size_z * 0.5f
+        //        };
+        //        area.bounding_box.Extents = { cell_size.x * 0.5f, box_size_y * 0.5f, cell_size.x * 0.5f };
+        //        model_divisions_[model].areas.emplace_back(area);
+        //        //計算の都合上、zをここで下げておく？
+        //        z -= 1;
+        //    }
+        //}
     }
 
     size_t triangles_size = model_divisions_[model].triangles.size();
@@ -127,14 +189,14 @@ SpaceDivisionRayCast::SpaceDivisionRayCast()
         {
             DirectX::XMFLOAT3 area_min, area_max;
             area_min = {
-                area[area_i].boundingBox.Center.x - area[area_i].boundingBox.Extents.x,
-                area[area_i].boundingBox.Center.y,
-                area[area_i].boundingBox.Center.z - area[area_i].boundingBox.Extents.z
+                area[area_i].bounding_box.Center.x - area[area_i].bounding_box.Extents.x,
+                area[area_i].bounding_box.Center.y,
+                area[area_i].bounding_box.Center.z - area[area_i].bounding_box.Extents.z
             };
             area_max = {
-                area[area_i].boundingBox.Center.x + area[area_i].boundingBox.Extents.x,
-                area[area_i].boundingBox.Center.y,
-                area[area_i].boundingBox.Center.z + area[area_i].boundingBox.Extents.z
+                area[area_i].bounding_box.Center.x + area[area_i].bounding_box.Extents.x,
+                area[area_i].bounding_box.Center.y,
+                area[area_i].bounding_box.Center.z + area[area_i].bounding_box.Extents.z
             };
 
             if (area_min.x > tri_max.x)continue;
@@ -143,7 +205,7 @@ SpaceDivisionRayCast::SpaceDivisionRayCast()
             if (area_max.z < tri_min.z)continue;
 
             {
-                model_divisions_[model].areas.at(area_i).triangleIndices.emplace_back(i);
+                model_divisions_[model].areas.at(area_i).triangle_indices.emplace_back(i);
             }
         }
     }
@@ -182,11 +244,11 @@ bool SpaceDivisionRayCast::RayCast(
             for (int area_i = 0; area_i < areas_size; area_i++)
             {
                 float dist = distance;
-                if (area[area_i].boundingBox.Intersects(vec_start, direction, dist))
+                if (area[area_i].bounding_box.Intersects(vec_start, direction, dist))
                 {
                     //当たったAABBの中にあるメッシュの三角形とレイの当たり判定を取る
-                    int triangles_size = area[area_i].triangleIndices.size();
-                    const int* triangle_i = area[area_i].triangleIndices.data();
+                    int triangles_size = area[area_i].triangle_indices.size();
+                    const int* triangle_i = area[area_i].triangle_indices.data();
                     const CollisionMesh::Triangle* triangle = collision_mesh.triangles.data();
                     for (int areas_triangle_i = 0; areas_triangle_i < triangles_size; areas_triangle_i++)
                     {
@@ -258,8 +320,8 @@ void SpaceDivisionRayCast::DebugDraw(RenderContext&rc,Model*model)
             //モデルにあるすべての頂点情報とエリアにある頂点情報を確認する
             //有るものだけを描画する
             const CollisionMesh::Triangle* triangle = model_divisions_[model].triangles.data();
-            int areas_triangle_size = area[i].triangleIndices.size();
-            const int* areas_triangle = area[i].triangleIndices.data();
+            int areas_triangle_size = area[i].triangle_indices.size();
+            const int* areas_triangle = area[i].triangle_indices.data();
 
             for (int areas_triangle_index = 0; areas_triangle_index < areas_triangle_size; areas_triangle_index++)
             {
@@ -270,7 +332,7 @@ void SpaceDivisionRayCast::DebugDraw(RenderContext&rc,Model*model)
             }
             
         }
-        shape_renderer->DrawBox(area[i].boundingBox.Center, boxAngle, area[i].boundingBox.Extents, boxColor);
+        shape_renderer->DrawBox(area[i].bounding_box.Center, boxAngle, area[i].bounding_box.Extents, boxColor);
     }
 
     ////コチラはモデルから取り出した全ての三角形を描画する
@@ -332,7 +394,7 @@ void SpaceDivisionRayCast::DrowImgui()
                 for (int area_i = 0; area_i < area_size; area_i++)
                 {
                     outs.str("");
-                    int triangle_in_area = area[area_i].triangleIndices.size();
+                    int triangle_in_area = area[area_i].triangle_indices.size();
                     outs << area_i << " : areas_triangles:"<<triangle_in_area;
                     ImGui::TextWrapped(outs.str().c_str());
                     triangle_parsent += triangle_in_area;

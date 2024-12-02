@@ -38,6 +38,9 @@ RayCastScene::RayCastScene()
 	stage = std::make_unique<Stage>();
 	space_division_raycast = std::make_unique<SpaceDivisionRayCast>();
 	space_division_raycast->Load(stage.get()->GetModel());
+
+	timer_ = std::make_unique<number_namager>();
+	timer_->SetTimer(60);
 }
 
 // XVˆ—
@@ -55,6 +58,7 @@ void RayCastScene::Update(float elapsedTime)
 		space_division_raycast->Load(stage->GetModel());
 		cur_num = stage->GetNumber();
 	}
+	timer_->UpdateTimer(elapsedTime);
 }
 
 // •`‰æˆ—
@@ -126,6 +130,9 @@ void RayCastScene::Render(float elapsedTime)
 	rc.camera = &camera;
 	stage.get()->Render(elapsedTime,rc);
 	space_division_raycast->DebugDraw(rc,stage->GetModel());
+
+	timer_->DrawTimer({0,0},{1280,720});
+	timer_->DrawNumber(17,{640,310},{128,72});
 }
 
 // GUI•`‰æˆ—

@@ -135,6 +135,7 @@
     <ClInclude Include="Source\ModelRenderer.h" />
     <ClInclude Include="Source\LambertShader.h" />
     <ClInclude Include="Source\ModelResource.h" />
+    <ClInclude Include="Source\number_manager.h" />
     <ClInclude Include="Source\ResourceManager.h" />
     <ClInclude Include="Source\Scene\AnimationScene.h" />
     <ClInclude Include="Source\Scene\AttachWeaponScene.h" />
@@ -186,6 +187,7 @@
     <ClCompile Include="Source\ModelRenderer.cpp" />
     <ClCompile Include="Source\LambertShader.cpp" />
     <ClCompile Include="Source\ModelResource.cpp" />
+    <ClCompile Include="Source\number_manager.cpp" />
     <ClCompile Include="Source\ResourceManager.cpp" />
     <ClCompile Include="Source\Scene\AnimationScene.cpp" />
     <ClCompile Include="Source\Scene\AttachWeaponScene.cpp" />
