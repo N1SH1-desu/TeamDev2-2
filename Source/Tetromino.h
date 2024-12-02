@@ -90,13 +90,13 @@ switch (rotate)\
 		TetrominoCollider() = default;
 
 		template<TetrominoType Type>
-		void PlaceTetromino(unsigned int top, unsigned int left, int rotate)
+		bool PlaceTetromino(unsigned int top, unsigned int left, int rotate)
 		{
 			static_assert(TetrominoBlock<Type>::value == true, "This type is invalid");
 
-			if (!DetectionCollide<Type>(x, y, rotate))
+			if (!DetectionCollide<Type>(top, left, rotate))
 			{
-				return;
+				return false;
 			}
 
 			TetroArray shapeArray{};
@@ -112,7 +112,7 @@ switch (rotate)\
 					}
 				}
 			}
-
+			return true;
 
 		}
 
@@ -130,7 +130,7 @@ switch (rotate)\
 				{
 					if (shapeArray[row][col] != 0)
 					{
-						if (Placed[row + top][col + left] != 0)
+						if (Placed[row + top][col + left] != 0 || row + top >= ROW_LENGTH || col + left >= COL_LENGTH)
 						{
 							return false;
 						}

@@ -22,3 +22,17 @@ DirectX::XMFLOAT3 SetBlockPosFromMousePos(InputMouse* input, float grid_size)
 
     return { x, y, 0.0f };
 }
+
+DirectX::XMFLOAT3 SetBlockPosFromGrid(int xGrid, int yGrid, float offset)
+{
+    constexpr float xAxisMax = 60.0f;
+    constexpr float yAxisMax = 32.0f;
+
+    float x = -xAxisMax + (xGrid * offset);
+    if (x >= xAxisMax) x = xAxisMax;
+
+    float y = yAxisMax - (yGrid * offset);
+    if (y <= -yAxisMax) y = -yAxisMax;
+
+    return { x, y, 0.0f };
+}

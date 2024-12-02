@@ -64,9 +64,38 @@ void ProjectScreenScene::Update(float elapsedTime)
 
 	}
 
-	//stage.position = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size);
+	{
+		POINTS mPoints = refInputMouse->GetPosition();
 
-	tetroCollision.DetectionCollide<Tetromino::TetrominoType::TETRO_T>(0, 1, 0);
+		static int rotate = 0;
+		static int x = 0;
+		static int y = 0;
+
+		int xGrid = mPoints.x / static_cast<SHORT>(Grid2DRenderer::grid_size);
+		int yGrid = mPoints.y / static_cast<SHORT>(Grid2DRenderer::grid_size);
+
+		//stage.position = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size);
+		if (tetroCollision.DetectionCollide<Tetromino::TetrominoType::TETRO_T>(yGrid, xGrid, rotate))
+		{
+			x = xGrid;
+			y = yGrid;
+		}
+		stage.position = SetBlockPosFromGrid(x, y, 8.0f);
+
+		if (GetAsyncKeyState(VK_SPACE))
+		{
+			DirectX::XMMATRIX S = DirectX::XMMatrixScaling(stage.scale.x, stage.scale.y, stage.scale.z);
+			DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(stage.angle.x, stage.angle.y, stage.angle.z);
+			DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(stage.position.x, stage.position.y, stage.position.z);
+			DirectX::XMStoreFloat4x4(&stage.transform, S * R * T);
+			if (tetroCollision.PlaceTetromino<Tetromino::TetrominoType::TETRO_T>(y, x, 0u))
+			{
+				sceneModels->CommitBlock({ 0u,stage.transform });
+			}
+		}
+	}
+
+
 
 	// ステージ行列更新処理
 	{
@@ -119,14 +148,7 @@ void ProjectScreenScene::Render(float elapsedTime)
 	}
 
 	{
-		static UINT blockIndex = 0u;
-
-		sceneModels->SelectedBlockRender(rc, modelRenderer, stage.transform, blockIndex, ShaderId::Lambert, true);
-
-		if (GetAsyncKeyState(VK_RETURN) && 0x8000)
-		{
-			sceneModels->CommitBlock({ blockIndex, stage.transform });
-		}
+		sceneModels->SelectedBlockRender(rc, modelRenderer, stage.transform, 0u, ShaderId::Lambert, true);
 
 		sceneModels->RenderCommitedBlocks(rc, modelRenderer, ShaderId::Lambert, true);
 	}
