@@ -4,7 +4,7 @@
 #include <Graphics.h>
 #include <cmath>
 
-DirectX::XMFLOAT3 SetBlockPosFromMousePos(InputMouse* input, float grid_size, RECT viewPort, DirectX::XMMATRIX& Projection, DirectX::XMMATRIX& View, DirectX::XMMATRIX& world)
+DirectX::XMFLOAT3 SetBlockPosFromMousePos(InputMouse* input, float grid_size)
 {
     POINTS pos = input->GetPosition();
 

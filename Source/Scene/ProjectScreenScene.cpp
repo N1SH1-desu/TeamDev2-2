@@ -64,13 +64,9 @@ void ProjectScreenScene::Update(float elapsedTime)
 
 	}
 
-	DirectX::XMMATRIX Projection = DirectX::XMLoadFloat4x4(&camera.GetProjection());	
-	DirectX::XMMATRIX View = DirectX::XMLoadFloat4x4(&camera.GetView());
-	DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();
+	//stage.position = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size);
 
-	RECT viewport = { 0, 0, static_cast<LONG>(Graphics::Instance().GetScreenWidth()), static_cast<LONG>(Graphics::Instance().GetScreenHeight()) };
-
-	stage.position = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size, viewport, Projection, View, World);
+	tetroCollision.DetectionCollide<Tetromino::TetrominoType::TETRO_T>(0, 1, 0);
 
 	// ステージ行列更新処理
 	{

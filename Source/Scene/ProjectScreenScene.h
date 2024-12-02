@@ -7,6 +7,7 @@
 #include "Model.h"
 #include "Sprite.h"
 #include "FetchModelFromSceneAsset.h"
+#include "Tetromino.h"
 
 class ProjectScreenScene : public Scene
 {
@@ -39,4 +40,5 @@ private:
 	Object								stage;
 	std::vector<Object>					objs;
 	std::unique_ptr<SceneModel>			sceneModels;
+	Tetromino::TetrominoCollider		tetroCollision;
 };
