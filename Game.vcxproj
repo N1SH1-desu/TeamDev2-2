@@ -68,8 +68,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;xinput.lib;xaudio2.lib;winmm.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>.\External\SphereCast\lib\vs2019\$(PlatformTarget)\MD\$(Configuration);.\External\DirectXTex\Bin\Desktop_2022\x64\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;xinput.lib;xaudio2.lib;winmm.lib;D2d1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\External\SphereCast\lib\vs2019\$(PlatformTarget)\MD\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -127,15 +127,23 @@
     <ClInclude Include="Source\BasicShader.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Collision.h" />
+    <ClInclude Include="Source\ControlTetrisBlock.h" />
     <ClInclude Include="Source\Dialog.h" />
+    <ClInclude Include="Source\FetchModelFromSceneAsset.h" />
     <ClInclude Include="Source\fogs.h" />
     <ClInclude Include="Source\Framework.h" />
     <ClInclude Include="Source\FreeCameraController.h" />
+    <ClInclude Include="Source\Gfx2D.h" />
+    <ClInclude Include="Source\Gfx2DSandbox.h" />
+    <ClInclude Include="Source\Grid2DRenderer.h" />
+    <ClInclude Include="Source\InputMouse.h" />
     <ClInclude Include="Source\Light.h" />
+    <ClInclude Include="Source\Mathf.h" />
     <ClInclude Include="Source\ModelRenderer.h" />
     <ClInclude Include="Source\LambertShader.h" />
     <ClInclude Include="Source\ModelResource.h" />
-    <ClInclude Include="Source\number_manager.h" />
+    <ClInclude Include="Source\player.h" />
+    <ClInclude Include="Source\PlayerManager.h" />
     <ClInclude Include="Source\ResourceManager.h" />
     <ClInclude Include="Source\Scene\AnimationScene.h" />
     <ClInclude Include="Source\Scene\AttachWeaponScene.h" />
@@ -163,6 +171,8 @@
     <ClInclude Include="Source\Shader.h" />
     <ClInclude Include="Source\space_division_raycast.h" />
     <ClInclude Include="Source\Sprite.h" />
+    <ClInclude Include="Source\Stage.h" />
+    <ClInclude Include="Source\StageManager.h" />
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\TransformUtils.h" />
   </ItemGroup>
@@ -181,13 +191,20 @@
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\Dialog.cpp" />
+    <ClCompile Include="Source\FetchModelFromSceneAsset.cpp" />
     <ClCompile Include="Source\fogs.cpp" />
     <ClCompile Include="Source\Framework.cpp" />
     <ClCompile Include="Source\FreeCameraController.cpp" />
+    <ClCompile Include="Source\Gfx2D.cpp" />
+    <ClCompile Include="Source\Gfx2DSandbox.cpp" />
+    <ClCompile Include="Source\Grid2DRenderer.cpp" />
+    <ClCompile Include="Source\InputMouse.cpp" />
+    <ClCompile Include="Source\Mathf.cpp" />
     <ClCompile Include="Source\ModelRenderer.cpp" />
     <ClCompile Include="Source\LambertShader.cpp" />
     <ClCompile Include="Source\ModelResource.cpp" />
-    <ClCompile Include="Source\number_manager.cpp" />
+    <ClCompile Include="Source\player.cpp" />
+    <ClCompile Include="Source\PlayerManager.cpp" />
     <ClCompile Include="Source\ResourceManager.cpp" />
     <ClCompile Include="Source\Scene\AnimationScene.cpp" />
     <ClCompile Include="Source\Scene\AttachWeaponScene.cpp" />

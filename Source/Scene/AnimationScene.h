@@ -5,12 +5,15 @@
 #include "Camera.h"
 #include "FreeCameraController.h"
 #include "Model.h"
+#include"player.h"
+#include"stage.h"
+#include "FetchModelFromSceneAsset.h"
 
 class AnimationScene : public Scene
 {
 public:
 	AnimationScene();
-	~AnimationScene() override = default;
+	~AnimationScene();
 
 	// 更新処理
 	void Update(float elapsedTime) override;
@@ -18,60 +21,50 @@ public:
 	// 描画処理
 	void Render(float elapsedTime) override;
 
+
 	// GUI描画処理
 	void DrawGUI() override;
 
-private:
-	// アニメーション再生
-	void PlayAnimation(int index, bool loop);
-	void PlayAnimation(const char* name, bool loop);
-
-	// アニメーション更新処理
-	void UpdateAnimation(float elapsedTime);
-
-	// トランスフォーム更新処理
-	void UpdateTransform(float elapsedTime);
-
-	// 移動入力処理
-	bool InputMove();
-
-	// ジャンプ入力処理
-	bool InputJump();
 
 private:
-	Camera								camera;
+	std::unique_ptr<Player> player = nullptr;
+
 	FreeCameraController				cameraController;
 
-	std::unique_ptr<Model>				model;
-	DirectX::XMFLOAT4X4					transform = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
-	DirectX::XMFLOAT3					position = { 0, 0, 0 };
-	DirectX::XMFLOAT3					angle = { 0, 0, 0 };
-	DirectX::XMFLOAT3					scale = { 0.01f, 0.01f, 0.01f };
-
-	DirectX::XMFLOAT3					velocity = { 0, 0, 0 };
-	float								gravity = 10.0f;
-	float								acceleration = 50.0f;
-	float								deceleration = 20.0f;
-	float								moveSpeed = 5.0f;
-	float								turnSpeed = DirectX::XMConvertToRadians(720);
-	float								jumpSpeed = 5.0f;
-	float								airControl = 0.3f;
-	float								moveVecX = 0.0f;
-	float								moveVecZ = 0.0f;
-	bool								onGround = false;
-
-
-	int									animationIndex = -1;
-	float								animationSeconds = 0.0f;
-	bool								animationLoop = false;
-	bool								animationPlaying = false;
-	float								animationBlendSecondsLength = 0.2f;
-
-	enum class State
+	struct Object
 	{
-		Idle,
-		Run,
-		Jump,
+		DirectX::XMFLOAT3		position = { 0, 0, 0 };
+		DirectX::XMFLOAT3		angle = { 0, 0, 0 };
+		DirectX::XMFLOAT3		scale = { 1, 1, 1 };
+		DirectX::XMFLOAT4X4		transform = { 
+			1, 0, 0, 0, 
+			0, 1, 0, 0, 
+			0, 0, 1, 0, 
+			0, 0, 0, 1 };
+		std::unique_ptr<Model>	model;
+
+		void UpdateTransform()
+		{
+			DirectX::XMMATRIX S = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
+			DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(angle.x, angle.y, angle.z);
+			DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(position.x, position.y, position.z);
+			DirectX::XMMATRIX WorldTransform = S * R * T;
+			DirectX::XMStoreFloat4x4(&transform, WorldTransform);
+			model->UpdateTransform();
+		}
 	};
-	State								state = State::Idle;
+	Object								cube;
+	Object								cube2;
+
+	std::unique_ptr<Stage> stage = nullptr;
+
+
+	std::unique_ptr<SceneModel> sceneModel;
+	DirectX::XMFLOAT3 scenePosition = { 0.0f, 0.0f, 0.0f };
+	DirectX::XMFLOAT3 sceneScale = { 0.0f, 0.0f, 0.0f };
+	DirectX::XMFLOAT4X4 sceneTransform = { 1.0f,0.0f,0.0f,1.0f, 0.0f,1.0f,0.0f,1.0f, 0.0f,0.0f,1.0f,1.0f, 0.0f,0.0f,0.0f,1.0f };
+
+
+	float									timer = 0;
+	int										Co = 0;
 };

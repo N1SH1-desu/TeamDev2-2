@@ -21,9 +21,11 @@ public:
 		DirectX::XMFLOAT3	translate;
 		DirectX::XMFLOAT4X4	localTransform;
 		DirectX::XMFLOAT4X4	globalTransform;
+		DirectX::XMFLOAT4X4	worldTransform;
 
 		std::vector<Node*>	children;
 	};
+	Model(Model::Node&&, ModelResource::Mesh&&);
 
 	// çsóÒåvéZ
 	void UpdateTransform();

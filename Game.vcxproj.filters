@@ -34,9 +34,6 @@
     <Filter Include="Source\07_ヒットストップ">
       <UniqueIdentifier>{dbc5131a-4742-4901-a1fc-5613aabcadbc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\06_アタッチメント">
-      <UniqueIdentifier>{b034a89d-348b-48cb-b06b-f93ebb2abac6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\05_スクリーン座標変換">
       <UniqueIdentifier>{1516a6b5-4626-4f8a-8789-334db1edcb9f}</UniqueIdentifier>
     </Filter>
@@ -187,7 +184,7 @@
       <Filter>Source\04_アニメーション</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene\AttachWeaponScene.h">
-      <Filter>Source\06_アタッチメント</Filter>
+      <Filter>Source\09_移動床\06_アタッチメント</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene\ProjectScreenScene.h">
       <Filter>Source\05_スクリーン座標変換</Filter>
@@ -210,11 +207,59 @@
     <ClInclude Include="Source\Scene\LandWalkScene.h">
       <Filter>Source\02_地上歩行</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Gfx2D.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Gfx2DSandbox.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Grid2DRenderer.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InputMouse.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FetchModelFromSceneAsset.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ControlTetrisBlock.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
     <ClInclude Include="Source\Scene\stage.h">
       <Filter>Source\チーム制作_ゲームシーン</Filter>
     </ClInclude>
     <ClInclude Include="Source\fogs.h">
       <Filter>Source\チーム制作_ゲームシーン</Filter>
+=======
+>>>>>>> ce7a451f39a8100717c1112796019b0046d30690
+    <ClInclude Include="Source\player.h">
+      <Filter>Source\04_アニメーション</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Mathf.h">
+      <Filter>Source\04_アニメーション</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Stage.h">
+      <Filter>Source\04_アニメーション</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StageManager.h">
+      <Filter>Source\04_アニメーション</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlayerManager.h">
+      <Filter>Source\04_アニメーション</Filter>
+<<<<<<< HEAD
+=======
+    <ClInclude Include="Source\Scene\stage.h">
+      <Filter>Source\チーム制作_ゲームシーン</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\fogs.h">
+      <Filter>Source\チーム制作_ゲームシーン</Filter>
+>>>>>>> origin/stage
+=======
+>>>>>>> d4bdab88892274223179e9fde26de4dcafd4c579
+>>>>>>> ce7a451f39a8100717c1112796019b0046d30690
     </ClInclude>
     <ClInclude Include="Source\space_division_raycast.h">
       <Filter>Source\チーム制作_ゲームシーン</Filter>
@@ -330,7 +375,7 @@
       <Filter>Source\04_アニメーション</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene\AttachWeaponScene.cpp">
-      <Filter>Source\06_アタッチメント</Filter>
+      <Filter>Source\09_移動床\06_アタッチメント</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene\ProjectScreenScene.cpp">
       <Filter>Source\05_スクリーン座標変換</Filter>
@@ -353,11 +398,50 @@
     <ClCompile Include="Source\Scene\LandWalkScene.cpp">
       <Filter>Source\02_地上歩行</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Gfx2D.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Gfx2DSandbox.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Grid2DRenderer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InputMouse.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FetchModelFromSceneAsset.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
     <ClCompile Include="Source\Scene\stage.cpp">
       <Filter>Source\チーム制作_ゲームシーン</Filter>
     </ClCompile>
     <ClCompile Include="Source\fogs.cpp">
       <Filter>Source\チーム制作_ゲームシーン</Filter>
+=======
+>>>>>>> ce7a451f39a8100717c1112796019b0046d30690
+    <ClCompile Include="Source\player.cpp">
+      <Filter>Source\04_アニメーション</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Mathf.cpp">
+      <Filter>Source\04_アニメーション</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PlayerManager.cpp">
+      <Filter>Source\04_アニメーション</Filter>
+<<<<<<< HEAD
+=======
+    <ClCompile Include="Source\Scene\stage.cpp">
+      <Filter>Source\チーム制作_ゲームシーン</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\fogs.cpp">
+      <Filter>Source\チーム制作_ゲームシーン</Filter>
+>>>>>>> origin/stage
+=======
+>>>>>>> d4bdab88892274223179e9fde26de4dcafd4c579
+>>>>>>> ce7a451f39a8100717c1112796019b0046d30690
     </ClCompile>
     <ClCompile Include="Source\space_division_raycast.cpp">
       <Filter>Source\チーム制作_ゲームシーン</Filter>

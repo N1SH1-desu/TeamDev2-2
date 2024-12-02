@@ -1,12 +1,15 @@
 #include "Graphics.h"
 #include "Model.h"
+#include "ResourceManager.h"
 
 // コンストラクタ
 Model::Model(const char* filename)
 {
 	// リソース読み込み
-	resource = std::make_shared<ModelResource>();
-	resource->Load(Graphics::Instance().GetDevice(), filename);
+	//resource = std::make_shared<ModelResource>();
+	//resource->Load(Graphics::Instance().GetDevice(), filename);
+
+	resource = ResourceManager::Instance().LoadModelResource(filename);
 
 	// ノード
 	const std::vector<ModelResource::Node>& resNodes = resource->GetNodes();
@@ -31,6 +34,14 @@ Model::Model(const char* filename)
 
 	// 行列計算
 	UpdateTransform();
+}
+
+Model::Model(Model::Node&& node, ModelResource::Mesh&& mesh)
+{
+	resource = std::make_shared<ModelResource>();
+
+	nodes.emplace_back(node);
+	resource->AddMesh(std::move(mesh));
 }
 
 // 変換行列計算

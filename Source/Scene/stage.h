@@ -15,7 +15,13 @@ namespace stage_number
 
 class Stage
 {
-private:
+public:
+	static Stage& Instance() {
+		static Stage instance;
+		return instance;
+	}
+
+
 	struct Object
 	{
 		bool					onGround = false;
@@ -120,6 +126,7 @@ public:
 	void SelectStage(int selector);
 
 	Model* GetModel() { return stage_[now_stage].model.get(); }
+
 
 	int GetNumber() { return now_stage; }
 
