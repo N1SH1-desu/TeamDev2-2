@@ -25,24 +25,56 @@ private:
 		};
 		struct Area
 		{
-			DirectX::BoundingBox	boundingBox;
-			std::vector<int>		triangleIndices;
+			DirectX::BoundingBox	bounding_box;
+			std::vector<int>		triangle_indices;
 		};
 
 		std::vector<Triangle>	triangles;
 		std::vector<Area>		areas;
+
+
 	};
 	map<Model*, CollisionMesh> model_divisions_;
 
-	const int cell_size_ = 2;
+	//矩形エリアを表す構造体
+	struct Rect {
+		float x_min, x_max, z_min, z_max;
+	};
+	//四分木ノード
+	struct QuadTreeNode {
+		Rect bounds;	//この四分木がカバーするエリア
+
+		std::vector<CollisionMesh::Area*>areas;
+
+		QuadTreeNode(const Rect& bounds) :bounds(bounds) {}
+		~QuadTreeNode() { areas.clear(); }
+
+
+	};
+	vector<QuadTreeNode>node_index;
+	map<Model*, QuadTreeNode>model_quad_parent_;
+
+	const int node_depth_ = 16;
+	const int offset[16] = 
+	{ 
+		0, 1, 5, 21,
+		85, 341, 1365, 5461,
+		21845, 87381, 349525, 1398101,
+		5592405, 22369621, 89478485, 357913941 
+	};
+
+
 	int draw_box_=0;
+	bool all_draw_ = false;
+
+	
 
 public:
     SpaceDivisionRayCast();
 	~SpaceDivisionRayCast() { models_.clear(); model_divisions_.clear(); }
 
     //空間分割したいモデルを登録する。
-    void Load(Model* model,DirectX::XMFLOAT4X4 world_transform);
+    void Load(Model* model);
 
     //空間分割したモデルでレイキャストする
 	bool RayCast(
@@ -51,6 +83,7 @@ public:
 		Model* model,
 		DirectX::XMFLOAT3& hit_position,
 		DirectX::XMFLOAT3& hit_normal);
+	int GetNodeId(float x_min, float x_max, float z_min, float z_max);
 
 	//確認
 	void DebugDraw(RenderContext& rc ,Model*model);

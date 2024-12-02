@@ -37,7 +37,10 @@ RayCastScene::RayCastScene()
 
 	stage = std::make_unique<Stage>();
 	space_division_raycast = std::make_unique<SpaceDivisionRayCast>();
-	space_division_raycast->Load(stage.get()->GetCollisionModel(), stage.get()->GetCollisionTransform());
+	space_division_raycast->Load(stage.get()->GetModel());
+
+	timer_ = std::make_unique<number_namager>();
+	timer_->SetTimer(60);
 }
 
 // 更新処理
@@ -52,9 +55,10 @@ void RayCastScene::Update(float elapsedTime)
 	static int cur_num = stage->GetNumber();
 	if (cur_num != stage.get()->GetNumber())
 	{
-		space_division_raycast->Load(stage->GetCollisionModel(), stage->GetCollisionTransform());
+		space_division_raycast->Load(stage->GetModel());
 		cur_num = stage->GetNumber();
 	}
+	timer_->UpdateTimer(elapsedTime);
 }
 
 // 描画処理
@@ -81,8 +85,8 @@ void RayCastScene::Render(float elapsedTime)
 	{
 		DirectX::XMFLOAT3 s;
 		DirectX::XMFLOAT3 e;
-		float size_x = 2.f;
-		float size_z = 2.f;
+		float size_x = 1.f;
+		float size_z = 1.f;
 		float add_size = 2.f;
 		for (float x = -size_x; x < size_x; x+=add_size)
 		{
@@ -94,21 +98,18 @@ void RayCastScene::Render(float elapsedTime)
 
 				DirectX::XMFLOAT3 hitPosition, hitNormal;
 
-				//if (Collision::RayCast(s, e, stage->GetTransform(), stage->GetModel(), hitPosition, hitNormal))
-				if ( space_division_raycast->RayCast(s, e,  stage->GetCollisionModel(), hitPosition, hitNormal))
+				//if (Collision::RayCast(s, e, stage->GetTransform(),stage.get()->GetModel(), hitPosition, hitNormal))
+				if ( space_division_raycast->RayCast(s, e,  stage->GetModel(), hitPosition, hitNormal))
 				{
 					// 交差した位置と法線を表示
 					shapeRenderer->DrawSphere(hitPosition, 0.2f, { 1, 0, 0, 1 });
-
 					DirectX::XMFLOAT3 p = hitPosition;
 					p.x += hitNormal.x * 1.0f;
 					p.y += hitNormal.y * 1.0f;
 					p.z += hitNormal.z * 1.0f;
 					primitiveRenderer->AddVertex(hitPosition, { 1, 0, 0, 1 });
 					primitiveRenderer->AddVertex(p, { 1, 0, 0, 1 });
-
 				}
-
 				{	// レイ描画
 					primitiveRenderer->AddVertex(s, { 0, 1, 1, 1 });
 					primitiveRenderer->AddVertex(e, { 0, 1, 1, 1 });
@@ -128,7 +129,10 @@ void RayCastScene::Render(float elapsedTime)
 	rc.renderState = renderState;
 	rc.camera = &camera;
 	stage.get()->Render(elapsedTime,rc);
-	space_division_raycast->DebugDraw(rc,stage->GetCollisionModel());
+	space_division_raycast->DebugDraw(rc,stage->GetModel());
+
+	timer_->DrawTimer({0,0},{1280,720});
+	timer_->DrawNumber(17,{640,310},{128,72});
 }
 
 // GUI描画処理

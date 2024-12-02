@@ -7,6 +7,8 @@
 #include "FreeCameraController.h"
 #include"stage.h"
 #include"space_division_raycast.h"
+#include"number_manager.h"
+
 
 class RayCastScene : public Scene
 {
@@ -42,4 +44,5 @@ private:
 
 	std::unique_ptr<Stage> stage;
 	std::unique_ptr<SpaceDivisionRayCast> space_division_raycast;
+	std::unique_ptr<number_namager> timer_;
 };

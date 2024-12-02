@@ -264,6 +264,9 @@
     <ClInclude Include="Source\space_division_raycast.h">
       <Filter>Source\チーム制作_ゲームシーン</Filter>
     </ClInclude>
+    <ClInclude Include="Source\number_manager.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Framework.cpp">
@@ -442,6 +445,9 @@
     </ClCompile>
     <ClCompile Include="Source\space_division_raycast.cpp">
       <Filter>Source\チーム制作_ゲームシーン</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\number_manager.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
