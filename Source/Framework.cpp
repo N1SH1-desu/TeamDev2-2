@@ -35,12 +35,12 @@ Framework::Framework(HWND hWnd)
 	ImGuiRenderer::Initialize(hWnd, Graphics::Instance().GetDevice(), Graphics::Instance().GetDeviceContext());
 
 	// ÉVÅ[Éìèâä˙âª
-	//scene = std::make_unique<RayCastScene>();
+	scene = std::make_unique<RayCastScene>();
 	//scene = std::make_unique<LandWalkScene>();
 	//scene = std::make_unique<SlideMoveScene>();
 	//scene = std::make_unique<MoveFloorScene>();
 	//scene = std::make_unique<TerrainAlignScene>();
-	scene = std::make_unique<AnimationScene>();
+	//scene = std::make_unique<AnimationScene>();
 	//scene = std::make_unique<Player>();
 	//scene = std::make_unique<AttachWeaponScene>();
 	//scene = std::make_unique<ProjectScreenScene>();

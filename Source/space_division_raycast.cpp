@@ -90,78 +90,93 @@ SpaceDivisionRayCast::SpaceDivisionRayCast()
     XMFLOAT2 cell_size = {2,2 };
 
     // 空間分割
-    //for (float x = volume_min.x; x < volume_max.x; x += cell_size.x) {
-    //    for (float z = volume_min.z; z < volume_max.z; z += cell_size.y) {
-    //        CollisionMesh::Area& area = model_divisions_[model].areas.emplace_back();
-    //        area.bounding_box.Center =
-    //        { 
-    //            x + cell_size.x * 0.5f,
-    //            volume_min.y + box_size_y * 0.5f,
-    //            z + cell_size.y * 0.5f 
-    //        };
-    //        area.bounding_box.Extents = { cell_size.x * 0.5f, box_size_y * 0.5f, cell_size.x * 0.5f };
-
-    //        //この中でトライアングルの登録のためのfor文を書くと
-    //        //四回同じfor文を通ることになるのでそれはちょっと…
-    //    }
-    //}
+    for (float x = volume_min.x; x < volume_max.x; x += cell_size.x) {
+        for (float z = volume_min.z; z < volume_max.z; z += cell_size.y) {
+            CollisionMesh::Area& area = model_divisions_[model].areas.emplace_back();
+            area.bounding_box.Center =
+            { 
+                x + cell_size.x * 0.5f,
+                volume_min.y + box_size_y * 0.5f,
+                z + cell_size.y * 0.5f 
+            };
+            area.bounding_box.Extents = { cell_size.x * 0.5f, box_size_y * 0.5f, cell_size.x * 0.5f };
+            //この中でトライアングルの登録のためのfor文を書くと
+            //四回同じfor文を通ることになるのでそれはちょっと…
+        }
+    }
 
     for (int i = 0; i < node_depth_; i++)
     {
-        int d = (i==0)
-            ?1
-            :2<<i-1;
+        //int d = (i==0)
+        //    ?1
+        //    :2<<i-1;
         //const float cell_size_x = (volume_max.x - volume_min.x) / static_cast<float>(d);
         //const float cell_size_z = (volume_max.z - volume_min.z) / static_cast<float>(d);
 
-        //for (int z = 0; z < d;z+=2)
+        //if (d == 1)
         //{
-        //    for (int x = 0; x < d;x++)
+        //    CollisionMesh::Area area;
+        //    //(0,0)
+        //    area.bounding_box.Center =
         //    {
-        //        CollisionMesh::Area area;
-        //        //(0,0)
-        //        area.bounding_box.Center =
+        //        volume_min.x + cell_size_x * 0.5f,
+        //        volume_min.y + box_size_y * 0.5f,
+        //        volume_min.z + cell_size_z * 0.5f
+        //    };
+        //    area.bounding_box.Extents = { cell_size_x * 0.5f, box_size_y * 0.5f, cell_size_z * 0.5f };
+        //    model_divisions_[model].areas.emplace_back(area);
+        //}
+        //else
+        //{
+        //    for (int z = 0; z < d; z += 2)
+        //    {
+        //        for (int x = 0; x < d; x++)
         //        {
-        //            x + cell_size_x * 0.5f,
-        //            volume_min.y + box_size_y * 0.5f,
-        //            z + cell_size_z * 0.5f
-        //        };
-        //        area.bounding_box.Extents = { cell_size.x * 0.5f, box_size_y * 0.5f, cell_size.x * 0.5f };
-        //        model_divisions_[model].areas.emplace_back(area);
-        //        //(0,1)
-        //        
-        //        x += 1;
-        //        area.bounding_box.Center =
-        //        {
-        //            x + cell_size_x * 0.5f,
-        //            volume_min.y + box_size_y * 0.5f,
-        //            z + cell_size_z * 0.5f
-        //        };
-        //        area.bounding_box.Extents = { cell_size.x * 0.5f, box_size_y * 0.5f, cell_size.x * 0.5f };
-        //        model_divisions_[model].areas.emplace_back(area);
-        //        //(1,0)
-        //        x -= 1;
-        //        z += 1;
-        //        area.bounding_box.Center =
-        //        {
-        //            x + cell_size_x * 0.5f,
-        //            volume_min.y + box_size_y * 0.5f,
-        //            z + cell_size_z * 0.5f
-        //        };
-        //        area.bounding_box.Extents = { cell_size.x * 0.5f, box_size_y * 0.5f, cell_size.x * 0.5f };
-        //        model_divisions_[model].areas.emplace_back(area);
-        //        //(1,1)
-        //        x += 1;
-        //        area.bounding_box.Center =
-        //        {
-        //            x + cell_size_x * 0.5f,
-        //            volume_min.y + box_size_y * 0.5f,
-        //            z + cell_size_z * 0.5f
-        //        };
-        //        area.bounding_box.Extents = { cell_size.x * 0.5f, box_size_y * 0.5f, cell_size.x * 0.5f };
-        //        model_divisions_[model].areas.emplace_back(area);
-        //        //計算の都合上、zをここで下げておく？
-        //        z -= 1;
+        //            CollisionMesh::Area area;
+        //            //(0,0)
+        //            area.bounding_box.Center =
+        //            {
+        //                volume_min.x + ((x * cell_size_x) + cell_size_x * 0.5f),
+        //                volume_min.y + box_size_y * 0.5f,
+        //                volume_min.z + ((z * cell_size_z) + cell_size_z * 0.5f)
+        //            };
+        //            area.bounding_box.Extents = { cell_size_x * 0.5f, box_size_y * 0.5f, cell_size_z * 0.5f };
+        //            model_divisions_[model].areas.emplace_back(area);
+        //            //(0,1)
+
+        //            x += 1;
+        //            area.bounding_box.Center =
+        //            {
+        //                volume_min.x + ((x * cell_size_x) + cell_size_x * 0.5f),
+        //                volume_min.y + box_size_y * 0.5f,
+        //                volume_min.z + ((z * cell_size_z) + cell_size_z * 0.5f)
+        //            };
+        //            area.bounding_box.Extents = { cell_size_x * 0.5f, box_size_y * 0.5f, cell_size_z * 0.5f };
+        //            model_divisions_[model].areas.emplace_back(area);
+        //            //(1,0)
+        //            x -= 1;
+        //            z += 1;
+        //            area.bounding_box.Center =
+        //            {
+        //                volume_min.x + ((x * cell_size_x) + cell_size_x * 0.5f),
+        //                volume_min.y + box_size_y * 0.5f,
+        //                volume_min.z + ((z * cell_size_z) + cell_size_z * 0.5f)
+        //            };
+        //            area.bounding_box.Extents = { cell_size_x * 0.5f, box_size_y * 0.5f, cell_size_z * 0.5f };
+        //            model_divisions_[model].areas.emplace_back(area);
+        //            //(1,1)
+        //            x += 1;
+        //            area.bounding_box.Center =
+        //            {
+        //                volume_min.x + ((x * cell_size_x) + cell_size_x * 0.5f),
+        //                volume_min.y + box_size_y * 0.5f,
+        //                volume_min.z + ((z * cell_size_z) + cell_size_z * 0.5f)
+        //            };
+        //            area.bounding_box.Extents = { cell_size_x * 0.5f, box_size_y * 0.5f, cell_size_z * 0.5f };
+        //            model_divisions_[model].areas.emplace_back(area);
+        //            //計算の都合上、zをここで下げておく？
+        //            z -= 1;
+        //        }
         //    }
         //}
     }

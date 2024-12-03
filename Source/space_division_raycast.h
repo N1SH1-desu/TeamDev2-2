@@ -54,7 +54,7 @@ private:
 	vector<QuadTreeNode>node_index;
 	map<Model*, QuadTreeNode>model_quad_parent_;
 
-	const int node_depth_ = 16;
+	const int node_depth_ = 3;
 	const int offset[16] = 
 	{ 
 		0, 1, 5, 21,
