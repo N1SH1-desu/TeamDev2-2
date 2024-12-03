@@ -24,32 +24,28 @@ namespace Tetromino
 	template <>
 	struct TetrominoBlock<TetrominoType::TETRO_T> : std::true_type
 	{
-		static constexpr TetroArray rotate0 = {
+		static constexpr std::array<TetroArray, 4> rotations = {
 			{
-				{ 1, 1, 1},
-				{ 0, 1, 0},
-				{ 0, 0, 0},
-			},
-		};
-		static constexpr TetroArray rotate1 = {
-			{
-				{0, 1, 0},
-				{1, 1, 0},
-				{0, 1, 0},
-			},
-		};
-		static constexpr TetroArray rotate2 = {
-			{
-				{0, 1, 0},
-				{1, 1, 1},
-				{0, 0, 0},
-			}
-		};
-		static constexpr TetroArray rotate3 = {
-			{
-				{1, 0, 0},
-				{1, 1, 0},
-				{1, 0, 0},
+				{{
+					{1, 1, 1},
+					{0, 1, 0},
+					{0, 0, 0}
+				}},
+				{{
+					{0, 1, 0},
+					{1, 1, 0},
+					{0, 1, 0}
+				}},
+				{{
+					{0, 1, 0},
+					{1, 1, 1},
+					{0, 0, 0}
+				}},
+				{{
+					{1, 0, 0},
+					{1, 1, 0},
+					{1, 0, 0}
+				}},
 			}
 		};
 	};
@@ -57,11 +53,88 @@ namespace Tetromino
 	template <>
 	struct TetrominoBlock<TetrominoType::TETRO_S> : std::true_type
 	{
+		static constexpr std::array<TetroArray, 4> rotations = {
+			{
+				{{
+					{0, 1, 1},
+					{1, 1, 0},
+					{0, 0, 0}
+				}},
+				{{
+					{1, 0, 0},
+					{1, 1, 0},
+					{0, 1, 0}
+				}},
+				{{
+					{0, 1, 1},
+					{1, 1, 0},
+					{0, 0, 0},
+				}},
+				{{
+					{1, 0, 0},
+					{1, 1, 0},
+					{0, 1, 0},
+				}}
+			}
+		};
 	};
 
 	template <>
 	struct TetrominoBlock<TetrominoType::TETRO_Z> : std::true_type
 	{
+		static constexpr std::array<TetroArray, 4> rotations = {
+			{
+				{{
+					{1, 1, 0},
+					{0, 1, 1},
+					{0, 0, 0}
+				}},
+				{{
+					{0, 1, 0},
+					{1, 1, 0},
+					{1, 0, 0}
+				}},
+				{{
+					{1, 1, 0},
+					{0, 1, 1},
+					{0, 0, 0},
+				}},
+				{{
+					{0, 1, 0},
+					{1, 1, 0},
+					{1, 0, 0},
+				}}
+			}
+		};
+	};
+	
+	template<>
+	struct TetrominoBlock<TetrominoType::TETRO_L> : std::true_type
+	{
+		static constexpr std::array<TetroArray, 4> rotations = {
+			{
+				{{
+					{1, 0, 0},
+					{1, 0, 0},
+					{1, 1, 0}
+				}},
+				{{
+					{0, 1, 0},
+					{1, 1, 0},
+					{1, 0, 0}
+				}},
+				{{
+					{1, 1, 0},
+					{0, 1, 1},
+					{0, 0, 0},
+				}},
+				{{
+					{0, 1, 0},
+					{1, 1, 0},
+					{1, 0, 0},
+				}}
+			}
+		};
 	};
 
 #define Rotate(type, rotateIndex) ( TetrominoBlock<type>::rotate ## rotateIndex )
