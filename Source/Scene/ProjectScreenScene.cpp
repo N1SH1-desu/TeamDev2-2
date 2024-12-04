@@ -38,7 +38,7 @@ ProjectScreenScene::ProjectScreenScene()
 
 	sceneModels = std::make_unique<SceneModel>("Data/Model/TetrisBlock/Colors.mdl");
 
-	stage.scale = { 1.0f, 1.0f, 1.0f };
+	stage.scale = { 8.0f, 8.0f, 8.0f };
 	stage.position = { 0.0f, 0.0f, 0.0f };
 	stage.angle = { 0.0f, 0.0f, 0.0f };
 }
@@ -159,7 +159,7 @@ void ProjectScreenScene::Render(float elapsedTime)
 	}
 
 	{
-		for (DirectX::XMFLOAT4X4 tf : tetroRenderer.GetTransforms())
+		for (const DirectX::XMFLOAT4X4& tf : tetroRenderer.GetTransforms())
 		{
 			sceneModels->SelectedBlockRender(rc, modelRenderer, tf, 0u, ShaderId::Lambert, true);
 		}
