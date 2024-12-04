@@ -41,7 +41,7 @@ public:
 			DirectX::XMStoreFloat4x4(&transform, WorldTransform);
 		}
 	};
-	Object stage_[stage_number::stage_max_num];
+	Object stage_;
 	Object stage_collision_[stage_number::stage_max_num];
 
 	int now_stage;
@@ -125,14 +125,14 @@ public:
 
 	void SelectStage(int selector);
 
-	Model* GetModel() { return stage_[now_stage].model.get(); }
+	Model* GetModel() { return stage_.model.get(); }
 
 	void LoadStage(int StageNum);
 
 
 	int GetNumber() { return now_stage; }
 
-	DirectX::XMFLOAT4X4 GetTransform() { return stage_[now_stage].transform; }
+	DirectX::XMFLOAT4X4 GetTransform() { return stage_.transform; }
 	DirectX::XMFLOAT4X4 GetCollisionTransform() { return stage_collision_[now_stage].transform; }
 
 	//モデルを覆うように似たような地形の簡易マップを呼び出す
