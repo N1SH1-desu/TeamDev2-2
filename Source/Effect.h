@@ -22,10 +22,11 @@ public:
 	void SetScale(Effekseer::Handle handle, const DirectX::XMFLOAT3& scale);
 
 	//çƒê∂íÜÇ©î€Ç©
-	bool IsPlay() { return isPlay; }
+	bool IsPlay();
+
+	Effekseer::Handle GetHandle() { return handle; }
 
 private:
 	Effekseer::EffectRef effekseerEffect;
-
-	bool isPlay = false;
+	Effekseer::Handle handle;
 };

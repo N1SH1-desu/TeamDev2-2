@@ -5,15 +5,15 @@
 #include "Camera.h"
 #include "FreeCameraController.h"
 #include "Model.h"
-#include"player.h"
-#include"stage.h"
+#include "player.h"
+#include "stage.h"
 #include "FetchModelFromSceneAsset.h"
 #include "stage.h"
 
 class AnimationScene : public Scene
 {
 public:
-	AnimationScene();
+	AnimationScene(int StageNum);
 	~AnimationScene();
 
 	// XVˆ—
@@ -24,7 +24,7 @@ public:
 
 
 	// GUI•`‰æˆ—
-	void DrawGUI() override;
+	//void DrawGUI() override;
 
 
 private:

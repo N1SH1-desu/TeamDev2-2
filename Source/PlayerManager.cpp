@@ -35,6 +35,7 @@ void PlayerManager::Update(float elapsedTime) {
 		DirectX::XMFLOAT3 end = { player->position.x, player->position.y + player->velocity.y - 0.05f, player->position.z };
 	}
 }
+
 void PlayerManager::Render(ModelRenderer* modelRenderer,RenderContext& rc, ShaderId ID) 
 {	
 	ID3D11DeviceContext* dc = Graphics::Instance().GetDeviceContext();

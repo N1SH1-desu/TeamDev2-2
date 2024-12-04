@@ -2,6 +2,7 @@
 #include "Collision.h"
 #include "PlayerManager.h"
 #include "EffectManager.h"
+#include "imgui.h"
 
 void PoisonGus::Initialize()
 {
@@ -28,10 +29,22 @@ void PoisonGus::Sensing(float elapsedTime)
 
 		if (Collision::InteresectCylinderVsCylinder(position, radius, height, player->GetPosition(), player->GetRaidus(), player->GetHeight(), outPosition))
 		{
-			/*if (!effect.GetEffect(POISON)->IsPlay())
-				effect.GetEffect(POISON)->Play(position, 0.5f);*/
+			if (!effect.GetEffect(POISON)->IsPlay())
+			{
+				effect.GetEffect(POISON)->Play(position, 0.5f);
+				break;
+			}
 		}
-		else 
-			effect.GetEffect(POISON)->Stop(effect.GetEffect(POISON)->Play(position));
 	}
+}
+
+void PoisonGus::Render(ModelRenderer* modelRenderer, RenderContext& rc, ShaderId ID)
+{
+	modelRenderer->Render(rc, transform, model.get(), ID);
+
+	EffectManager& effect = EffectManager::instance();
+
+	ImGui::Begin("Gus");
+	ImGui::Text("Play : %d", static_cast<int>(effect.GetEffect(POISON)->IsPlay()));
+	ImGui::End();
 }

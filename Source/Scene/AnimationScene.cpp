@@ -8,9 +8,13 @@
 #include "ControlTetrisBlock.h"
 #include "TrapManager.h"
 #include "EffectManager.h"
+#include "SceneManager.h"
+#include "SceneTitle.h"
+#include "KeyManager.h"
+#include "PortalManager.h"
 
 // コンストラクタ
-AnimationScene::AnimationScene()
+AnimationScene::AnimationScene(int StageNum)
 {
 	ID3D11Device* device = Graphics::Instance().GetDevice();
 	float screenWidth = Graphics::Instance().GetScreenWidth();
@@ -42,7 +46,7 @@ AnimationScene::AnimationScene()
 	cube2.angle = { 0, 0, 0 };
 	cube2.scale = { 2, 2, 2 };
 
-	stage = std::make_unique<Stage>();
+	Stage::Instance().LoadStage(StageNum);
 
 	EffectManager::instance().Initialize();
 	sceneModel = std::make_unique<SceneModel>("Data/Model/TetrisBlock/scene.mdl");
@@ -64,9 +68,9 @@ void AnimationScene::Update(float elapsedTime)
 
 	//// トランスフォーム更新処理
 	//UpdateTransform(elapsedTime);
-	if (timer > 1&& Co<9)
+	if (timer > 1&& Co < 9)
 	{
-		PlayerManager::Instance().Register(new Player(DirectX::XMFLOAT3(0.0f, 3, 0), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f), DirectX::XMFLOAT3(0.0f, -90.0f, 0.0f)));
+		PlayerManager::Instance().Register(new Player(DirectX::XMFLOAT3(0.0f, 5, 0), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f), DirectX::XMFLOAT3(0.0f, -90.0f, 0.0f)));
 		timer = 0;
 		Co++;
 	}
@@ -134,7 +138,10 @@ void AnimationScene::Update(float elapsedTime)
 	timer += elapsedTime;
 
 	TrapManager::Instance().Update(elapsedTime);
-	stage->Update(elapsedTime);
+	EffectManager::instance().Update(elapsedTime);
+	Stage::Instance().Update(elapsedTime);
+	KeyManager::Instance().Update(elapsedTime);
+	PortalManager::Instance().Update(elapsedTime);
 }
 
 // 描画処理
@@ -168,8 +175,12 @@ void AnimationScene::Render(float elapsedTime)
 	primitiveRenderer->DrawGrid(20, 1);
 	primitiveRenderer->Render(dc, Camera::Instance().GetView(), Camera::Instance().GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
-	EffectManager::instance().Render(camera.GetView(), camera.GetProjection());
-	stage->Render(elapsedTime, rc);
+	EffectManager::instance().Render(Camera::Instance().GetView(), Camera::Instance().GetProjection());
+	Stage::Instance().Render(elapsedTime, rc);
+	TrapManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
+	KeyManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
+	PortalManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
+
 	sceneModel->SelectedBlockRender(rc, modelRenderer, sceneTransform, 0u, ShaderId::Lambert);
 }
 
@@ -308,5 +319,4 @@ void AnimationScene::Render(float elapsedTime)
 	//	stage->DrawGUI();
 
 	//	ImGui::End();
-}
 

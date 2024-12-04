@@ -15,8 +15,13 @@ protected:
 public:
 	virtual void Initialize() {};
 
-	//マネージャー自身の更新処理
-	virtual void Update(float elapsedTime) { Manage(elapsedTime); };
+	virtual void Update(float elapsedTime) 
+	{ 
+		for (const auto& object : objects)
+			object->Update(elapsedTime);
+
+		Manage(elapsedTime); 
+	};
 
 	virtual void Render(ModelRenderer* modelRenderer, RenderContext& rc, ShaderId ID)
 	{
@@ -47,12 +52,8 @@ public:
 	}
 
 protected:
-	//登録したオブジェクトのの更新処理や削除など
 	virtual void Manage(float elapsedTime)
 	{
-		for (const auto& object : objects)
-			object->Update(elapsedTime);
-
 		for (auto object : removes)
 		{
 			auto it = std::find_if(objects.begin(), objects.end(), [&object](const auto& ptr) { return ptr.get() == object;  });

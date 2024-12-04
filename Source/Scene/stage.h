@@ -127,6 +127,8 @@ public:
 
 	Model* GetModel() { return stage_[now_stage].model.get(); }
 
+	void LoadStage(int StageNum);
+
 
 	int GetNumber() { return now_stage; }
 
@@ -135,7 +137,5 @@ public:
 
 	//モデルを覆うように似たような地形の簡易マップを呼び出す
 	Model* GetCollisionModel() { return stage_collision_[now_stage].model.get(); }
-	
-
 };
 

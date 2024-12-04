@@ -24,6 +24,8 @@ public:
 	float& GetHeight() { return height;}
 
 	Model* GetModel() { return model.get(); }
+
+	virtual void DrawGUI() {};
 protected:
 	//s—ñXVˆ—
 	virtual void UpdateTransform();

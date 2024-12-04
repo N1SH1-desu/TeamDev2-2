@@ -27,10 +27,10 @@ Effekseer::Handle Effect::Play(const DirectX::XMFLOAT3& position, float scale)
 {
 	Effekseer::ManagerRef effekseerManager = EffectManager::instance().GetEffeckseerManager();
 
-	Effekseer::Handle handle = effekseerManager->Play(effekseerEffect, position.x, position.y, position.z);
-	isPlay = true;
+	handle = effekseerManager->Play(effekseerEffect, position.x, position.y, position.z);
 
 	effekseerManager->SetScale(handle, scale, scale, scale);
+
 	return handle;
 }
 
@@ -40,7 +40,6 @@ void Effect::Stop(Effekseer::Handle handle)
 	Effekseer::ManagerRef effekseerManager = EffectManager::instance().GetEffeckseerManager();
 
 	effekseerManager->StopEffect(handle);
-	isPlay = false;
 }
 
 //À•WÝ’è
@@ -54,6 +53,11 @@ void Effect::SetPosition(Effekseer::Handle handle, const DirectX::XMFLOAT3& posi
 void Effect::SetScale(Effekseer::Handle handle, const DirectX::XMFLOAT3& scale)
 {
 	Effekseer::ManagerRef effekseerManager = EffectManager::instance().GetEffeckseerManager();
-
 	effekseerManager->SetScale(handle, scale.x, scale.y, scale.z);
+}
+
+bool Effect::IsPlay()
+{
+	Effekseer::ManagerRef effekseerManager = EffectManager::instance().GetEffeckseerManager();
+	return effekseerManager->GetShown(handle);
 }

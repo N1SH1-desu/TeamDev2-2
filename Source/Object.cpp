@@ -44,6 +44,10 @@ void Object::Update(float elapsedTime)
 void Object::Render(ModelRenderer* modelRenderer, RenderContext& rc, ShaderId ID)
 {
 	modelRenderer->Render(rc, transform, model.get(), ID);
+
+#ifdef _DEBUG
+	DrawGUI();
+#endif
 }
 
 DirectX::XMVECTOR Object::GetVec(DirectX::XMFLOAT3 target, DirectX::XMFLOAT3 position)

@@ -105,7 +105,6 @@ public:
 
 	bool								jumpC = false;
 
-	int									HP = 0;
 	bool PC = true;
 	float PT;
 

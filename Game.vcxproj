@@ -129,6 +129,7 @@
     <ClInclude Include="Source\BasicShader.h" />
     <ClInclude Include="Source\Cage.h" />
     <ClInclude Include="Source\Camera.h" />
+    <ClInclude Include="Source\KeyManager.h" />
     <ClInclude Include="Source\Collision.h" />
     <ClInclude Include="Source\ControlTetrisBlock.h" />
     <ClInclude Include="Source\Dialog.h" />
@@ -142,6 +143,7 @@
     <ClInclude Include="Source\Gfx2DSandbox.h" />
     <ClInclude Include="Source\Grid2DRenderer.h" />
     <ClInclude Include="Source\InputMouse.h" />
+    <ClInclude Include="Source\Key.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\Mathf.h" />
     <ClInclude Include="Source\ModelRenderer.h" />
@@ -151,8 +153,13 @@
     <ClInclude Include="Source\player.h" />
     <ClInclude Include="Source\PlayerManager.h" />
     <ClInclude Include="Source\PoisonGus.h" />
+    <ClInclude Include="Source\Portal.h" />
+    <ClInclude Include="Source\PortalManager.h" />
     <ClInclude Include="Source\ResourceManager.h" />
     <ClInclude Include="Source\Rock.h" />
+    <ClInclude Include="Source\SceneManager.h" />
+    <ClInclude Include="Source\SceneStageSelect.h" />
+    <ClInclude Include="Source\SceneTitle.h" />
     <ClInclude Include="Source\Scene\AnimationScene.h" />
     <ClInclude Include="Source\Scene\AttachWeaponScene.h" />
     <ClInclude Include="Source\Scene\HitStopScene.h" />
@@ -209,6 +216,7 @@
     <ClCompile Include="Source\Gfx2DSandbox.cpp" />
     <ClCompile Include="Source\Grid2DRenderer.cpp" />
     <ClCompile Include="Source\InputMouse.cpp" />
+    <ClCompile Include="Source\Key.cpp" />
     <ClCompile Include="Source\Mathf.cpp" />
     <ClCompile Include="Source\ModelRenderer.cpp" />
     <ClCompile Include="Source\LambertShader.cpp" />
@@ -217,8 +225,13 @@
     <ClCompile Include="Source\player.cpp" />
     <ClCompile Include="Source\PlayerManager.cpp" />
     <ClCompile Include="Source\PoisonGus.cpp" />
+    <ClCompile Include="Source\Portal.cpp" />
+    <ClCompile Include="Source\PortalManager.cpp" />
     <ClCompile Include="Source\ResourceManager.cpp" />
     <ClCompile Include="Source\Rock.cpp" />
+    <ClCompile Include="Source\SceneManager.cpp" />
+    <ClCompile Include="Source\SceneStageSelect.cpp" />
+    <ClCompile Include="Source\SceneTitle.cpp" />
     <ClCompile Include="Source\Scene\AnimationScene.cpp" />
     <ClCompile Include="Source\Scene\AttachWeaponScene.cpp" />
     <ClCompile Include="Source\Scene\HitStopScene.cpp" />
