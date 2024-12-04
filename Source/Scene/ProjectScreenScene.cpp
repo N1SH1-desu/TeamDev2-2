@@ -36,9 +36,9 @@ ProjectScreenScene::ProjectScreenScene()
 	sprite = std::make_unique<Sprite>(device);
 	stage.model = std::make_unique<Model>("Data/Model/Stage/ExampleStage.mdl");
 
-	sceneModels = std::make_unique<SceneModel>("Data/Model/TetrisBlock/fixedScene.mdl");
+	sceneModels = std::make_unique<SceneModel>("Data/Model/TetrisBlock/Colors.mdl");
 
-	stage.scale = { 0.4f, 0.4f, 0.4f };
+	stage.scale = { 1.0f, 1.0f, 1.0f };
 	stage.position = { 0.0f, 0.0f, 0.0f };
 	stage.angle = { 0.0f, 0.0f, 0.0f };
 }
@@ -80,17 +80,28 @@ void ProjectScreenScene::Update(float elapsedTime)
 			x = xGrid;
 			y = yGrid;
 		}
-		stage.position = SetBlockPosFromGrid(x, y, 8.0f);
+
+		tetroRenderer.CalcWorldPosition<Tetromino::TetrominoType::TETRO_T>(y, x, rotate);
+		tetroRenderer.UpdateTransform(stage.scale);
+
+		if (GetAsyncKeyState('F'))
+		{
+			rotate++;
+			if (rotate > 3)
+			{
+				rotate = 0;
+			}
+		}
 
 		if (GetAsyncKeyState(VK_SPACE))
 		{
-			DirectX::XMMATRIX S = DirectX::XMMatrixScaling(stage.scale.x, stage.scale.y, stage.scale.z);
-			DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(stage.angle.x, stage.angle.y, stage.angle.z);
-			DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(stage.position.x, stage.position.y, stage.position.z);
-			DirectX::XMStoreFloat4x4(&stage.transform, S * R * T);
-			if (tetroCollision.PlaceTetromino<Tetromino::TetrominoType::TETRO_T>(y, x, 0u))
+			if (tetroCollision.PlaceTetromino<Tetromino::TetrominoType::TETRO_T>(y, x, rotate))
 			{
-				sceneModels->CommitBlock({ 0u,stage.transform });
+				auto transforms = tetroRenderer.GetTransforms();
+				for (DirectX::XMFLOAT4X4 ts : transforms)
+				{
+					sceneModels->CommitBlock({ 0u, std::move(ts) });
+				}
 			}
 		}
 	}
@@ -148,7 +159,10 @@ void ProjectScreenScene::Render(float elapsedTime)
 	}
 
 	{
-		sceneModels->SelectedBlockRender(rc, modelRenderer, stage.transform, 0u, ShaderId::Lambert, true);
+		for (DirectX::XMFLOAT4X4 tf : tetroRenderer.GetTransforms())
+		{
+			sceneModels->SelectedBlockRender(rc, modelRenderer, tf, 0u, ShaderId::Lambert, true);
+		}
 
 		sceneModels->RenderCommitedBlocks(rc, modelRenderer, ShaderId::Lambert, true);
 	}
