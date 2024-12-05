@@ -60,24 +60,24 @@ namespace Tetromino
 		static constexpr std::array<TetroArray, 4> rotations = {
 			{
 				{{
-					{0, 1, 1},
-					{1, 1, 0},
+					{0, 2, 2},
+					{2, 2, 0},
 					{0, 0, 0}
 				}},
 				{{
-					{1, 0, 0},
-					{1, 1, 0},
-					{0, 1, 0}
+					{2, 0, 0},
+					{2, 2, 0},
+					{0, 2, 0}
 				}},
 				{{
-					{0, 1, 1},
-					{1, 1, 0},
+					{0, 2, 2},
+					{2, 2, 0},
 					{0, 0, 0},
 				}},
 				{{
-					{1, 0, 0},
-					{1, 1, 0},
-					{0, 1, 0},
+					{2, 0, 0},
+					{2, 2, 0},
+					{0, 2, 0},
 				}}
 			}
 		};
@@ -89,24 +89,24 @@ namespace Tetromino
 		static constexpr std::array<TetroArray, 4> rotations = {
 			{
 				{{
-					{1, 1, 0},
-					{0, 1, 1},
+					{2, 2, 0},
+					{0, 2, 2},
 					{0, 0, 0}
 				}},
 				{{
-					{0, 1, 0},
-					{1, 1, 0},
-					{1, 0, 0}
+					{0, 2, 0},
+					{2, 2, 0},
+					{2, 0, 0}
 				}},
 				{{
-					{1, 1, 0},
-					{0, 1, 1},
+					{2, 2, 0},
+					{0, 2, 2},
 					{0, 0, 0},
 				}},
 				{{
-					{0, 1, 0},
-					{1, 1, 0},
-					{1, 0, 0},
+					{0, 2, 0},
+					{2, 2, 0},
+					{2, 0, 0},
 				}}
 			}
 		};
@@ -118,23 +118,23 @@ namespace Tetromino
 		static constexpr std::array<TetroArray, 4> rotations = {
 			{
 				{{
-					{1, 0, 0},
-					{1, 0, 0},
-					{1, 1, 0}
+					{3, 0, 0},
+					{3, 0, 0},
+					{3, 3, 0}
 				}},
 				{{
-					{1, 1, 1},
-					{1, 0, 0},
+					{3, 3, 3},
+					{3, 0, 0},
 					{0, 0, 0}
 				}},
 				{{
-					{1, 1, 0},
-					{0, 1, 0},
-					{0, 1, 0},
+					{3, 3, 0},
+					{0, 3, 0},
+					{0, 3, 0},
 				}},
 				{{
-					{0, 0, 1},
-					{1, 1, 1},
+					{0, 0, 3},
+					{3, 3, 3},
 					{0, 0, 0},
 				}}
 			}
@@ -147,23 +147,23 @@ namespace Tetromino
 		static constexpr std::array<TetroArray, 4> rotations = {
 			{
 				{{
-					{0, 1, 0},
-					{0, 1, 0},
-					{1, 1, 0}
+					{0, 3, 0},
+					{0, 3, 0},
+					{3, 3, 0}
 				}},
 				{{
-					{1, 0, 0},
-					{1, 1, 1},
+					{3, 0, 0},
+					{3, 3, 3},
 					{0, 0, 0}
 				}},
 				{{
-					{1, 1, 0},
-					{1, 0, 0},
-					{1, 0, 0},
+					{3, 3, 0},
+					{3, 0, 0},
+					{3, 0, 0},
 				}},
 				{{
-					{1, 1, 1},
-					{0, 0, 1},
+					{3, 3, 3},
+					{0, 0, 3},
 					{0, 0, 0},
 				}}
 			}
@@ -176,22 +176,22 @@ namespace Tetromino
 		static constexpr std::array<TetroArray, 4> rotations = {
 			{
 				{{
-					{1, 0, 0},
-					{1, 0, 0},
-					{1, 0, 0}
+					{4, 0, 0},
+					{4, 0, 0},
+					{4, 0, 0}
 				}},
 				{{
-					{1, 1, 1},
+					{4, 4, 4},
 					{0, 0, 0},
 					{0, 0, 0}
 				}},
 				{{
-					{1, 0, 0},
-					{1, 0, 0},
-					{1, 0, 0},
+					{4, 0, 0},
+					{4, 0, 0},
+					{4, 0, 0},
 				}},
 				{{
-					{1, 1, 1},
+					{4, 4, 4},
 					{0, 0, 0},
 					{0, 0, 0},
 				}}
@@ -205,23 +205,23 @@ namespace Tetromino
 		static constexpr std::array<TetroArray, 4> rotations = {
 			{
 				{{
-					{1, 1, 0},
-					{1, 1, 0},
+					{5, 5, 0},
+					{5, 5, 0},
 					{0, 0, 0}
 				}},
 				{{
-					{1, 1, 0},
-					{1, 1, 0},
+					{5, 5, 0},
+					{5, 5, 0},
 					{0, 0, 0}
 				}},
 				{{
-					{1, 1, 0},
-					{1, 1, 0},
+					{5, 5, 0},
+					{5, 5, 0},
 					{0, 0, 0},
 				}},
 				{{
-					{1, 1, 0},
-					{1, 1, 0},
+					{5, 5, 0},
+					{5, 5, 0},
 					{0, 0, 0},
 				}}
 			}
@@ -236,12 +236,12 @@ namespace Tetromino
 	public:
 		TetrominoCollider() = default;
 
-		template<TetrominoType Type>
-		bool PlaceTetromino(unsigned int top, unsigned int left, int rotate)
+		template<typename Type>
+		bool PlaceTetromino(Type tetroType,  unsigned int top, unsigned int left, int rotate)
 		{
 			static_assert(TetrominoBlock<Type>::value == true, "This type is invalid");
 
-			if (!DetectionCollide<Type>(top, left, rotate))
+			if (!DetectionCollide(tetroType, top, left, rotate))
 			{
 				return false;
 			}
@@ -263,8 +263,8 @@ namespace Tetromino
 
 		}
 
-		template<TetrominoType Type>
-		bool DetectionCollide(unsigned int top, unsigned int left, unsigned int rotate)
+		template<typename Type>
+		bool DetectionCollide(Type tetroType, unsigned int top, unsigned int left, unsigned int rotate)
 		{
 			static_assert(TetrominoBlock<Type>::value == true, "This type is invalid");
 
@@ -300,8 +300,8 @@ namespace Tetromino
 	public:
 		TetroRenderer() = default;
 
-		template<TetrominoType Type>
-		void CalcWorldPosition(unsigned int top, unsigned int left, unsigned int rotate,
+		template<typename Type>
+		void CalcWorldPosition(Type type, unsigned int top, unsigned int left, unsigned int rotate,
 			const unsigned int offset = 8.0f, const float xAxisMax = 60.0f, const float yAxisMax = 32.0f)
 		{
 			TetroArray shapeArray{};

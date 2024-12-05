@@ -43,5 +43,6 @@ private:
 	Tetromino::TetrominoCollider		tetroCollision;
 	Tetromino::TetroRenderer            tetroRenderer;
 	
+	int tetroType = 0;
 	bool EditerMode = false;
 };

@@ -67,16 +67,20 @@ void ProjectScreenScene::Update(float elapsedTime)
 	{
 		static bool Oned = false;
 		static float time = 0.0f;
-		if (GetKeyState('G') & 0x8000 && !Oned)
+		if ((GetKeyState('G') & 0x8000) && !Oned)
 		{
 			EditerMode = !EditerMode;
 			Oned = true;
-		}
-		time += elapsedTime;
-		if (time>= 1.0f)
-		{
-			Oned = false;
 			time = 0.0f;
+		}
+		if (Oned)
+		{
+			time += elapsedTime;
+			if (time >= 1.0f)
+			{
+				Oned = false;
+				time = 0.0f;
+			}
 		}
 
 		{
@@ -97,13 +101,13 @@ void ProjectScreenScene::Update(float elapsedTime)
 				int yGrid = mPoints.y / static_cast<SHORT>(Grid2DRenderer::grid_size);
 
 				//stage.position = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size);
-				if (tetroCollision.DetectionCollide<Tetromino::TetrominoType::TETRO_T>(yGrid, xGrid, rotate))
+				if (tetroCollision.DetectionCollide(static_cast<Tetromino::TetrominoType>(tetroType), yGrid, xGrid, rotate))
 				{
 					x = xGrid;
 					y = yGrid;
 				}
 
-				tetroRenderer.CalcWorldPosition<Tetromino::TetrominoType::TETRO_T>(y, x, rotate);
+				tetroRenderer.CalcWorldPosition(static_cast<Tetromino::TetrominoType>(tetroType), y, x, rotate);
 				tetroRenderer.UpdateTransform(stage.scale);
 
 				if (GetKeyState('F') & 0x8000)
@@ -117,7 +121,7 @@ void ProjectScreenScene::Update(float elapsedTime)
 
 				if (GetKeyState(VK_SPACE) & 0x8000)
 				{
-					if (tetroCollision.PlaceTetromino<Tetromino::TetrominoType::TETRO_T>(y, x, rotate))
+					if (tetroCollision.PlaceTetromino(static_cast<Tetromino::TetrominoType>(tetroType), y, x, rotate))
 					{
 						auto transforms = tetroRenderer.GetTransforms();
 						for (DirectX::XMFLOAT4X4 ts : transforms)
@@ -189,14 +193,11 @@ void ProjectScreenScene::Render(float elapsedTime)
 			{
 				sceneModels->SelectedBlockRender(rc, modelRenderer, tf, 0u, ShaderId::Lambert, true);
 			}
-
-		}
-
-		{
-			grid2DRenderer->Draw(d2dContext);
 		}
 	}
+
 	sceneModels->RenderCommitedBlocks(rc, modelRenderer, ShaderId::Lambert, true);
+	grid2DRenderer->Draw(d2dContext);
 }
 
 // GUIï`âÊèàóù
