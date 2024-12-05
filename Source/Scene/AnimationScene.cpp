@@ -33,7 +33,7 @@ AnimationScene::AnimationScene(int StageNum)
 		{ 0, 1, 0 }			// è„ÉxÉNÉgÉã
 	);
 	cameraController.SyncCameraToController(Camera::Instance());
-	PlayerManager::Instance().Register(new Player(DirectX::XMFLOAT3(0, 3, 0), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f), DirectX::XMFLOAT3(0, 180, 0)));
+	//PlayerManager::Instance().Register(new Player(DirectX::XMFLOAT3(0, 3, 0), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f), DirectX::XMFLOAT3(0, 180, 0)));
 
 	timer = 0;
 	cube.model = std::make_unique<Model>("Data/Model/Cube/Cube.mdl");

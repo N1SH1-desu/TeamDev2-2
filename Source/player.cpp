@@ -9,13 +9,13 @@
 
  Player::Player(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale, DirectX::XMFLOAT3 angle) 
  {
-	model = new Model("./Data/Model/Jammo/Jammo.mdl");
+	model = new Model("./Data/Model/UnityChan/UnityChan.mdl");
 	this->position = position;
 	this->scale = scale;
 	this->angle = angle;
 	this->state = State::Idle;
 	this->HP = 30;
-	PlayAnimation("Jump", false);
+	PlayAnimation("Falling", true);
 }
 
  Player::~Player() {
@@ -36,7 +36,7 @@ void Player::Update(float elapsedTime)
 		wal = 0.03f;
 		if (RayGround(Stage::Instance().GetCollisionTransform(), Stage::Instance().GetCollisionModel()))
 		{
-			PlayAnimation("Running", true);
+			PlayAnimation("Run", true);
 			state = Run;
 		}
 		break;
@@ -74,7 +74,7 @@ void Player::Update(float elapsedTime)
 		DirectX::XMFLOAT3 outPosition;
 		if (Collision::InteresectCylinderVsCylinder(position, radius, height, portal->GetPosition(), portal->GetRadius(), portal->GetHeight(), outPosition) && portal->Enabled())
 		{
-			PlayerManager::Instance().Remove(this);
+			//PlayerManager::Instance().Remove(this);
 		}
 	}
 }
@@ -276,7 +276,7 @@ bool Player::InputMove()
 				Walltime += tt;
 
 				if (Walltime<0.5f) {
-				PlayAnimation("Jump", true);
+				PlayAnimation("Climing", true);
 				state = State::Jump;
 				}
 				else
