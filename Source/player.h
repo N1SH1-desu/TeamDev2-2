@@ -68,8 +68,10 @@ public:
 		Idle,
 		Run,
 		Jump,
+		EndJump,
 	};
 	State								state;
+	State								before_state;
 
 	int									animationIndex = -1;
 	float								animationSeconds = 0.0f;
@@ -104,8 +106,13 @@ public:
 	bool								jumpC = false;
 
 	int									HP = 0;
-	bool PC = true;
+	bool PC = false;
 	float PT;
 
 	float								tt;
+
+	float								wal;
+
+	float									Walltime;
+
 };

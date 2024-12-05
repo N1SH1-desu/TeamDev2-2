@@ -27,12 +27,13 @@ void Player::Update(float elapsedTime)
 {
 	tt = elapsedTime;
 	InputMove();
+	before_state = state;
 
 	switch (state)
 	{
 	case State::Idle:
 		position.y -= velocity.y;
-
+		wal = 0.03f;
 		if (RayGround(Stage::Instance().GetCollisionTransform(), Stage::Instance().GetCollisionModel()))
 		{
 			//Animation_Reset();
@@ -42,20 +43,26 @@ void Player::Update(float elapsedTime)
 		break;
 
 	case State::Run:
+		if (RayGround(Stage::Instance().GetCollisionTransform(), Stage::Instance().GetCollisionModel())) {
 		position.x -= moveSpeed * elapsedTime;
+		onGround;
+		}
+		else {
+		position.y -= velocity.y;
+		}
 		break;
 
 	case State::Jump:
-		position.y += velocity.y;
+		position.y += wal;
+		break;
+	case State::EndJump:
+		position.x -= moveSpeed * elapsedTime;
 		break;
 	}
 
 	if (PC)
 	{
 		PoisonC(elapsedTime);
-	}
-	else {
-		//PT = 0;
 	}
 
 	// トランスフォーム更新処理
@@ -257,14 +264,35 @@ bool Player::InputMove()
 				DirectX::XMFLOAT3 q;
 				DirectX::XMStoreFloat3(&q, Q);
 
+				Walltime += tt;
 
-				HitP();
-				turn();
+				if (Walltime<0.5f) {
+				PlayAnimation("Jump", true);
+				state = State::Jump;
+				}
+				else
+				{
+					turn();
+					PlayAnimation("Run", true);
+					state = State::Run;
+					Walltime = 0.0f;
+				}
+				//HitP();
 			}
-
-
+			else if (before_state == State::Jump)
+			{
+				PlayAnimation("Run", true);
+				state = State::EndJump;
+				Walltime = 0.0f;
+			}
+		}
+		else if(before_state == State::Jump)
+		{
+			PlayAnimation("Run", true);
+			state = State::Run;
 		}
 	return true;
+
 }
 
 // ジャンプ入力処理
@@ -274,7 +302,6 @@ bool Player::InputJump()
 	{
 			velocity.y = jumpSpeed;
 			velocity.x += 1.0f;
-			//InputMove();
 		return true;
 	}
 	return false;
@@ -322,6 +349,7 @@ bool Player::RayGround(DirectX::XMFLOAT4X4 transform, Model* model)
 	if (Collision::RayCast(s, e, transform, model, p, n))
 	{
 		// 交点のY座標をプレイヤーに位置に設定する
+		velocity.y = 0;
 		position.y = p.y;
 		return onGround = true;
 	}
