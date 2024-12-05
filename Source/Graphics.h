@@ -3,6 +3,7 @@
 #include <d3d11.h>
 #include <wrl.h>
 #include <memory>
+#include <mutex>
 #include "RenderState.h"
 #include "PrimitiveRenderer.h"
 #include "ShapeRenderer.h"
@@ -68,6 +69,9 @@ public:
 
 	Grid2DRenderer* GetGrid2DRenderer() const { return grid2DRenderer.get(); }
 
+	//ミューテックス取得
+	std::mutex& GetMutex() { return mutex; } //排他制御
+
 private:
 	HWND											hWnd = nullptr;
 	Microsoft::WRL::ComPtr<ID3D11Device>			device;
@@ -87,4 +91,5 @@ private:
 	std::unique_ptr<PrimitiveRenderer>				primitiveRenderer;
 	std::unique_ptr<ShapeRenderer>					shapeRenderer;
 	std::unique_ptr<ModelRenderer>					modelRenderer;
+	std::mutex mutex;
 };

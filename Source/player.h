@@ -32,6 +32,8 @@ public:
 	DirectX::XMFLOAT3 GetPosition() { return position; }
 	void SetPosition(const DirectX::XMFLOAT3& position) { this->position = position; }
 
+	float GetRaidus() { return radius; }
+	float GetHeight() { return height; }
 
 	void OnLanded() { onGround = true; }
 
@@ -104,8 +106,6 @@ public:
 	float								moveSpeed = 5.0f;
 
 	bool								jumpC = false;
-
-	int									HP = 0;
 	bool PC = false;
 	float PT;
 
@@ -115,4 +115,8 @@ public:
 
 	float									Walltime;
 
+	int									HP = 10;
+
+	float radius = 2.0f;
+	float height = 2.0f;
 };

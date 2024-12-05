@@ -111,7 +111,7 @@ public:
 
 public:
 	Stage();
-	~Stage() = default;
+	~Stage() {}
 
 	void Update(float elapsedTime);
 
@@ -125,7 +125,6 @@ public:
 
 	Model* GetModel() { return stage_.model.get(); }
 
-
 	int GetNumber() { return now_stage; }
 
 	DirectX::XMFLOAT4X4 GetTransform() { return stage_.transform; }
@@ -133,7 +132,7 @@ public:
 
 	//モデルを覆うように似たような地形の簡易マップを呼び出す
 	Model* GetCollisionModel() { return stage_collision_[now_stage].model.get(); }
-	
 
+	void ObjectSetting(int selecter);
 };
 

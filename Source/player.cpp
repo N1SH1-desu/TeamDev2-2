@@ -5,10 +5,10 @@
 #include"Collision.h"
 #include"PlayerManager.h"
 #include"Scene/stage.h"
+#include "PortalManager.h"
 
- Player::Player(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale, DirectX::XMFLOAT3 angle) {
-
-
+ Player::Player(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale, DirectX::XMFLOAT3 angle) 
+ {
 	model = new Model("./Data/Model/Jammo/Jammo.mdl");
 	this->position = position;
 	this->scale = scale;
@@ -36,7 +36,6 @@ void Player::Update(float elapsedTime)
 		wal = 0.03f;
 		if (RayGround(Stage::Instance().GetCollisionTransform(), Stage::Instance().GetCollisionModel()))
 		{
-			//Animation_Reset();
 			PlayAnimation("Running", true);
 			state = Run;
 		}
@@ -68,6 +67,16 @@ void Player::Update(float elapsedTime)
 	// トランスフォーム更新処理
 	UpdateTransform(elapsedTime);
 
+	for (int i = 0; i < PortalManager::Instance().GetObjectCount(); i++)
+	{
+		auto portal = PortalManager::Instance().GetObject_(i);
+
+		DirectX::XMFLOAT3 outPosition;
+		if (Collision::InteresectCylinderVsCylinder(position, radius, height, portal->GetPosition(), portal->GetRadius(), portal->GetHeight(), outPosition) && portal->Enabled())
+		{
+			PlayerManager::Instance().Remove(this);
+		}
+	}
 }
 void Player::PlayAnimation(int index, bool loop)
 {
