@@ -11,10 +11,12 @@ PlayerManager::PlayerManager()
 
 void PlayerManager::Update(float elapsedTime) {
 
-	for (Player* player : players) {
+	for (Player* player : players) 
+	{
 		player->Update(elapsedTime);
 		player->UpdateAnimation(elapsedTime);
 	}
+
 	for(Player* player : remove) {
 		std::vector<Player*>::iterator it = 
 			std::find(players.begin(), players.end(), player);
@@ -26,7 +28,14 @@ void PlayerManager::Update(float elapsedTime) {
 	remove.clear();
 
 	//“–‚½‚è”»’è
+	for (auto player : players)
+	{
+		HitResult hit;
+		DirectX::XMFLOAT3 start = { player->position.x, player->position.y + 1.0f, player->position.z };
+		DirectX::XMFLOAT3 end = { player->position.x, player->position.y + player->velocity.y - 0.05f, player->position.z };
+	}
 }
+
 void PlayerManager::Render(ModelRenderer* modelRenderer,RenderContext& rc, ShaderId ID) 
 {	
 	ID3D11DeviceContext* dc = Graphics::Instance().GetDeviceContext();
