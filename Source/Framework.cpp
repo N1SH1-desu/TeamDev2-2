@@ -6,19 +6,14 @@
 #include "Framework.h"
 #include "Graphics.h"
 #include "ImGuiRenderer.h"
-#include "Scene/RayCastScene.h"
-#include "Scene/LandWalkScene.h"
-#include "Scene/SlideMoveScene.h"
+
 #include "Scene/AnimationScene.h"
-#include "Scene/ProjectScreenScene.h"
-#include "Scene/AttachWeaponScene.h"
-#include "Scene/HitStopScene.h"
-#include "Scene/UIAnimScene.h"
-#include "Scene/MoveFloorScene.h"
-#include "Scene/TerrainAlignScene.h"
-#include "Scene/ResourceManagementScene.h"
-#include"player.h"
+
 #include "PlayerManager.h"
+#include "SceneManager.h"
+#include "SceneTitle.h"
+
+#define MANAGER 1
 
 // 垂直同期間隔設定
 static const int syncInterval = 1;
@@ -35,7 +30,7 @@ Framework::Framework(HWND hWnd)
 	ImGuiRenderer::Initialize(hWnd, Graphics::Instance().GetDevice(), Graphics::Instance().GetDeviceContext());
 
 	// シーン初期化
-	scene = std::make_unique<RayCastScene>();
+	//scene = std::make_unique<RayCastScene>();
 	//scene = std::make_unique<LandWalkScene>();
 	//scene = std::make_unique<SlideMoveScene>();
 	//scene = std::make_unique<MoveFloorScene>();
@@ -47,6 +42,12 @@ Framework::Framework(HWND hWnd)
 	//scene = std::make_unique<ResourceManagementScene>();
 	//scene = std::make_unique<UIAnimScene>();
 	//scene = std::make_unique<HitStopScene>();
+
+#if MANAGER
+	SceneManager::Instance().ChangeScene(new SceneTitle);
+#else
+	scene = std::make_unique<AnimationScene>();
+#endif
 }
 
 // デストラクタ
@@ -66,10 +67,12 @@ void Framework::Update(float elapsedTime)
 
 	mouse.ProcessCommand();
 
+#if MANAGER
+	SceneManager::Instance().Update(elapsedTime, &mouse);
+#else
 	scene->SetInputMouse(&mouse);
-
-	// シーン更新処理
 	scene->Update(elapsedTime);
+#endif
 }
 
 // 描画処理
@@ -84,13 +87,19 @@ void Framework::Render(float elapsedTime)
 	Graphics::Instance().SetRenderTargets();
 
 	// シーン描画処理
-	scene->Render(elapsedTime);
 
 	// シーンGUI描画処理
+
+#if MANAGER
+	SceneManager::Instance().Render(elapsedTime);
+	SceneManager::Instance().DrawGUI();
+#else
+	scene->Render(elapsedTime);
 	scene->DrawGUI();
+#endif
 
 	// シーン切り替えGUI
-	SceneSelectGUI();
+	//SceneSelectGUI();
 #if 0
 	// IMGUIデモウインドウ描画（IMGUI機能テスト用）
 	ImGui::ShowDemoWindow();
@@ -125,21 +134,21 @@ void Framework::SceneSelectGUI()
 	ImGui::SetNextWindowPos(ImVec2(pos.x + displaySize.x - width - 10, pos.y + 10), ImGuiCond_Once);
 	ImGui::SetNextWindowSize(ImVec2(width, height), ImGuiCond_Once);
 
-	if (ImGui::Begin("Scene"))
-	{
-		ChangeSceneButtonGUI<RayCastScene>(u8"01.レイキャスト");
-		ChangeSceneButtonGUI<LandWalkScene>(u8"02.地上歩行");
-		ChangeSceneButtonGUI<SlideMoveScene>(u8"03.壁ずり移動");
-		ChangeSceneButtonGUI<AnimationScene>(u8"04.アニメーション");
-		ChangeSceneButtonGUI<ProjectScreenScene>(u8"05.スクリーン座標変換");
-		ChangeSceneButtonGUI<AttachWeaponScene>(u8"06.アタッチメント");
-		ChangeSceneButtonGUI<HitStopScene>(u8"07.ヒットストップ");
-		ChangeSceneButtonGUI<UIAnimScene>(u8"08.UI演出");
-		ChangeSceneButtonGUI<MoveFloorScene>(u8"09.移動床");
-		ChangeSceneButtonGUI<TerrainAlignScene>(u8"10.地形に沿う姿勢制御");
-		ChangeSceneButtonGUI<ResourceManagementScene>(u8"11.リソース管理");
-	}
-	ImGui::End();
+	//if (ImGui::Begin("Scene"))
+	//{
+	//	//ChangeSceneButtonGUI<RayCastScene>(u8"01.レイキャスト");
+	//	ChangeSceneButtonGUI<LandWalkScene>(u8"02.地上歩行");
+	//	ChangeSceneButtonGUI<SlideMoveScene>(u8"03.壁ずり移動");
+	//	ChangeSceneButtonGUI<AnimationScene>(u8"04.アニメーション");
+	//	ChangeSceneButtonGUI<ProjectScreenScene>(u8"05.スクリーン座標変換");
+	//	ChangeSceneButtonGUI<AttachWeaponScene>(u8"06.アタッチメント");
+	//	ChangeSceneButtonGUI<HitStopScene>(u8"07.ヒットストップ");
+	//	ChangeSceneButtonGUI<UIAnimScene>(u8"08.UI演出");
+	//	ChangeSceneButtonGUI<MoveFloorScene>(u8"09.移動床");
+	//	ChangeSceneButtonGUI<TerrainAlignScene>(u8"10.地形に沿う姿勢制御");
+	//	ChangeSceneButtonGUI<ResourceManagementScene>(u8"11.リソース管理");
+	//}
+	//ImGui::End();
 }
 
 // フレームレート計算

@@ -14,7 +14,6 @@ using namespace DirectX;
 class SpaceDivisionRayCast
 {
 private:
-    vector<Model*> models_;
     
 	struct CollisionMesh
 	{
@@ -34,56 +33,69 @@ private:
 
 
 	};
-	map<Model*, CollisionMesh> model_divisions_;
+	CollisionMesh model_divisions_;
 
-	//矩形エリアを表す構造体
-	struct Rect {
-		float x_min, x_max, z_min, z_max;
-	};
 	//四分木ノード
-	struct QuadTreeNode {
-		Rect bounds;	//この四分木がカバーするエリア
-
-		std::vector<CollisionMesh::Area*>areas;
-
-		QuadTreeNode(const Rect& bounds) :bounds(bounds) {}
-		~QuadTreeNode() { areas.clear(); }
-
-
-	};
-	vector<QuadTreeNode>node_index;
-	map<Model*, QuadTreeNode>model_quad_parent_;
-
-	const int node_depth_ = 3;
-	const int offset[16] = 
+	//深度ごとのモートンのオフセット
+	static constexpr int offset[16] = 
 	{ 
 		0, 1, 5, 21,
 		85, 341, 1365, 5461,
 		21845, 87381, 349525, 1398101,
 		5592405, 22369621, 89478485, 357913941 
 	};
+	DirectX::XMFLOAT3 volume_min_{}, volume_max_{};
+	//当たり判定を取りたい二点空ノード番号を取る
+	uint64_t GetCellId(float x_min, float x_max, float z_min, float z_max);
+	
+	struct QuadTreeNode {
+		DirectX::XMFLOAT3 center;	//この四分木の中心
+		DirectX::XMFLOAT3 half_size; //四分木空間の
+		float depth;
+		bool is_leaf;				//depth＝＝0ならtrue;
+		//最大深度
+		static const int node_depth_ = 4;
+
+		CollisionMesh::Area area;
+
+		QuadTreeNode()
+			:center{0,0,0}
+			,half_size{0,0,0}
+			,depth{0}
+			,is_leaf{false}
+		{
+		}
+		~QuadTreeNode() {}
+
+		//四分木空間を作成する関数
+		static void CreateQuadTree(
+			DirectX::XMFLOAT3 center,
+			DirectX::XMFLOAT3 half_size,
+			uint32_t depth,
+			std::vector<QuadTreeNode>* node = {});
+
+	};
+	vector<QuadTreeNode>quad_tree_nodes_;
+
 
 
 	int draw_box_=0;
 	bool all_draw_ = false;
-
-	
-
 public:
     SpaceDivisionRayCast();
-	~SpaceDivisionRayCast() { models_.clear(); model_divisions_.clear(); }
+	~SpaceDivisionRayCast() { this->clear(); }
 
     //空間分割したいモデルを登録する。
     void Load(Model* model);
+	//現在の空間分割を削除
+	void clear();
 
     //空間分割したモデルでレイキャストする
 	bool RayCast(
 		const DirectX::XMFLOAT3& start,
 		const DirectX::XMFLOAT3& end,
-		Model* model,
 		DirectX::XMFLOAT3& hit_position,
 		DirectX::XMFLOAT3& hit_normal);
-	int GetNodeId(float x_min, float x_max, float z_min, float z_max);
 
 	//確認
 	void DebugDraw(RenderContext& rc ,Model*model);

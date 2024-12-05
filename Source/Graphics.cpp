@@ -1,6 +1,5 @@
 #include "Misc.h"
 #include "Graphics.h"
-
 // ‰Šú‰»
 void Graphics::Initialize(HWND hWnd)
 {

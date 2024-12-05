@@ -5,14 +5,15 @@
 #include "Camera.h"
 #include "FreeCameraController.h"
 #include "Model.h"
-#include"player.h"
-#include"stage.h"
+#include "player.h"
+#include "stage.h"
 #include "FetchModelFromSceneAsset.h"
+#include "stage.h"
 
 class AnimationScene : public Scene
 {
 public:
-	AnimationScene();
+	AnimationScene(int StageNum);
 	~AnimationScene();
 
 	// XVˆ—
@@ -23,7 +24,7 @@ public:
 
 
 	// GUI•`‰æˆ—
-	void DrawGUI() override;
+	//void DrawGUI() override;
 
 
 private:
@@ -56,7 +57,7 @@ private:
 	Object								cube;
 	Object								cube2;
 
-	std::unique_ptr<Stage> stage = nullptr;
+	//std::unique_ptr<Stage> stage = nullptr;
 
 
 	std::unique_ptr<SceneModel> sceneModel;
@@ -67,4 +68,6 @@ private:
 
 	float									timer = 0;
 	int										Co = 0;
+
+	std::unique_ptr<Stage> stage = nullptr;
 };

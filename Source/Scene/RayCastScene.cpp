@@ -55,6 +55,8 @@ void RayCastScene::Update(float elapsedTime)
 	static Model* cur_model = stage.get()->GetModel();
 	if (cur_model!=stage->GetModel())
 	{
+		
+		space_division_raycast->clear();
 		space_division_raycast->Load(stage->GetModel());
 		
 		delete cur_model;
@@ -88,21 +90,21 @@ void RayCastScene::Render(float elapsedTime)
 	{
 		DirectX::XMFLOAT3 s;
 		DirectX::XMFLOAT3 e;
-		float size_x = 1.f;
-		float size_z = 1.f;
-		float add_size = 2.f;
+		float size_x = 10.f;
+		float size_z = 2.f;
+		float add_size = 1.f;
 		for (float x = -size_x; x < size_x; x+=add_size)
 		{
 			for (float z = -size_z; z < size_z; z+=add_size)
 			{
-
-				s = { x,10.f,-4.f+z };
-				e = { x,-10.f,4.f+z };
+				
+				s = { x,2.f,0.f+z };
+				e = { x,-2.f,0.f+z };
 
 				DirectX::XMFLOAT3 hitPosition, hitNormal;
 
 				//if (Collision::RayCast(s, e, stage->GetTransform(),stage.get()->GetModel(), hitPosition, hitNormal))
-				if ( space_division_raycast->RayCast(s, e,  stage->GetModel(), hitPosition, hitNormal))
+				if ( space_division_raycast->RayCast(s, e, hitPosition, hitNormal))
 				{
 					// Œð·‚µ‚½ˆÊ’u‚Æ–@ü‚ð•\Ž¦
 					shapeRenderer->DrawSphere(hitPosition, 0.2f, { 1, 0, 0, 1 });
