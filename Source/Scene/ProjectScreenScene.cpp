@@ -65,42 +65,66 @@ void ProjectScreenScene::Update(float elapsedTime)
 	}
 
 	{
-		POINTS mPoints = refInputMouse->GetPosition();
-
-		static int rotate = 0;
-		static int x = 0;
-		static int y = 0;
-
-		int xGrid = mPoints.x / static_cast<SHORT>(Grid2DRenderer::grid_size);
-		int yGrid = mPoints.y / static_cast<SHORT>(Grid2DRenderer::grid_size);
-
-		//stage.position = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size);
-		if (tetroCollision.DetectionCollide<Tetromino::TetrominoType::TETRO_T>(yGrid, xGrid, rotate))
+		static bool Oned = false;
+		static float time = 0.0f;
+		if (GetKeyState('G') & 0x8000 && !Oned)
 		{
-			x = xGrid;
-			y = yGrid;
+			EditerMode = !EditerMode;
+			Oned = true;
+		}
+		time += elapsedTime;
+		if (time>= 1.0f)
+		{
+			Oned = false;
+			time = 0.0f;
 		}
 
-		tetroRenderer.CalcWorldPosition<Tetromino::TetrominoType::TETRO_T>(y, x, rotate);
-		tetroRenderer.UpdateTransform(stage.scale);
-
-		if (GetAsyncKeyState('F'))
 		{
-			rotate++;
-			if (rotate > 3)
-			{
-				rotate = 0;
-			}
+			Grid2DRenderer* g2R = Graphics::Instance().GetGridRenderer();
+			g2R->Update(elapsedTime, EditerMode);
 		}
 
-		if (GetAsyncKeyState(VK_SPACE))
+		if (EditerMode)
 		{
-			if (tetroCollision.PlaceTetromino<Tetromino::TetrominoType::TETRO_T>(y, x, rotate))
 			{
-				auto transforms = tetroRenderer.GetTransforms();
-				for (DirectX::XMFLOAT4X4 ts : transforms)
+				POINTS mPoints = refInputMouse->GetPosition();
+
+				static int rotate = 0;
+				static int x = 0;
+				static int y = 0;
+
+				int xGrid = mPoints.x / static_cast<SHORT>(Grid2DRenderer::grid_size);
+				int yGrid = mPoints.y / static_cast<SHORT>(Grid2DRenderer::grid_size);
+
+				//stage.position = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size);
+				if (tetroCollision.DetectionCollide<Tetromino::TetrominoType::TETRO_T>(yGrid, xGrid, rotate))
 				{
-					sceneModels->CommitBlock({ 0u, std::move(ts) });
+					x = xGrid;
+					y = yGrid;
+				}
+
+				tetroRenderer.CalcWorldPosition<Tetromino::TetrominoType::TETRO_T>(y, x, rotate);
+				tetroRenderer.UpdateTransform(stage.scale);
+
+				if (GetKeyState('F') & 0x8000)
+				{
+					rotate++;
+					if (rotate > 3)
+					{
+						rotate = 0;
+					}
+				}
+
+				if (GetKeyState(VK_SPACE) & 0x8000)
+				{
+					if (tetroCollision.PlaceTetromino<Tetromino::TetrominoType::TETRO_T>(y, x, rotate))
+					{
+						auto transforms = tetroRenderer.GetTransforms();
+						for (DirectX::XMFLOAT4X4 ts : transforms)
+						{
+							sceneModels->CommitBlock({ 0u, std::move(ts) });
+						}
+					}
 				}
 			}
 		}
@@ -158,28 +182,21 @@ void ProjectScreenScene::Render(float elapsedTime)
 		//modelRenderer->Render(rc, obj.transform, obj.model.get(), ShaderId::Lambert);
 	}
 
+	if (EditerMode)
 	{
-		for (const DirectX::XMFLOAT4X4& tf : tetroRenderer.GetTransforms())
 		{
-			sceneModels->SelectedBlockRender(rc, modelRenderer, tf, 0u, ShaderId::Lambert, true);
+			for (const DirectX::XMFLOAT4X4& tf : tetroRenderer.GetTransforms())
+			{
+				sceneModels->SelectedBlockRender(rc, modelRenderer, tf, 0u, ShaderId::Lambert, true);
+			}
+
 		}
 
-		sceneModels->RenderCommitedBlocks(rc, modelRenderer, ShaderId::Lambert, true);
+		{
+			grid2DRenderer->Draw(d2dContext);
+		}
 	}
-
-	{
-		//dc->RSSetState(renderState->GetRasterizerState(RasterizerState::SolidCullNone));
-
-		//DirectX::XMMATRIX view = DirectX::XMLoadFloat4x4(&camera.GetView());
-		//DirectX::XMMATRIX proj = DirectX::XMLoadFloat4x4(&camera.GetProjection(false));
-		//DirectX::XMFLOAT4X4 viewProj; DirectX::XMStoreFloat4x4(&viewProj, view * proj);
-		//gridRenderer->Draw(dc, viewProj);
-
-	}
-
-	{
-		grid2DRenderer->Draw(d2dContext);
-	}
+	sceneModels->RenderCommitedBlocks(rc, modelRenderer, ShaderId::Lambert, true);
 }
 
 // GUIï`âÊèàóù

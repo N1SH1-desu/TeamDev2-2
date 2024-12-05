@@ -42,4 +42,6 @@ private:
 	std::unique_ptr<SceneModel>			sceneModels;
 	Tetromino::TetrominoCollider		tetroCollision;
 	Tetromino::TetroRenderer            tetroRenderer;
+	
+	bool EditerMode = false;
 };
