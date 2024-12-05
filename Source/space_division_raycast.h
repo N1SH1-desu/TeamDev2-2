@@ -36,9 +36,8 @@ private:
 	CollisionMesh model_divisions_;
 
 	//四分木ノード
-
-	const int node_depth_ = 3;
-	const int offset[16] = 
+	//深度ごとのモートンのオフセット
+	static constexpr int offset[16] = 
 	{ 
 		0, 1, 5, 21,
 		85, 341, 1365, 5461,
@@ -54,8 +53,8 @@ private:
 		DirectX::XMFLOAT3 half_size; //四分木空間の
 		float depth;
 		bool is_leaf;				//depth＝＝0ならtrue;
-
-		//矩形エリアを表す構造体
+		//最大深度
+		static const int node_depth_ = 5;
 
 		CollisionMesh::Area area;
 
@@ -73,7 +72,6 @@ private:
 			DirectX::XMFLOAT3 center,
 			DirectX::XMFLOAT3 half_size,
 			uint32_t depth,
-			uint32_t now_depth,
 			std::vector<QuadTreeNode>* node = {});
 
 	};
@@ -96,7 +94,6 @@ public:
 	bool RayCast(
 		const DirectX::XMFLOAT3& start,
 		const DirectX::XMFLOAT3& end,
-		Model* model,
 		DirectX::XMFLOAT3& hit_position,
 		DirectX::XMFLOAT3& hit_normal);
 

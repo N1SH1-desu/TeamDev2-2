@@ -178,7 +178,7 @@ SpaceDivisionRayCast::SpaceDivisionRayCast()
     {
         if (quad_tree_nodes_.size() > 0)quad_tree_nodes_.clear();
 
-        QuadTreeNode::CreateQuadTree(center, box_size, node_depth_, 0, &quad_tree_nodes_);
+        QuadTreeNode::CreateQuadTree(center, box_size, QuadTreeNode::node_depth_, &quad_tree_nodes_);
     }
 
     //四分木空間のエリアをモデルディビジョンに保存する
@@ -245,6 +245,9 @@ SpaceDivisionRayCast::SpaceDivisionRayCast()
 
 }
 
+//
+// 四分木構造体内の情報をすべてクリアする
+//
 void SpaceDivisionRayCast::clear()
 {
     quad_tree_nodes_.clear();
@@ -258,7 +261,6 @@ void SpaceDivisionRayCast::clear()
 bool SpaceDivisionRayCast::RayCast(
     const DirectX::XMFLOAT3& start,
     const DirectX::XMFLOAT3& end,
-    Model* model,
     DirectX::XMFLOAT3& hit_position,
     DirectX::XMFLOAT3& hit_normal)
 {
@@ -328,6 +330,8 @@ bool SpaceDivisionRayCast::RayCast(
         const CollisionMesh::Area* area = model_divisions_.areas.data();
 
         const auto area_triangle_size = area[id].triangle_indices.size();
+        if (area_triangle_size == 0)
+            return false;
         const int* area_triangle = area[id].triangle_indices.data();
         const CollisionMesh::Triangle* triangle = model_divisions_.triangles.data();
         for (int triangle_i = 0; triangle_i < area_triangle_size; triangle_i++)
@@ -406,36 +410,34 @@ void SpaceDivisionRayCast::DebugDraw(RenderContext&rc,Model*model)
         {
             ////モデルにあるすべての頂点情報とエリアにある頂点情報を確認する
             ////有るものだけを描画する
-            //const CollisionMesh::Triangle* triangle = model_divisions_[model].triangles.data();
+            //const CollisionMesh::Triangle* triangle = model_divisions_.triangles.data();
             //int areas_triangle_size = area[i].triangle_indices.size();
             //const int* areas_triangle = area[i].triangle_indices.data();
-
             //for (int areas_triangle_index = 0; areas_triangle_index < areas_triangle_size; areas_triangle_index++)
             //{
-
             //    primitiveRenderer->AddVertex(triangle[areas_triangle[areas_triangle_index]].positions[0], polygonColor);
             //    primitiveRenderer->AddVertex(triangle[areas_triangle[areas_triangle_index]].positions[1], polygonColor);
             //    primitiveRenderer->AddVertex(triangle[areas_triangle[areas_triangle_index]].positions[2], polygonColor);
             //}
-            //
+            
         }
         shape_renderer->DrawBox(area[i].bounding_box.Center, boxAngle, area[i].bounding_box.Extents, boxColor);
     }
 
-    ////コチラはモデルから取り出した全ての三角形を描画する
-    //// 三角形ポリゴン描画
-    if (all_draw_)
-    {
-        //polygonColor = { 1,1,1,1 };
-        //size_t size = model_divisions_[model].triangles.size();
-        //CollisionMesh::Triangle* triangle = model_divisions_[model].triangles.data();
-        //for (size_t i = 0; i < size; i++)
-        //{
-        //    primitiveRenderer->AddVertex(triangle[i].positions[0], polygonColor);
-        //    primitiveRenderer->AddVertex(triangle[i].positions[1], polygonColor);
-        //    primitiveRenderer->AddVertex(triangle[i].positions[2], polygonColor);
-        //}
-    }
+    //////コチラはモデルから取り出した全ての三角形を描画する
+    ////// 三角形ポリゴン描画
+    //if (all_draw_)
+    //{
+    //    //polygonColor = { 1,1,1,1 };
+    //    //size_t size = model_divisions_[model].triangles.size();
+    //    //CollisionMesh::Triangle* triangle = model_divisions_[model].triangles.data();
+    //    //for (size_t i = 0; i < size; i++)
+    //    //{
+    //    //    primitiveRenderer->AddVertex(triangle[i].positions[0], polygonColor);
+    //    //    primitiveRenderer->AddVertex(triangle[i].positions[1], polygonColor);
+    //    //    primitiveRenderer->AddVertex(triangle[i].positions[2], polygonColor);
+    //    //}
+    //}
 
     primitiveRenderer->Render(dc, rc.camera->GetView(), rc.camera->GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
     shape_renderer->Render(dc, rc.camera->GetView(), rc.camera->GetProjection());
@@ -476,15 +478,15 @@ void SpaceDivisionRayCast::DrowImgui()
         CollisionMesh::Area* area = collision_mesh.areas.data();
         ImGui::BeginChild(ImGui::GetID("SpaceDivision"), ImVec2(300, 200), ImGuiWindowFlags_NoTitleBar);
         {
-            for (int area_i = 0; area_i < area_size; area_i++)
-            {
-                outs.str("");
-                int triangle_in_area = area[area_i].triangle_indices.size();
-                outs << area_i << " : areas_triangles:" << triangle_in_area;
-                ImGui::TextWrapped(outs.str().c_str());
-                triangle_parsent += triangle_in_area;
-
-            }
+            //for (int area_i = 0; area_i < area_size; area_i++)
+            //{
+            //    outs.str("");
+            //    int triangle_in_area = area[area_i].triangle_indices.size();
+            //    if (triangle_in_area <= 0)continue;
+            //    outs << area_i << " : areas_triangles:" << triangle_in_area;
+            //    ImGui::TextWrapped(outs.str().c_str());
+            //    triangle_parsent += triangle_in_area;
+            //}
         }
         ImGui::EndChild();
 
@@ -500,18 +502,20 @@ void SpaceDivisionRayCast::DrowImgui()
 #endif
 }
 
+//
+// 四分木を渡された深度分作成する
+//
 void SpaceDivisionRayCast::QuadTreeNode::CreateQuadTree(
     DirectX::XMFLOAT3 center,
     DirectX::XMFLOAT3 half_size,
     uint32_t depth,
-    uint32_t now_depth,
     std::vector<QuadTreeNode>* node)
 {
     QuadTreeNode parent;
     parent.center = center;
     parent.half_size = half_size;
-    parent.depth = now_depth;
-    parent.is_leaf = (depth == now_depth);
+    parent.depth = node_depth_ - depth;
+    parent.is_leaf = (depth <= 0);
 
     //エリアを作る
     parent.area.bounding_box.Center = center;
@@ -550,10 +554,12 @@ void SpaceDivisionRayCast::QuadTreeNode::CreateQuadTree(
         DirectX::XMFLOAT3 child_center;
         DirectX::XMStoreFloat3(&child_center, vec_child_center);
 
-        CreateQuadTree(child_center, quad_size, depth,now_depth+1, node);
+        CreateQuadTree(child_center, quad_size, depth-1, node);
     }
 }
-
+//
+// 渡された座標がどのノードのIDの位置にあるかを算出する。
+//
 uint64_t SpaceDivisionRayCast::GetCellId(float x_min, float x_max, float z_min, float z_max)
 {
     //オブジェクトの全体を計算
@@ -561,9 +567,9 @@ uint64_t SpaceDivisionRayCast::GetCellId(float x_min, float x_max, float z_min, 
     float box_z = volume_max_.z - volume_min_.z;
 
     //単位長方形の幅を計算
-    const float dx = box_x / quad_tree_calc::MaxSplit(static_cast<uint64_t>(node_depth_));
-    const float dz = box_z / quad_tree_calc::MaxSplit(static_cast<uint64_t>(node_depth_));
-    const int64_t max_split_num = quad_tree_calc::MaxSplit(static_cast<uint64_t>(node_depth_));
+    const float dx = box_x / quad_tree_calc::MaxSplit(static_cast<uint64_t>(QuadTreeNode::node_depth_));
+    const float dz = box_z / quad_tree_calc::MaxSplit(static_cast<uint64_t>(QuadTreeNode::node_depth_));
+    constexpr int64_t max_split_num = quad_tree_calc::MaxSplit(static_cast<uint64_t>(QuadTreeNode::node_depth_));
 
     //引数の座標を0～MAX_SPLIT-1のグリッド座標へ変換
     int64_t ix_min = static_cast<int64_t>(x_min / dx);
@@ -589,11 +595,11 @@ uint64_t SpaceDivisionRayCast::GetCellId(float x_min, float x_max, float z_min, 
     //xzの値が0なら
     if (xz == 0)
     {
-        return offset[node_depth_] + z_valume;
+        return offset[QuadTreeNode::node_depth_] + z_valume;
     }
     //1-indexed,assume xz<2^32
     uint64_t msb_pos = quad_tree_calc::GetMsbPos(static_cast<uint32_t>(xz));
-    uint64_t l = node_depth_ - msb_pos;
+    uint64_t l = QuadTreeNode::node_depth_ - msb_pos;
     return offset[l] + (z_valume >> (msb_pos << 1));
 
 
