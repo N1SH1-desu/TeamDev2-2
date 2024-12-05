@@ -1,16 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <FxCompile Include="Shader\BasicPS.hlsl" />
-    <FxCompile Include="Shader\BasicVS.hlsl" />
-    <FxCompile Include="Shader\LambertPS.hlsl" />
-    <FxCompile Include="Shader\LambertVS.hlsl" />
-    <FxCompile Include="Shader\ShapeRendererPS.hlsl" />
-    <FxCompile Include="Shader\ShapeRendererVS.hlsl" />
-    <FxCompile Include="Shader\PrimitiveRendererPS.hlsl" />
-    <FxCompile Include="Shader\PrimitiveRendererVS.hlsl" />
-    <FxCompile Include="Shader\SpritePS.hlsl" />
-    <FxCompile Include="Shader\SpriteVS.hlsl" />
+    <FxCompile Include="Shader\BasicPS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\BasicVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\LambertPS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\LambertVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\PrimitiveRendererPS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\PrimitiveRendererVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\ShapeRendererPS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\ShapeRendererVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\SpritePS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\SpriteVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui-docking\imgui.cpp" />
@@ -42,18 +62,8 @@
     <ClCompile Include="Source\player.cpp" />
     <ClCompile Include="Source\PlayerManager.cpp" />
     <ClCompile Include="Source\ResourceManager.cpp" />
-    <ClCompile Include="Source\Scene\AnimationScene.cpp" />
-    <ClCompile Include="Source\Scene\AttachWeaponScene.cpp" />
-    <ClCompile Include="Source\Scene\HitStopScene.cpp" />
-    <ClCompile Include="Source\Scene\SlideMoveScene.cpp" />
-    <ClCompile Include="Source\Scene\MoveFloorScene.cpp" />
-    <ClCompile Include="Source\Scene\RayCastScene.cpp" />
     <ClCompile Include="Source\Scene\ResourceManagementScene.cpp" />
-    <ClCompile Include="Source\Scene\LandWalkScene.cpp" />
     <ClCompile Include="Source\Scene\stage.cpp" />
-    <ClCompile Include="Source\Scene\TerrainAlignScene.cpp" />
-    <ClCompile Include="Source\Scene\ProjectScreenScene.cpp" />
-    <ClCompile Include="Source\Scene\UIAnimScene.cpp" />
     <ClCompile Include="Source\ShapeRenderer.cpp" />
     <ClCompile Include="Source\GpuResourceUtils.cpp" />
     <ClCompile Include="Source\Graphics.cpp" />
@@ -62,12 +72,44 @@
     <ClCompile Include="Source\Model.cpp" />
     <ClCompile Include="Source\PrimitiveRenderer.cpp" />
     <ClCompile Include="Source\RenderState.cpp" />
-    <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\space_division_raycast.cpp" />
     <ClCompile Include="Source\Sprite.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\TransformUtils.cpp" />
     <ClCompile Include="Source\number_manager.cpp" />
+    <ClCompile Include="Source\Scene\AnimationScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\AttachWeaponScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\HitStopScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\LandWalkScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\MoveFloorScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\ProjectScreenScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\RayCastScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\SlideMoveScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\TerrainAlignScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\UIAnimScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\imgui-docking\imconfig.h" />
@@ -104,18 +146,8 @@
     <ClInclude Include="Source\player.h" />
     <ClInclude Include="Source\PlayerManager.h" />
     <ClInclude Include="Source\ResourceManager.h" />
-    <ClInclude Include="Source\Scene\AnimationScene.h" />
-    <ClInclude Include="Source\Scene\AttachWeaponScene.h" />
-    <ClInclude Include="Source\Scene\HitStopScene.h" />
-    <ClInclude Include="Source\Scene\SlideMoveScene.h" />
-    <ClInclude Include="Source\Scene\MoveFloorScene.h" />
-    <ClInclude Include="Source\Scene\RayCastScene.h" />
     <ClInclude Include="Source\Scene\ResourceManagementScene.h" />
-    <ClInclude Include="Source\Scene\LandWalkScene.h" />
     <ClInclude Include="Source\Scene\stage.h" />
-    <ClInclude Include="Source\Scene\TerrainAlignScene.h" />
-    <ClInclude Include="Source\Scene\ProjectScreenScene.h" />
-    <ClInclude Include="Source\Scene\UIAnimScene.h" />
     <ClInclude Include="Source\ShapeRenderer.h" />
     <ClInclude Include="Source\GpuResourceUtils.h" />
     <ClInclude Include="Source\Graphics.h" />
@@ -126,7 +158,6 @@
     <ClInclude Include="Source\PrimitiveRenderer.h" />
     <ClInclude Include="Source\RenderContext.h" />
     <ClInclude Include="Source\RenderState.h" />
-    <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\Shader.h" />
     <ClInclude Include="Source\space_division_raycast.h" />
     <ClInclude Include="Source\Sprite.h" />
@@ -135,14 +166,69 @@
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\TransformUtils.h" />
     <ClInclude Include="Source\number_manager.h" />
+    <ClInclude Include="Source\Scene\AnimationScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\AttachWeaponScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\HitStopScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\LandWalkScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\MoveFloorScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\ProjectScreenScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\RayCastScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\SlideMoveScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\TerrainAlignScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\UIAnimScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shader\Basic.hlsli" />
-    <None Include="Shader\Lambert.hlsli" />
-    <None Include="Shader\Scene.hlsli" />
-    <None Include="Shader\ShapeRenderer.hlsli" />
-    <None Include="Shader\PrimitiveRenderer.hlsli" />
-    <None Include="Shader\Skinning.hlsli" />
-    <None Include="Shader\Sprite.hlsli" />
+    <None Include="Shader\Basic.hlsli">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\Lambert.hlsli">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\PrimitiveRenderer.hlsli">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\Scene.hlsli">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\ShapeRenderer.hlsli">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\Skinning.hlsli">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\Sprite.hlsli">
+      <Filter>Shader</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{bc865c76-2eb6-47d8-b8dc-45e9993c48c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{26223918-9f1a-4f4a-852c-4a54e946e5a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

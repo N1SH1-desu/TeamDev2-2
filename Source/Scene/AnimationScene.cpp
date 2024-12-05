@@ -6,6 +6,7 @@
 #include "Collision.h"
 #include "Grid2DRenderer.h"
 #include "ControlTetrisBlock.h"
+#include"space_division_raycast.h"
 
 // コンストラクタ
 AnimationScene::AnimationScene()
@@ -44,6 +45,9 @@ AnimationScene::AnimationScene()
 
 	sceneModel = std::make_unique<SceneModel>("Data/Model/TetrisBlock/scene.mdl");
 	sceneScale = { 0.1f, 0.1f, 0.1f };
+
+	//add_by_nikaido_iichiko
+	//SpaceDivisionRayCast::Instance().Load(stage->GetModel());
 }
 
 AnimationScene::~AnimationScene() {
@@ -161,14 +165,17 @@ void AnimationScene::Render(float elapsedTime)
 	dc->RSSetState(renderState->GetRasterizerState(RasterizerState::SolidCullNone));
 
 	// グリッド描画
-	primitiveRenderer->DrawGrid(20, 1);
-	primitiveRenderer->Render(dc, Camera::Instance().GetView(), Camera::Instance().GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	//primitiveRenderer->DrawGrid(20, 1);
+	//primitiveRenderer->Render(dc, Camera::Instance().GetView(), Camera::Instance().GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
 	stage->Render(elapsedTime,rc);
 
 	sceneModel->SelectedBlockRender(rc, modelRenderer, sceneTransform, 0u, ShaderId::Lambert);
 
 	grid2dRenderer->Draw(gfx2D->GetContext());
+
+	//add_by_nikaido_iichiko
+	//SpaceDivisionRayCast::Instance().DebugDraw(rc);
 }
 
 
@@ -183,7 +190,7 @@ void AnimationScene::DrawGUI()
 	//	ImGui::Spacing();
 
 	//}
-	//	stage->DrawGUI();
+		stage->DrawGUI();
 
 	//	ImGui::End();
 }

@@ -248,11 +248,17 @@ SpaceDivisionRayCast::SpaceDivisionRayCast()
 //
 // 四分木構造体内の情報をすべてクリアする
 //
-void SpaceDivisionRayCast::clear()
+void SpaceDivisionRayCast::Clear()
 {
     quad_tree_nodes_.clear();
     model_divisions_.areas.clear();
     model_divisions_.triangles.clear();
+}
+
+void SpaceDivisionRayCast::Reload(Model* model)
+{
+    this->Clear();
+    this->Load(model);
 }
 
 
@@ -380,7 +386,7 @@ bool SpaceDivisionRayCast::RayCast(
     return hit;
 }
 
-void SpaceDivisionRayCast::DebugDraw(RenderContext&rc,Model*model)
+void SpaceDivisionRayCast::DebugDraw(RenderContext&rc)
 {
     PrimitiveRenderer* primitiveRenderer = Graphics::Instance().GetPrimitiveRenderer();
     ShapeRenderer* shape_renderer = Graphics::Instance().GetShapeRenderer();
