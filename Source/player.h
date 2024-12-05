@@ -106,8 +106,6 @@ public:
 	float								moveSpeed = 5.0f;
 
 	bool								jumpC = false;
-
-	int									HP = 0;
 	bool PC = false;
 	float PT;
 

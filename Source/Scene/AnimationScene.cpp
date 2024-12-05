@@ -46,7 +46,7 @@ AnimationScene::AnimationScene(int StageNum)
 	cube2.angle = { 0, 0, 0 };
 	cube2.scale = { 2, 2, 2 };
 
-	Stage::Instance().LoadStage(StageNum);
+	Stage::Instance().SelectStage(StageNum);
 
 	EffectManager::instance().Initialize();
 	sceneModel = std::make_unique<SceneModel>("Data/Model/TetrisBlock/scene.mdl");
