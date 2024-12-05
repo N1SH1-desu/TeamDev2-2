@@ -54,7 +54,7 @@ private:
 		float depth;
 		bool is_leaf;				//depth0‚È‚çtrue;
 		//Å‘å[“x
-		static const int node_depth_ = 5;
+		static const int node_depth_ = 4;
 
 		CollisionMesh::Area area;
 

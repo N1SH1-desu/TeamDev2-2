@@ -98,8 +98,8 @@ void RayCastScene::Render(float elapsedTime)
 			for (float z = -size_z; z < size_z; z+=add_size)
 			{
 				
-				s = { x,10.f,0.f+z };
-				e = { x,-10.f,0.f+z };
+				s = { x,2.f,0.f+z };
+				e = { x,-2.f,0.f+z };
 
 				DirectX::XMFLOAT3 hitPosition, hitNormal;
 

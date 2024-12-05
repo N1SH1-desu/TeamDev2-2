@@ -273,8 +273,6 @@ bool SpaceDivisionRayCast::RayCast(
 
     if (distance <= 0.0f)return false;
 
-    
-        
             ////¬‚³‚¢AABB‚ÆƒŒƒC‚ÌŒð·”»’è‚ðŽæ‚é
             //const CollisionMesh& collision_mesh = model_divisions_[model];
             //int areas_size =collision_mesh.areas.size();
@@ -325,6 +323,11 @@ bool SpaceDivisionRayCast::RayCast(
         float box_space_z_min = z_min - volume_min_.z;
         float box_space_x_max = x_max - volume_min_.x;
         float box_space_z_max = z_max - volume_min_.z;
+
+        if (box_space_x_min < 0)return false;
+        if (box_space_x_max < 0)return false;
+        if (box_space_z_min < 0)return false;
+        if (box_space_z_max < 0)return false;
 
         const uint64_t id = GetCellId(box_space_x_min, box_space_x_max, box_space_z_min, box_space_z_max);
         const CollisionMesh::Area* area = model_divisions_.areas.data();
