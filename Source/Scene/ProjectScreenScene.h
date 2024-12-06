@@ -42,8 +42,7 @@ private:
 	Object								stage;
 	std::vector<Object>					objs;
 	std::unique_ptr<SceneModel>			sceneModels;
-	Tetromino::TetrominoCollider		tetroCollision;
-	Tetromino::TetroRenderer            tetroRenderer;
+	Tetromino::TetrominoEditor			tetroEditer;
 	
 	int tetroType = 0;
 	bool EditerMode = false;

@@ -32,7 +32,14 @@ namespace Tetromino
 
 	void TetroRenderer::RenderSelcetedTetromino(RenderContext& rc, ModelRenderer* mR, ShaderId id, bool ortho)
 	{
-
+		for (const DirectX::XMFLOAT4X4& tf : transforms)
+		{
+			sceneModel->SelectedBlockRender(rc, mR, tf, colorIndex - 1, ShaderId::Lambert, true);
+		}
+	}
+	void TetroRenderer::RenderCommitedTetromino(RenderContext& rc, ModelRenderer* mR, ShaderId id, bool ortho)
+	{
+		sceneModel->RenderCommitedBlocks(rc, mR, ShaderId::Lambert, true);
 	}
 
 
@@ -54,7 +61,7 @@ namespace Tetromino
 		if (keyFiled.GetKeyStatus('R') == Input::KeyStatus::Release)
 		{
 			rotate++;
-			if (rotate > 4)
+			if (rotate > 3)
 				rotate = 0;
 		}
 
@@ -78,11 +85,19 @@ namespace Tetromino
 				auto transforms = renderer.GetTransforms();
 				for (DirectX::XMFLOAT4X4 ts : transforms)
 				{
-					sceneModels->CommitBlock({ colorIndex, std::move(ts) });
+					sceneModels->CommitBlock({ (colorIndex - 1), std::move(ts) });
 				}
 			}
 		}
 
+		renderer.AttackSceneModel(sceneModels);
+
+	}
+
+	void TetrominoEditor::Render(RenderContext& rc, ModelRenderer* mR)
+	{
+		renderer.RenderSelcetedTetromino(rc, mR, ShaderId::Lambert, true);
+		renderer.RenderCommitedTetromino(rc, mR, ShaderId::Lambert, true);
 	}
 
 }

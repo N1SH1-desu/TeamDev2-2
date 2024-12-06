@@ -306,8 +306,6 @@ namespace Tetromino
 
 			worldPositions.clear();
 
-			int colorIndex = 0;
-
 			for (int row = 0; row < shapeArray.size(); row++)
 			{
 				for (int col = 0; col < shapeArray[row].size(); col++)
@@ -341,13 +339,18 @@ namespace Tetromino
 			}
 		}
 
+		void AttackSceneModel(SceneModel* ref) { sceneModel = ref; }
+
 		void RenderSelcetedTetromino(RenderContext& rc, ModelRenderer* mR, ShaderId id = ShaderId::Basic, bool ortho = false);
+		void RenderCommitedTetromino(RenderContext& rc, ModelRenderer* mR, ShaderId id = ShaderId::Basic, bool ortho = false);
 
 		const std::vector<DirectX::XMFLOAT4X4>& GetTransforms() const { return transforms; }
 
 	private:
 		std::vector<DirectX::XMFLOAT4X4> transforms;
 		std::vector<DirectX::XMFLOAT2> worldPositions;
+		int colorIndex = 0;
+		SceneModel* sceneModel;
 	};
 
 
@@ -357,6 +360,7 @@ namespace Tetromino
 		TetrominoEditor() = default;
 
 		void Update(const POINTS mousePos, const Input::KeyInput keyFiled, SceneModel* sceneModels);
+		void Render(RenderContext& rc, ModelRenderer* mR);
 
 	private:
 		TetrominoCollider collider;
