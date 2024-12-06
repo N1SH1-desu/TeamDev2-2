@@ -306,6 +306,7 @@ namespace Tetromino
 
 			worldPositions.clear();
 
+
 			for (int row = 0; row < shapeArray.size(); row++)
 			{
 				for (int col = 0; col < shapeArray[row].size(); col++)
@@ -320,7 +321,7 @@ namespace Tetromino
 
 						worldPositions.push_back({ x, y });
 
-						colorIndex = shapeArray[row][col];
+						colorIndex = shapeArray[row][col] - 1;
 					}
 				}
 			}

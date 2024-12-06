@@ -34,7 +34,7 @@ namespace Tetromino
 	{
 		for (const DirectX::XMFLOAT4X4& tf : transforms)
 		{
-			sceneModel->SelectedBlockRender(rc, mR, tf, colorIndex - 1, ShaderId::Lambert, true);
+			sceneModel->SelectedBlockRender(rc, mR, tf, colorIndex, ShaderId::Lambert, true);
 		}
 	}
 	void TetroRenderer::RenderCommitedTetromino(RenderContext& rc, ModelRenderer* mR, ShaderId id, bool ortho)
@@ -85,7 +85,7 @@ namespace Tetromino
 				auto transforms = renderer.GetTransforms();
 				for (DirectX::XMFLOAT4X4 ts : transforms)
 				{
-					sceneModels->CommitBlock({ (colorIndex - 1), std::move(ts) });
+					sceneModels->CommitBlock({ colorIndex, std::move(ts) });
 				}
 			}
 		}
