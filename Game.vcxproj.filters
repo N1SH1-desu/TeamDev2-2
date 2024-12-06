@@ -231,6 +231,9 @@
     <ClInclude Include="Source\Tetromino.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\KeyInput.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Framework.cpp">
@@ -381,6 +384,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\Tetromino.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\KeyInput.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

@@ -64,23 +64,12 @@ void ProjectScreenScene::Update(float elapsedTime)
 
 	}
 
+	keyInput.Update();
+
 	{
-		static bool Oned = false;
-		static float time = 0.0f;
-		if ((GetKeyState('G') & 0x8000) && !Oned)
+		if (keyInput.GetKeyStatus('G') == Input::Release)
 		{
 			EditerMode = !EditerMode;
-			Oned = true;
-			time = 0.0f;
-		}
-		if (Oned)
-		{
-			time += elapsedTime;
-			if (time >= 1.0f)
-			{
-				Oned = false;
-				time = 0.0f;
-			}
 		}
 
 		{
@@ -100,7 +89,6 @@ void ProjectScreenScene::Update(float elapsedTime)
 				int xGrid = mPoints.x / static_cast<SHORT>(Grid2DRenderer::grid_size);
 				int yGrid = mPoints.y / static_cast<SHORT>(Grid2DRenderer::grid_size);
 
-				//stage.position = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size);
 				if (tetroCollision.DetectionCollide(static_cast<Tetromino::TetrominoType>(tetroType), yGrid, xGrid, rotate))
 				{
 					x = xGrid;
@@ -110,7 +98,7 @@ void ProjectScreenScene::Update(float elapsedTime)
 				tetroRenderer.CalcWorldPosition(static_cast<Tetromino::TetrominoType>(tetroType), y, x, rotate);
 				tetroRenderer.UpdateTransform(stage.scale);
 
-				if (GetKeyState('F') & 0x8000)
+				if (keyInput.GetKeyStatus('F') == Input::Release)
 				{
 					rotate++;
 					if (rotate > 3)
@@ -119,7 +107,7 @@ void ProjectScreenScene::Update(float elapsedTime)
 					}
 				}
 
-				if (GetKeyState(VK_SPACE) & 0x8000)
+				if (keyInput.GetKeyStatus(VK_SPACE) == Input::Release)
 				{
 					if (tetroCollision.PlaceTetromino(static_cast<Tetromino::TetrominoType>(tetroType), y, x, rotate))
 					{

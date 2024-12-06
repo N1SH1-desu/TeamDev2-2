@@ -8,6 +8,8 @@
 #include "Sprite.h"
 #include "FetchModelFromSceneAsset.h"
 #include "Tetromino.h"
+#include "KeyInput.h"
+
 
 class ProjectScreenScene : public Scene
 {
@@ -45,4 +47,6 @@ private:
 	
 	int tetroType = 0;
 	bool EditerMode = false;
+	Input::KeyInput keyInput;
+	
 };

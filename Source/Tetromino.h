@@ -228,26 +228,22 @@ namespace Tetromino
 		};
 	};
 
-#define CheckRotate(type, rotateIndex) shapeArray = TetrominoBlock<type>::rotations[rotateIndex];
-		
+	void CheckRotate(TetroArray& shapeArray, TetrominoType type, int rotate);
 
 	class TetrominoCollider
 	{
 	public:
 		TetrominoCollider() = default;
 
-		template<typename Type>
-		bool PlaceTetromino(Type tetroType,  unsigned int top, unsigned int left, int rotate)
+		bool PlaceTetromino(TetrominoType tetroType,  unsigned int top, unsigned int left, int rotate)
 		{
-			static_assert(TetrominoBlock<Type>::value == true, "This type is invalid");
-
 			if (!DetectionCollide(tetroType, top, left, rotate))
 			{
 				return false;
 			}
 
 			TetroArray shapeArray{};
-			CheckRotate(Type, rotate);
+			CheckRotate(shapeArray, tetroType, rotate);
 
 			for (int row = 0; row < shapeArray.size(); ++row)
 			{
@@ -263,13 +259,10 @@ namespace Tetromino
 
 		}
 
-		template<typename Type>
-		bool DetectionCollide(Type tetroType, unsigned int top, unsigned int left, unsigned int rotate)
+		bool DetectionCollide(TetrominoType tetroType, unsigned int top, unsigned int left, unsigned int rotate)
 		{
-			static_assert(TetrominoBlock<Type>::value == true, "This type is invalid");
-
 			TetroArray shapeArray{};
-			CheckRotate(Type, rotate);
+			CheckRotate(shapeArray, tetroType, rotate);
 
 			for (int row = 0; row < shapeArray.size(); ++row)
 			{
@@ -300,12 +293,11 @@ namespace Tetromino
 	public:
 		TetroRenderer() = default;
 
-		template<typename Type>
-		void CalcWorldPosition(Type type, unsigned int top, unsigned int left, unsigned int rotate,
+		void CalcWorldPosition(TetrominoType type, unsigned int top, unsigned int left, unsigned int rotate,
 			const unsigned int offset = 8.0f, const float xAxisMax = 60.0f, const float yAxisMax = 32.0f)
 		{
 			TetroArray shapeArray{};
-			CheckRotate(Type, rotate);
+			CheckRotate(shapeArray, type, rotate);
 
 			worldPositions.clear();
 
