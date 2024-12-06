@@ -79,6 +79,13 @@ void ProjectScreenScene::Update(float elapsedTime)
 
 		if (EditerMode)
 		{
+			if (keyInput.GetKeyStatus('V') == Input::Release)
+			{
+				tetroType++;
+				if (tetroType > 6)
+					tetroType = 0;
+			}
+
 			{
 				POINTS mPoints = refInputMouse->GetPosition();
 

@@ -29,4 +29,60 @@ namespace Tetromino
 			break;
 		}
     }
+
+	void TetroRenderer::RenderSelcetedTetromino(RenderContext& rc, ModelRenderer* mR, ShaderId id, bool ortho)
+	{
+
+	}
+
+
+
+	void TetrominoEditor::Update(const POINTS mousePos, const Input::KeyInput keyFiled, SceneModel* sceneModels)
+	{
+		static int x = 0;
+		static int y = 0;
+		static int rotate = 0;
+		static int tetroType = 0;
+
+		if (keyFiled.GetKeyStatus('F') == Input::KeyStatus::Release)
+		{
+			tetroType++;
+			if (tetroType > 6)
+				tetroType = 0;
+		}
+
+		if (keyFiled.GetKeyStatus('R') == Input::KeyStatus::Release)
+		{
+			rotate++;
+			if (rotate > 4)
+				rotate = 0;
+		}
+
+		int xGrid = mousePos.x / static_cast<SHORT>(Grid2DRenderer::grid_size);
+		int yGrid = mousePos.y / static_cast<SHORT>(Grid2DRenderer::grid_size);
+
+		if (collider.DetectionCollide(static_cast<Tetromino::TetrominoType>(tetroType), yGrid, xGrid, rotate))
+		{
+			x = xGrid;
+			y = yGrid;
+		}
+
+		int colorIndex = renderer.CalcWorldPosition(static_cast<Tetromino::TetrominoType>(tetroType), y, x, rotate);
+		constexpr float SCALE = 8.0f;
+		renderer.UpdateTransform(DirectX::XMFLOAT3{ SCALE, SCALE, SCALE });
+
+		if (keyFiled.GetKeyStatus(VK_SPACE) == Input::Release)
+		{
+			if (collider.PlaceTetromino(static_cast<Tetromino::TetrominoType>(tetroType), y, x, rotate))
+			{
+				auto transforms = renderer.GetTransforms();
+				for (DirectX::XMFLOAT4X4 ts : transforms)
+				{
+					sceneModels->CommitBlock({ colorIndex, std::move(ts) });
+				}
+			}
+		}
+
+	}
+
 }

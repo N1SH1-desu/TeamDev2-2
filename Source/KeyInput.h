@@ -18,7 +18,7 @@ namespace Input
 
 		void Update();
 
-		KeyStatus GetKeyStatus(short key) { return keyField[key]; }
+	    KeyStatus GetKeyStatus(short key) const  { return keyField.at(key); }
 
 	private:
 		std::unordered_map<short, KeyStatus> keyField;

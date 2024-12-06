@@ -5,6 +5,11 @@
 #include <vector>
 #include <DirectXMath.h>
 
+#include "Graphics.h"
+#include "FetchModelFromSceneAsset.h"
+#include "InputMouse.h"
+#include "KeyInput.h"
+
 namespace Tetromino
 {
 	using TetroArray = std::array<std::array<uint8_t, 3>, 3>;
@@ -293,13 +298,15 @@ namespace Tetromino
 	public:
 		TetroRenderer() = default;
 
-		void CalcWorldPosition(TetrominoType type, unsigned int top, unsigned int left, unsigned int rotate,
+		int CalcWorldPosition(TetrominoType type, unsigned int top, unsigned int left, unsigned int rotate,
 			const unsigned int offset = 8.0f, const float xAxisMax = 60.0f, const float yAxisMax = 32.0f)
 		{
 			TetroArray shapeArray{};
 			CheckRotate(shapeArray, type, rotate);
 
 			worldPositions.clear();
+
+			int colorIndex = 0;
 
 			for (int row = 0; row < shapeArray.size(); row++)
 			{
@@ -314,9 +321,13 @@ namespace Tetromino
 						if (y <= -yAxisMax) y = -yAxisMax;
 
 						worldPositions.push_back({ x, y });
+
+						colorIndex = shapeArray[row][col];
 					}
 				}
 			}
+
+			return colorIndex;
 		}
 
 		void UpdateTransform(DirectX::XMFLOAT3 scale)
@@ -330,10 +341,25 @@ namespace Tetromino
 			}
 		}
 
+		void RenderSelcetedTetromino(RenderContext& rc, ModelRenderer* mR, ShaderId id = ShaderId::Basic, bool ortho = false);
+
 		const std::vector<DirectX::XMFLOAT4X4>& GetTransforms() const { return transforms; }
 
 	private:
 		std::vector<DirectX::XMFLOAT4X4> transforms;
 		std::vector<DirectX::XMFLOAT2> worldPositions;
+	};
+
+
+	class TetrominoEditor
+	{
+	public:
+		TetrominoEditor() = default;
+
+		void Update(const POINTS mousePos, const Input::KeyInput keyFiled, SceneModel* sceneModels);
+
+	private:
+		TetrominoCollider collider;
+		TetroRenderer renderer;
 	};
 }
