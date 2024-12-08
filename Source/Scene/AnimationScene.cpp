@@ -319,7 +319,6 @@ void AnimationScene::Render(float elapsedTime)
 //}
 
 	//}
-		stage->DrawGUI();
 
 	//	ImGui::End();
 
