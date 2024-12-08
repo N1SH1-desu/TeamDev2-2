@@ -41,6 +41,8 @@ ProjectScreenScene::ProjectScreenScene()
 	stage.scale = { 8.0f, 8.0f, 8.0f };
 	stage.position = { 0.0f, 0.0f, 0.0f };
 	stage.angle = { 0.0f, 0.0f, 0.0f };
+	
+	editerUI.Initialize(device);
 }
 
 // 更新処理
@@ -85,23 +87,13 @@ void ProjectScreenScene::Update(float elapsedTime)
 		}
 	}
 
-
-
-	// ステージ行列更新処理
 	{
-		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(stage.scale.x, stage.scale.y, stage.scale.z);
-		DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(stage.angle.x, stage.angle.y, stage.angle.z);
-		DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(stage.position.x, stage.position.y, stage.position.z);
-		DirectX::XMStoreFloat4x4(&stage.transform, S * R * T);
-	}
-
-	// オブジェクト行列更新処理
-	for (Object& obj : objs)
-	{
-		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(obj.scale.x, obj.scale.y, obj.scale.z);
-		DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(obj.angle.x, obj.angle.y, obj.angle.z);
-		DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(obj.position.x, obj.position.y, obj.position.z);
-		DirectX::XMStoreFloat4x4(&obj.transform, S * R * T);
+		static bool hoge = false;
+		if (keyInput.GetKeyStatus(VK_TAB) == Input::Release)
+		{
+			hoge = !hoge;
+		}
+		editerUI.Update(elapsedTime, hoge);
 	}
 }
 
@@ -142,6 +134,8 @@ void ProjectScreenScene::Render(float elapsedTime)
 		tetroEditer.Render(rc, modelRenderer);
 	}
 	grid2DRenderer->Draw(d2dContext);
+
+	editerUI.Render(dc);
 }
 
 // GUI描画処理

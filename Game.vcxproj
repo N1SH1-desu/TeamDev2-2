@@ -167,6 +167,7 @@
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\Shader.h" />
     <ClInclude Include="Source\Sprite.h" />
+    <ClInclude Include="Source\TetroEditerUI.h" />
     <ClInclude Include="Source\Tetromino.h" />
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\TransformUtils.h" />
@@ -220,6 +221,7 @@
     <ClCompile Include="Source\RenderState.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\Sprite.cpp" />
+    <ClCompile Include="Source\TetroEditerUI.cpp" />
     <ClCompile Include="Source\Tetromino.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\TransformUtils.cpp" />

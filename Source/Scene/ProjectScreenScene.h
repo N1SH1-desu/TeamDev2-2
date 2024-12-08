@@ -5,10 +5,10 @@
 #include "Camera.h"
 #include "FreeCameraController.h"
 #include "Model.h"
-#include "Sprite.h"
 #include "FetchModelFromSceneAsset.h"
 #include "Tetromino.h"
 #include "KeyInput.h"
+#include "TetroEditerUI.h"
 
 
 class ProjectScreenScene : public Scene
@@ -47,5 +47,6 @@ private:
 	int tetroType = 0;
 	bool EditerMode = false;
 	Input::KeyInput keyInput;
-	
+
+	TetroEditerUI editerUI;
 };
