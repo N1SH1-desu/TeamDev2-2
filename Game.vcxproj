@@ -153,6 +153,7 @@
     <ClInclude Include="Source\ModelResource.h" />
     <ClInclude Include="Source\number_manager.h" />
     <ClInclude Include="Source\Object.h" />
+    <ClInclude Include="Source\pause.h" />
     <ClInclude Include="Source\player.h" />
     <ClInclude Include="Source\PlayerManager.h" />
     <ClInclude Include="Source\PoisonGus.h" />
@@ -166,6 +167,7 @@
     <ClInclude Include="Source\Scene\AnimationScene.h" />
     <ClInclude Include="Source\Scene\AttachWeaponScene.h" />
     <ClInclude Include="Source\Scene\HitStopScene.h" />
+    <ClInclude Include="Source\Scene\RayCastScene.h" />
     <ClInclude Include="Source\Scene\SlideMoveScene.h" />
     <ClInclude Include="Source\Scene\MoveFloorScene.h" />
     <ClInclude Include="Source\Scene\ResourceManagementScene.h" />
@@ -226,6 +228,7 @@
     <ClCompile Include="Source\ModelResource.cpp" />
     <ClCompile Include="Source\number_manager.cpp" />
     <ClCompile Include="Source\Object.cpp" />
+    <ClCompile Include="Source\pause.cpp" />
     <ClCompile Include="Source\player.cpp" />
     <ClCompile Include="Source\PlayerManager.cpp" />
     <ClCompile Include="Source\PoisonGus.cpp" />
@@ -239,6 +242,7 @@
     <ClCompile Include="Source\Scene\AnimationScene.cpp" />
     <ClCompile Include="Source\Scene\AttachWeaponScene.cpp" />
     <ClCompile Include="Source\Scene\HitStopScene.cpp" />
+    <ClCompile Include="Source\Scene\RayCastScene.cpp" />
     <ClCompile Include="Source\Scene\SlideMoveScene.cpp" />
     <ClCompile Include="Source\Scene\MoveFloorScene.cpp" />
     <ClCompile Include="Source\Scene\ResourceManagementScene.cpp" />

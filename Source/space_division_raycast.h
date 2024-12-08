@@ -10,7 +10,7 @@
 using namespace std;
 using namespace DirectX;
 
-//空間分割レイキャスト用クラス
+//空間分割レイキャスト用クラス(インスタンスクラス)
 class SpaceDivisionRayCast
 {
 private:
@@ -82,13 +82,23 @@ private:
 	int draw_box_=0;
 	bool all_draw_ = false;
 public:
-    SpaceDivisionRayCast();
-	~SpaceDivisionRayCast() { this->clear(); }
+	SpaceDivisionRayCast();
+	~SpaceDivisionRayCast() { this->Clear(); }
+
+	//インスタンス化
+	static SpaceDivisionRayCast& Instance()
+	{
+		static SpaceDivisionRayCast instance;
+		return instance;
+	}
 
     //空間分割したいモデルを登録する。
     void Load(Model* model);
 	//現在の空間分割を削除
-	void clear();
+	void Clear();
+
+	//リロード関数
+	void Reload(Model* model);
 
     //空間分割したモデルでレイキャストする
 	bool RayCast(
@@ -98,6 +108,6 @@ public:
 		DirectX::XMFLOAT3& hit_normal);
 
 	//確認
-	void DebugDraw(RenderContext& rc ,Model*model);
+	void DebugDraw(RenderContext& rc );
 	void DrowImgui();
 };

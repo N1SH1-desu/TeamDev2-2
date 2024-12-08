@@ -7,13 +7,14 @@
 #include "Graphics.h"
 #include "ImGuiRenderer.h"
 
+#include"Scene/RayCastScene.h"
 #include "Scene/AnimationScene.h"
 
 #include "PlayerManager.h"
 #include "SceneManager.h"
 #include "SceneTitle.h"
 
-#define MANAGER 1
+#define MANAGER 0
 
 // ‚’¼“¯ŠúŠÔŠuİ’è
 static const int syncInterval = 1;
@@ -46,7 +47,7 @@ Framework::Framework(HWND hWnd)
 #if MANAGER
 	SceneManager::Instance().ChangeScene(new SceneTitle);
 #else
-	scene = std::make_unique<AnimationScene>();
+	scene = std::make_unique<RayCastScene>();
 #endif
 }
 
