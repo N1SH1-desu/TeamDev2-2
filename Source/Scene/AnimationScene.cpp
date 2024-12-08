@@ -12,6 +12,8 @@
 #include "SceneTitle.h"
 #include "KeyManager.h"
 #include "PortalManager.h"
+//add_by_nikaido
+#include"pause.h"
 
 // コンストラクタ
 AnimationScene::AnimationScene(int StageNum)
@@ -54,6 +56,7 @@ AnimationScene::AnimationScene(int StageNum)
 
 	//add_by_nikaido_iichiko
 	//SpaceDivisionRayCast::Instance().Load(stage->GetModel());
+	Pause::Instance().SetStageNum(StageNum);
 }
 
 AnimationScene::~AnimationScene() {
