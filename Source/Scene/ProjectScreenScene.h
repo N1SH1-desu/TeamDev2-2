@@ -44,8 +44,6 @@ private:
 	std::unique_ptr<SceneModel>			sceneModels;
 	Tetromino::TetrominoEditor			tetroEditer;
 	
-	int tetroType = 0;
-	bool EditerMode = false;
 	Input::KeyInput keyInput;
 
 	TetroEditerUI editerUI;
