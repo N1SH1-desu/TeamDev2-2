@@ -4,7 +4,6 @@
 #include "Graphics.h"
 #include "Collision.h"
 #include "Scene/ProjectScreenScene.h"
-#include "ControlTetrisBlock.h"
 
 // コンストラクタ
 ProjectScreenScene::ProjectScreenScene()
@@ -12,6 +11,7 @@ ProjectScreenScene::ProjectScreenScene()
 	ID3D11Device* device = Graphics::Instance().GetDevice();
 	float screenWidth = Graphics::Instance().GetScreenWidth();
 	float screenHeight = Graphics::Instance().GetScreenHeight();
+	ID2D1DeviceContext* d2dContext = Graphics::Instance().GetGfx2D()->GetContext();
 
 	// カメラ設定
 	camera.SetPerspectiveFov(
@@ -36,13 +36,11 @@ ProjectScreenScene::ProjectScreenScene()
 	sprite = std::make_unique<Sprite>(device);
 	stage.model = std::make_unique<Model>("Data/Model/Stage/ExampleStage.mdl");
 
-	sceneModels = std::make_unique<SceneModel>("Data/Model/TetrisBlock/Colors.mdl");
+	//sceneModels = std::make_unique<SceneModel>("Data/Model/TetrisBlock/Colors.mdl");
+	//
+	//editerUI.Initialize(device);
 
-	stage.scale = { 8.0f, 8.0f, 8.0f };
-	stage.position = { 0.0f, 0.0f, 0.0f };
-	stage.angle = { 0.0f, 0.0f, 0.0f };
-	
-	editerUI.Initialize(device);
+	editerMode.Initialize(device, d2dContext);
 }
 
 // 更新処理
@@ -67,34 +65,36 @@ void ProjectScreenScene::Update(float elapsedTime)
 	}
 
 	keyInput.Update();
+	POINTS mousePos = refInputMouse->GetPosition();
+	editerMode.Update(elapsedTime, mousePos, keyInput);
 
-	{
-		if (keyInput.GetKeyStatus('G') == Input::Release)
-		{
-			EditerMode = !EditerMode;
-		}
+	//{
+	//	if (keyInput.GetKeyStatus('G') == Input::Release)
+	//	{
+	//		EditerMode = !EditerMode;
+	//	}
 
-		{
-			Grid2DRenderer* g2R = Graphics::Instance().GetGridRenderer();
-			g2R->Update(elapsedTime, EditerMode);
-		}
+	//	{
+	//		Grid2DRenderer* g2R = Graphics::Instance().GetGridRenderer();
+	//		g2R->Update(elapsedTime, EditerMode);
+	//	}
 
-		if (EditerMode)
-		{
-			POINTS mousePos = refInputMouse->GetPosition();
+	//	if (EditerMode)
+	//	{
+	//		POINTS mousePos = refInputMouse->GetPosition();
 
-			tetroEditer.Update(mousePos, keyInput, sceneModels.get());
-		}
-	}
+	//		tetroEditer.Update(mousePos, keyInput, sceneModels.get());
+	//	}
+	//}
 
-	{
-		static bool hoge = false;
-		if (keyInput.GetKeyStatus(VK_TAB) == Input::Release)
-		{
-			hoge = !hoge;
-		}
-		editerUI.Update(elapsedTime, hoge);
-	}
+	//{
+	//	static bool hoge = false;
+	//	if (keyInput.GetKeyStatus(VK_TAB) == Input::Release)
+	//	{
+	//		hoge = !hoge;
+	//	}
+	//	editerUI.Update(elapsedTime, hoge);
+	//}
 }
 
 // 描画処理
@@ -107,14 +107,12 @@ void ProjectScreenScene::Render(float elapsedTime)
 	ShapeRenderer* shapeRenderer = Graphics::Instance().GetShapeRenderer();
 	EndlessGridRenderer* gridRenderer = Graphics::Instance().GetEndlessGridRenderer();
 	ID2D1DeviceContext* d2dContext = Graphics::Instance().GetGfx2D()->GetContext();
-	Grid2DRenderer* grid2DRenderer = Graphics::Instance().GetGridRenderer();
 
 	// モデル描画
 	RenderContext rc;
 	rc.deviceContext = dc;
 	rc.renderState = renderState;
 	rc.camera = &camera;
-	//modelRenderer->Render(rc, stage.transform, stage.model.get(), ShaderId::Lambert);
 
 	// スクリーンサイズ取得
 	float screenWidth = Graphics::Instance().GetScreenWidth();
@@ -124,18 +122,14 @@ void ProjectScreenScene::Render(float elapsedTime)
 	DirectX::XMMATRIX Projection = DirectX::XMLoadFloat4x4(&camera.GetProjection());
 	DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();
 
-	for (const Object& obj : objs)
-	{
-		//modelRenderer->Render(rc, obj.transform, obj.model.get(), ShaderId::Lambert);
-	}
+	//if (EditerMode)
+	//{
+	//	tetroEditer.Render(rc, modelRenderer);
+	//}
+	//grid2DRenderer->Draw(d2dContext);
 
-	if (EditerMode)
-	{
-		tetroEditer.Render(rc, modelRenderer);
-	}
-	grid2DRenderer->Draw(d2dContext);
-
-	editerUI.Render(dc);
+	//editerUI.Render(dc);
+	editerMode.Render(rc, d2dContext, modelRenderer);
 }
 
 // GUI描画処理
