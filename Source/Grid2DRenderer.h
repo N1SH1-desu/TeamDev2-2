@@ -6,6 +6,7 @@ class Grid2DRenderer : public Gfx2DSandbox
 {
 public:
 	Grid2DRenderer(ID2D1DeviceContext* context, IDXGISurface* targetSurface);
+	virtual void Update(float elapsedTime, bool check);
 	virtual void Excecute(ID2D1DeviceContext* context) override;
 
 	static constexpr float grid_size = 80.0f;

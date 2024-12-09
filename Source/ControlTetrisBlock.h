@@ -4,59 +4,35 @@
 #include <Graphics.h>
 #include <cmath>
 
-DirectX::XMFLOAT3 SetBlockPosFromMousePos(InputMouse* input, float grid_size, RECT viewPort, DirectX::XMMATRIX& Projection, DirectX::XMMATRIX& View, DirectX::XMMATRIX& world)
+DirectX::XMFLOAT3 SetBlockPosFromMousePos(InputMouse* input, float grid_size)
 {
     POINTS pos = input->GetPosition();
 
-    short x = pos.x / (static_cast<short>(grid_size));
-    short y = pos.y / (static_cast<short>(grid_size));
+    UINT xGridIndex = pos.x / static_cast<SHORT>(grid_size);
+    UINT yGridIndex = pos.y / static_cast<SHORT>(grid_size);
 
-   /* x = (static_cast<short>(grid_size) / 2) + (static_cast<short>(grid_size) * x);
-    y = (static_cast<short>(grid_size) / 2) + (static_cast<short>(grid_size) * y);*/
+    constexpr float xAxisMax = 60.0f;
+    constexpr float yAxisMax = 32.0f;
 
-    DirectX::XMVECTOR screenPos = DirectX::XMVectorSet(x, y, 0.0f, 0.0f);
+    float x = -xAxisMax + (xGridIndex * 8.0f);
+    if (x >= xAxisMax) x = xAxisMax;
 
-    DirectX::XMFLOAT3 objectSpacePos{};
-    //DirectX::XMStoreFloat3(&objectSpacePos, DirectX::XMVector3Unproject(
-    //    screenPos,
-    //    static_cast<float>(viewPort.left), static_cast<float>(viewPort.top),
-    //    static_cast<float>(viewPort.right - viewPort.left), static_cast<float>(viewPort.bottom - viewPort.top),
-    //    0.0f, 1.0f,
-    //    Projection,
-    //    View,
-    //    world
-    //));
-    //objectSpacePos.z = 0.0f;
+    float y = yAxisMax - (yGridIndex * 8.0f);
+    if (y <= -yAxisMax) y = -yAxisMax;
 
-    {
-        float fromMin = 0;
-        float fromMax = 16;
-        float toMin = -14;
-        float toMax = 16;
+    return { x, y, 0.0f };
+}
 
-        int value = static_cast<int>(toMin + ((x - fromMin) / (fromMax - fromMin)) * (toMax - toMin));
-        if (value % 2 != 0)
-        {
-            value++;
-        }
-        objectSpacePos.x = value;
-    }
+DirectX::XMFLOAT3 SetBlockPosFromGrid(int xGrid, int yGrid, float offset)
+{
+    constexpr float xAxisMax = 60.0f;
+    constexpr float yAxisMax = 32.0f;
 
-    {
-        float fromMin = 0;
-        float fromMax = 9;
-        float toMin = 9;
-        float toMax = -7;
+    float x = -xAxisMax + (xGrid * offset);
+    if (x >= xAxisMax) x = xAxisMax;
 
-        float value = toMin + (((y - fromMin) / (fromMax - fromMin)) * (toMax - toMin));
-        //value = std::round(value);
-        objectSpacePos.y = value;
-    }
+    float y = yAxisMax - (yGrid * offset);
+    if (y <= -yAxisMax) y = -yAxisMax;
 
-    if (ImGui::Begin("Block Property", nullptr))
-    {
-    }
-    ImGui::End();
-    
-    return objectSpacePos;
+    return { x, y, 0.0f };
 }

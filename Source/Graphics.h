@@ -8,6 +8,7 @@
 #include "PrimitiveRenderer.h"
 #include "ShapeRenderer.h"
 #include "ModelRenderer.h"
+#include "EndlessGridRenderer.h"
 #include "Gfx2D.h"
 #include "Grid2DRenderer.h"
 
@@ -65,9 +66,10 @@ public:
 	// モデルレンダラ取得
 	ModelRenderer* GetModelRenderer() const { return modelRenderer.get(); }
 
-	Graphics2D* GetGraphics2D() const { return d2dGraphics.get(); }
+	EndlessGridRenderer* GetEndlessGridRenderer() const { return endlessGridRenderer.get(); }
 
-	Grid2DRenderer* GetGrid2DRenderer() const { return grid2DRenderer.get(); }
+	Graphics2D* GetGfx2D() const { return graphics2D.get(); }
+	Grid2DRenderer* GetGridRenderer() const { return gridRenderer.get(); }
 
 	//ミューテックス取得
 	std::mutex& GetMutex() { return mutex; } //排他制御
@@ -81,9 +83,6 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView>	depthStencilView;
 	D3D11_VIEWPORT									viewport;
 
-	std::unique_ptr<Graphics2D>						d2dGraphics;
-	std::unique_ptr<Grid2DRenderer>					grid2DRenderer;
-
 	float	screenWidth = 0;
 	float	screenHeight = 0;
 
@@ -92,4 +91,8 @@ private:
 	std::unique_ptr<ShapeRenderer>					shapeRenderer;
 	std::unique_ptr<ModelRenderer>					modelRenderer;
 	std::mutex mutex;
+	std::unique_ptr<EndlessGridRenderer>			endlessGridRenderer;
+
+	std::unique_ptr<Graphics2D>						graphics2D;
+	std::unique_ptr<Grid2DRenderer>					gridRenderer;
 };
