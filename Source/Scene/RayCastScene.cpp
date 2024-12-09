@@ -5,6 +5,7 @@
 #include "Collision.h"
 #include "Scene/RayCastScene.h"
 #include"pause.h"
+#include"clear.h"
 
 
 // コンストラクタ
@@ -76,6 +77,7 @@ void RayCastScene::Update(float elapsedTime)
 	}
 
 	Pause::Instance().Update(elapsedTime,refInputMouse);
+	Clear::Instance().Update(elapsedTime,refInputMouse);
 }
 
 // 描画処理
@@ -115,7 +117,7 @@ void RayCastScene::Render(float elapsedTime)
 
 				DirectX::XMFLOAT3 hitPosition, hitNormal;
 
-				//if (Collision::RayCast(s, e, stage->GetTransform(),stage.get()->GetModel(), hitPosition, hitNormal))
+				//if (Collision::RayCast(s, e, Stage::Instance().GetTransform(),Stage::Instance().GetModel(), hitPosition, hitNormal))
 				if ( SpaceDivisionRayCast::Instance().RayCast(s, e, hitPosition, hitNormal))
 				{
 					// 交差した位置と法線を表示
@@ -149,6 +151,8 @@ void RayCastScene::Render(float elapsedTime)
 	SpaceDivisionRayCast::Instance().DebugDraw(rc);
 
 	Pause::Instance().Render(elapsedTime);
+	
+	Clear::Instance().Render(elapsedTime);
 
 	//timer_->DrawTimer({0,0},{1280,720});
 	//timer_->DrawNumber(17,{640,310},{128,72});

@@ -15,6 +15,14 @@ private:
     std::unique_ptr<Sprite> sprite_title_ = nullptr;
     std::unique_ptr<Sprite> sprite_back_ = nullptr;
 
+    //•`‰æˆÊ’u
+    float base_x_ = 160.f;      //1280/8
+    float base_y_ = 120.f;      //720/6
+
+    float clear_scale_ = 0.f;
+    float select_scale_ = 1.f;
+    float title_scale_ = 1.f;
+
     //³‚ÌƒNƒŠƒA
     bool flag_ = false;
 

@@ -222,6 +222,8 @@ SpaceDivisionRayCast::SpaceDivisionRayCast()
         const auto* area = model_divisions_.areas.data();
         for (int area_i=0;area_i<areas_size;area_i++)
         {
+
+            //エリアの中に頂点があるならエリアに保存する
             DirectX::XMFLOAT3 area_min, area_max;
             area_min = {
                 area[area_i].bounding_box.Center.x - area[area_i].bounding_box.Extents.x,
@@ -349,15 +351,18 @@ bool SpaceDivisionRayCast::RayCast(
             DirectX::XMFLOAT3 triangle_b=triangle[area_triangle[triangle_i]].positions[1];
             DirectX::XMFLOAT3 triangle_c=triangle[area_triangle[triangle_i]].positions[2];
 
-            float triangle_min_x = (std::min)((std::min)(triangle_a.x, triangle_b.x), triangle_c.x);
-            float triangle_min_z = (std::min)((std::min)(triangle_a.z, triangle_b.z), triangle_c.z);
-            float triangle_max_x = (std::max)((std::max)(triangle_a.x, triangle_b.x), triangle_c.x);
-            float triangle_max_z = (std::max)((std::max)(triangle_a.z, triangle_b.z), triangle_c.z);
+            //もしトライアングルがレイに重なってないならcontinue;
+            {
+                float triangle_min_x = (std::min)((std::min)(triangle_a.x, triangle_b.x), triangle_c.x);
+                float triangle_min_z = (std::min)((std::min)(triangle_a.z, triangle_b.z), triangle_c.z);
+                float triangle_max_x = (std::max)((std::max)(triangle_a.x, triangle_b.x), triangle_c.x);
+                float triangle_max_z = (std::max)((std::max)(triangle_a.z, triangle_b.z), triangle_c.z);
 
-            if (triangle_min_x > x_max)continue;
-            if (triangle_max_x < x_min)continue;
-            if (triangle_min_z > z_max)continue;
-            if (triangle_max_z < z_min)continue;
+                if (triangle_min_x > x_max)continue;
+                if (triangle_max_x < x_min)continue;
+                if (triangle_min_z > z_max)continue;
+                if (triangle_max_z < z_min)continue;
+            }
 
             DirectX::XMVECTOR vec_triangle_a = DirectX::XMLoadFloat3(&triangle_a);
             DirectX::XMVECTOR vec_triangle_b = DirectX::XMLoadFloat3(&triangle_b);
@@ -483,27 +488,27 @@ void SpaceDivisionRayCast::DrowImgui()
 
         if (draw_box_ >= area_size)draw_box_ = draw_box_ - area_size;
 
-        int triangle_parsent = 0;
-        CollisionMesh::Area* area = collision_mesh.areas.data();
-        ImGui::BeginChild(ImGui::GetID("SpaceDivision"), ImVec2(300, 200), ImGuiWindowFlags_NoTitleBar);
-        {
-            //for (int area_i = 0; area_i < area_size; area_i++)
-            //{
-            //    outs.str("");
-            //    int triangle_in_area = area[area_i].triangle_indices.size();
-            //    if (triangle_in_area <= 0)continue;
-            //    outs << area_i << " : areas_triangles:" << triangle_in_area;
-            //    ImGui::TextWrapped(outs.str().c_str());
-            //    triangle_parsent += triangle_in_area;
-            //}
-        }
-        ImGui::EndChild();
+        //int triangle_parsent = 0;
+        //CollisionMesh::Area* area = collision_mesh.areas.data();
+        //ImGui::BeginChild(ImGui::GetID("SpaceDivision"), ImVec2(300, 200), ImGuiWindowFlags_NoTitleBar);
+        //{
+        //    //for (int area_i = 0; area_i < area_size; area_i++)
+        //    //{
+        //    //    outs.str("");
+        //    //    int triangle_in_area = area[area_i].triangle_indices.size();
+        //    //    if (triangle_in_area <= 0)continue;
+        //    //    outs << area_i << " : areas_triangles:" << triangle_in_area;
+        //    //    ImGui::TextWrapped(outs.str().c_str());
+        //    //    triangle_parsent += triangle_in_area;
+        //    //}
+        //}
+        //ImGui::EndChild();
 
-        triangle_parsent = static_cast<int>((triangle_parsent / (area_triangle_size * 0.01f)));
-        //ImGui::InputInt("", &triangle_parsent);
-        outs.str("");
-        outs << triangle_parsent << ": in_box";
-        ImGui::TextWrapped(outs.str().c_str());
+        //triangle_parsent = static_cast<int>((triangle_parsent / (area_triangle_size * 0.01f)));
+        ////ImGui::InputInt("", &triangle_parsent);
+        //outs.str("");
+        //outs << triangle_parsent << ": in_box";
+        //ImGui::TextWrapped(outs.str().c_str());
 
     }
 
@@ -553,6 +558,7 @@ void SpaceDivisionRayCast::QuadTreeNode::CreateQuadTree(
         {quad_size.x * 0.5f,0.0f,quad_size.z * 0.5f}      //右上
     };
 
+    //子を再起処理で呼び出す
     for (int i = 0; i < 4; i++)
     {
         DirectX::XMVECTOR vec_child_offset = DirectX::XMLoadFloat3(&offsets[i]);
