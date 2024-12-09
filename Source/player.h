@@ -24,8 +24,6 @@ public:
 	// ˆÚ“®“ü—Íˆ—
 	bool InputMove();
 
-	// ƒWƒƒƒ“ƒv“ü—Íˆ—
-	bool InputJump();
 
 	void Update(float elapsedTime);
 

@@ -33,7 +33,7 @@ AnimationScene::AnimationScene(int StageNum)
 		{ 0, 1, 0 }			// è„ÉxÉNÉgÉã
 	);
 	cameraController.SyncCameraToController(Camera::Instance());
-	//PlayerManager::Instance().Register(new Player(DirectX::XMFLOAT3(0, 3, 0), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f), DirectX::XMFLOAT3(0, 180, 0)));
+	PlayerManager::Instance().Register(new Player(DirectX::XMFLOAT3(0, 3, 0), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f), DirectX::XMFLOAT3(0, 180, 0)));
 
 	timer = 0;
 	cube.model = std::make_unique<Model>("Data/Model/Cube/Cube.mdl");
@@ -96,16 +96,16 @@ void AnimationScene::Update(float elapsedTime)
 
 	//	else
 	//	{
-			if (Collision::InteresectCylinderVsCylinder(player->GetPosition(), 2.0f, 2.0f, cube.position, 2.0f, length, outPosition))
-			{
-				player->PlayAnimation("Running", true);
-				player->state = Player::State::Run;
-			}
-			else if (player->state == Player::State::Run && !player->onGround)
-			{
-				player->PlayAnimation("Jump", true);
-				player->state = Player::State::Idle;
-			}
+			//if (Collision::InteresectCylinderVsCylinder(player->GetPosition(), 2.0f, 2.0f, cube.position, 2.0f, length, outPosition))
+			//{
+			//	player->PlayAnimation("Running", true);
+			//	player->state = Player::State::Run;
+			//}
+			//else if (player->state == Player::State::Run && !player->onGround)
+			//{
+			//	player->PlayAnimation("Jump", true);
+			//	player->state = Player::State::Idle;
+			//}
 	//	}
 
 	//	if (Collision::InteresectCylinderVsCylinder(player->GetPosition(), 2.0f, 2.0f, cube2.position, 2.0f, 2.0f, outPosition))

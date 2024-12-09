@@ -36,7 +36,6 @@ void Player::Update(float elapsedTime)
 		wal = 0.03f;
 		if (RayGround(Stage::Instance().GetCollisionTransform(), Stage::Instance().GetCollisionModel()))
 		{
-			PlayAnimation("Run", true);
 			state = Run;
 		}
 		break;
@@ -45,14 +44,19 @@ void Player::Update(float elapsedTime)
 		if (RayGround(Stage::Instance().GetCollisionTransform(), Stage::Instance().GetCollisionModel())) {
 		position.x -= moveSpeed * elapsedTime;
 		onGround;
+		PlayAnimation("Run", true);
 		}
 		else {
 		position.y -= velocity.y;
+			PlayAnimation("Falling", true);
+
 		}
 		break;
 
 	case State::Jump:
 		position.y += wal;
+		PlayAnimation("Climing", true);
+
 		break;
 	case State::EndJump:
 		position.x -= moveSpeed * elapsedTime;
@@ -72,10 +76,10 @@ void Player::Update(float elapsedTime)
 		auto portal = PortalManager::Instance().GetObject_(i);
 
 		DirectX::XMFLOAT3 outPosition;
-		if (Collision::InteresectCylinderVsCylinder(position, radius, height, portal->GetPosition(), portal->GetRadius(), portal->GetHeight(), outPosition) && portal->Enabled())
-		{
+		//if (Collision::InteresectCylinderVsCylinder(position, radius, height, portal->GetPosition(), portal->GetRadius(), portal->GetHeight(), outPosition) && portal->Enabled())
+		//{
 			//PlayerManager::Instance().Remove(this);
-		}
+		//}
 	}
 }
 void Player::PlayAnimation(int index, bool loop)
@@ -275,46 +279,21 @@ bool Player::InputMove()
 
 				Walltime += tt;
 
-				if (Walltime<0.5f) {
-				PlayAnimation("Climing", true);
-				state = State::Jump;
+				if (Walltime < 1.0f) {
+					state = State::Jump;
 				}
 				else
 				{
 					turn();
-					PlayAnimation("Run", true);
 					state = State::Run;
 					Walltime = 0.0f;
 				}
-				//HitP();
 			}
-			else if (before_state == State::Jump)
-			{
-				PlayAnimation("Run", true);
-				state = State::EndJump;
-				Walltime = 0.0f;
-			}
-		}
-		else if(before_state == State::Jump)
-		{
-			PlayAnimation("Run", true);
-			state = State::Run;
 		}
 	return true;
 
 }
 
-// ƒWƒƒƒ“ƒv“ü—Íˆ—
-bool Player::InputJump()
-{
-	if (jumpC==true)
-	{
-			velocity.y = jumpSpeed;
-			velocity.x += 1.0f;
-		return true;
-	}
-	return false;
-}
 
 void Player::turn() {
 		angle.y *= -1.0f;
