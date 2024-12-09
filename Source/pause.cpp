@@ -52,6 +52,7 @@ Pause::Pause()
     pause_select_ = std::make_unique<Sprite>(id,".\\Data\\Sprite\\back_to_select.png");
     pause_title_ = std::make_unique<Sprite>(id,".\\Data\\Sprite\\back_to_title.png");
     pause_back_ = std::make_unique<Sprite>(id);
+    pause_key_ = std::make_unique<Sprite>(id,".\\Data\\Sprite\\pause.png");
 }
 
 void Pause::SetPause(bool flag)
@@ -218,31 +219,44 @@ void Pause::Render(float elapsedTime)
 
         if (add_scale < 0)add_scale = 0;
 
-        //”wŒi
-        pause_back_.get()->Render
-        (dc, 0, 0, 0,
-            Graphics::Instance().GetScreenWidth(), Graphics::Instance().GetScreenHeight(),
-            0.f,
-            0.f, 0.f, 0.f, alpha);
+        if (timer > 0)
+        {
+            //”wŒi
+            pause_back_.get()->Render
+            (dc, 0, 0, 0,
+                Graphics::Instance().GetScreenWidth(), Graphics::Instance().GetScreenHeight(),
+                0.f,
+                0.f, 0.f, 0.f, alpha);
 
-        pause_retry_.get()->Render
-        (dc
-            , pos_scale_x, pos_scale_y, 0,
-            size_scale_x, size_scale_y,
-            0.f,
-            1.f, 1.f, 1.f, 1.f);
-        pause_select_.get()->Render
-        (dc,
-            pos_scale_x, pos_scale_y + (base_size_y_ + base_size_y_ * 0.5f), 0,
-            size_scale_x, size_scale_y,
-            0.f,
-            1.f, 1.f, 1.f, 1.f);
-        pause_title_.get()->Render
-        (dc,
-            pos_scale_x, pos_scale_y + (3.0f * base_size_y_), 0,
-            size_scale_x, size_scale_y,
-            0.f,
-            1.f, 1.f, 1.f, 1.f);
+            pause_retry_.get()->Render
+            (dc
+                , pos_scale_x, pos_scale_y, 0,
+                size_scale_x, size_scale_y,
+                0.f,
+                1.f, 1.f, 1.f, 1.f);
+            pause_select_.get()->Render
+            (dc,
+                pos_scale_x, pos_scale_y + (base_size_y_ + base_size_y_ * 0.5f), 0,
+                size_scale_x, size_scale_y,
+                0.f,
+                1.f, 1.f, 1.f, 1.f);
+            pause_title_.get()->Render
+            (dc,
+                pos_scale_x, pos_scale_y + (3.0f * base_size_y_), 0,
+                size_scale_x, size_scale_y,
+                0.f,
+                1.f, 1.f, 1.f, 1.f);
+        }
+        else
+        {
+                pause_key_.get()->Render(
+                dc,
+                base_pos_x_ * 3.f, base_pos_y_ * 5.f, 0,
+                base_pos_x_, base_pos_y_,
+                0,
+                1, 1, 1, 1);
+            
+        }
 
 
     }

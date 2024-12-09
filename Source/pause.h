@@ -30,6 +30,7 @@ private:
     std::unique_ptr<Sprite> pause_select_;
     std::unique_ptr<Sprite> pause_retry_;
     std::unique_ptr<Sprite> pause_title_;
+    std::unique_ptr<Sprite> pause_key_;
     //‰æ–Ê‘S‘Ì‚ðˆÃ‚­‚·‚é‚½‚ß‚ÌŽlŠpŒ`
     std::unique_ptr<Sprite> pause_back_;
 
