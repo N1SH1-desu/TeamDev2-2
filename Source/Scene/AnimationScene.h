@@ -54,13 +54,11 @@ private:
 			model->UpdateTransform();
 		}
 	};
-	Object								cube;
-	Object								cube2;
 
 	//std::unique_ptr<Stage> stage = nullptr;
 
 
-	std::unique_ptr<SceneModel> sceneModel;
+	//std::unique_ptr<SceneModel> sceneModel;
 	DirectX::XMFLOAT3 scenePosition = { 0.0f, 0.0f, 0.0f };
 	DirectX::XMFLOAT3 sceneScale = { 0.0f, 0.0f, 0.0f };
 	DirectX::XMFLOAT4X4 sceneTransform = { 1.0f,0.0f,0.0f,1.0f, 0.0f,1.0f,0.0f,1.0f, 0.0f,0.0f,1.0f,1.0f, 0.0f,0.0f,0.0f,1.0f };

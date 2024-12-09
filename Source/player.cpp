@@ -275,9 +275,9 @@ bool Player::InputMove()
 
 				Walltime += tt;
 
-				if (Walltime<0.5f) {
-				PlayAnimation("Climing", true);
-				state = State::Jump;
+				if (Walltime < 0.5f) {
+					PlayAnimation("Climing", true);
+					state = State::Jump;
 				}
 				else
 				{
@@ -288,17 +288,18 @@ bool Player::InputMove()
 				}
 				//HitP();
 			}
-			else if (before_state == State::Jump)
-			{
-				PlayAnimation("Run", true);
-				state = State::EndJump;
-				Walltime = 0.0f;
-			}
-		}
-		else if(before_state == State::Jump)
-		{
-			PlayAnimation("Run", true);
-			state = State::Run;
+			//	else if (before_state == State::Jump)
+			//	{
+			//		PlayAnimation("Run", true);
+			//		state = State::EndJump;
+			//		Walltime = 0.0f;
+			//	}
+			//}
+			//else if(before_state == State::Jump)
+			//{
+			//	PlayAnimation("Run", true);
+			//	state = State::Run;
+			//}
 		}
 	return true;
 
