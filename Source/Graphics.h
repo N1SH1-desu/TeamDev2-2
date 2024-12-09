@@ -68,7 +68,11 @@ public:
 	EndlessGridRenderer* GetEndlessGridRenderer() const { return endlessGridRenderer.get(); }
 
 	Graphics2D* GetGfx2D() const { return graphics2D.get(); }
-	Grid2DRenderer* GetGridRenderer() const { return gridRenderer.get(); }
+	IDXGISurface* GetBackBuffer() {
+		Microsoft::WRL::ComPtr<IDXGISurface> backBuf;
+		swapchain->GetBuffer(0, IID_PPV_ARGS(&backBuf));
+		return backBuf.Get();
+	}
 
 private:
 	HWND											hWnd = nullptr;
@@ -89,5 +93,4 @@ private:
 	std::unique_ptr<EndlessGridRenderer>			endlessGridRenderer;
 
 	std::unique_ptr<Graphics2D>						graphics2D;
-	std::unique_ptr<Grid2DRenderer>					gridRenderer;
 };

@@ -2,19 +2,6 @@
 
 void TetroEditerMode::Initialize(ID3D11Device* device, ID2D1DeviceContext* d2dContext)
 {
-}
-
-void TetroEditerMode::Update(float elapsedTime, POINTS mousePos, const Input::KeyInput& keyInput)
-{
-}
-
-void TetroEditerMode::Render(RenderContext rc, ID2D1DeviceContext* d2dContext, ModelRenderer* mRenderer)
-{
-}
-#include "TetroEditerMode.h"
-
-void TetroEditerMode::Initialize(ID3D11Device* device, ID2D1DeviceContext* d2dContext)
-{
 	Graphics2D* gfx2d = Graphics::Instance().GetGfx2D();
 
 	editerUI.Initialize(device);

@@ -67,34 +67,6 @@ void ProjectScreenScene::Update(float elapsedTime)
 	keyInput.Update();
 	POINTS mousePos = refInputMouse->GetPosition();
 	editerMode.Update(elapsedTime, mousePos, keyInput);
-
-	//{
-	//	if (keyInput.GetKeyStatus('G') == Input::Release)
-	//	{
-	//		EditerMode = !EditerMode;
-	//	}
-
-	//	{
-	//		Grid2DRenderer* g2R = Graphics::Instance().GetGridRenderer();
-	//		g2R->Update(elapsedTime, EditerMode);
-	//	}
-
-	//	if (EditerMode)
-	//	{
-	//		POINTS mousePos = refInputMouse->GetPosition();
-
-	//		tetroEditer.Update(mousePos, keyInput, sceneModels.get());
-	//	}
-	//}
-
-	//{
-	//	static bool hoge = false;
-	//	if (keyInput.GetKeyStatus(VK_TAB) == Input::Release)
-	//	{
-	//		hoge = !hoge;
-	//	}
-	//	editerUI.Update(elapsedTime, hoge);
-	//}
 }
 
 // •`‰æˆ—
@@ -122,13 +94,6 @@ void ProjectScreenScene::Render(float elapsedTime)
 	DirectX::XMMATRIX Projection = DirectX::XMLoadFloat4x4(&camera.GetProjection());
 	DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();
 
-	//if (EditerMode)
-	//{
-	//	tetroEditer.Render(rc, modelRenderer);
-	//}
-	//grid2DRenderer->Draw(d2dContext);
-
-	//editerUI.Render(dc);
 	editerMode.Render(rc, d2dContext, modelRenderer);
 }
 
