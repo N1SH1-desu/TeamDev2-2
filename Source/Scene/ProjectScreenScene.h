@@ -17,6 +17,12 @@ public:
 	ProjectScreenScene();
 	~ProjectScreenScene() override = default;
 
+	static ProjectScreenScene& Instance() {
+		static ProjectScreenScene instance;
+		return instance;
+	}
+
+
 	// XVˆ—
 	void Update(float elapsedTime) override;
 
