@@ -30,7 +30,8 @@ void Pause::SetPause(bool flag)
     this->flag_ = flag;
 }
 
-void Pause::Update(float elapsedTime)
+//マウスの位置を獲得したいのでシーンからマウスをもらう
+void Pause::Update(float elapsedTime,InputMouse* mouse)
 {
     if (flag_)
     {

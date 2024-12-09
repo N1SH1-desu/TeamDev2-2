@@ -46,17 +46,18 @@ RayCastScene::RayCastScene()
 // 更新処理
 void RayCastScene::Update(float elapsedTime)
 {
-	// カメラ更新処理
-	cameraController.Update();
-	cameraController.SyncControllerToCamera(camera);
 	static bool pause = false;
 	if (GetAsyncKeyState('P') & 0x01)
 	{
 		pause = !pause;
 		Pause::Instance().SetPause(pause);
 	}
+	
 	if (!Pause::Instance().GetPause())
 	{
+		// カメラ更新処理
+		cameraController.Update();
+		cameraController.SyncControllerToCamera(camera);
 		Stage* stage = &Stage::Instance();
 
 		stage->Update(elapsedTime);
