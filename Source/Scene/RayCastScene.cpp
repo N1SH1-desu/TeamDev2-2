@@ -4,6 +4,7 @@
 #include "Graphics.h"
 #include "Collision.h"
 #include "Scene/RayCastScene.h"
+#include"pause.h"
 
 
 // コンストラクタ
@@ -35,9 +36,8 @@ RayCastScene::RayCastScene()
 	DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(-1, 0, -1);
 	DirectX::XMStoreFloat4x4(&worldTransform, S * R * T);
 
-	stage = std::make_unique<Stage>();
-	space_division_raycast = std::make_unique<SpaceDivisionRayCast>();
-	space_division_raycast->Load(stage.get()->GetModel());
+	Stage::Instance().SelectStage(5);
+	SpaceDivisionRayCast::Instance().Load(Stage::Instance().GetModel());
 
 	//timer_ = std::make_unique<number_namager>();
 	//timer_->SetTimer(60);
@@ -46,22 +46,36 @@ RayCastScene::RayCastScene()
 // 更新処理
 void RayCastScene::Update(float elapsedTime)
 {
-	// カメラ更新処理
-	cameraController.Update();
-	cameraController.SyncControllerToCamera(camera);
-
-	stage.get()->Update(elapsedTime);
-
-	static Model* cur_model = stage.get()->GetModel();
-	if (cur_model!=stage->GetModel())
+	static bool pause = false;
+	if (GetAsyncKeyState('P') & 0x01)
 	{
-		space_division_raycast->Load(stage->GetModel());
-		
-		delete cur_model;
+		pause = !pause;
+		Pause::Instance().SetPause(pause);
+	}
+	
+	if (!Pause::Instance().GetPause())
+	{
+		// カメラ更新処理
+		cameraController.Update();
+		cameraController.SyncControllerToCamera(camera);
+		Stage* stage = &Stage::Instance();
+
+	stage->Update(elapsedTime);
+
+
+	static Model* cur_model = stage->GetModel();
+	if (cur_model != stage->GetModel())
+	{
+
+		SpaceDivisionRayCast::Instance().Reload(stage->GetModel());
+
 		cur_model = nullptr;
 		cur_model = stage->GetModel();
 	}
 	//timer_->UpdateTimer(elapsedTime);
+	}
+
+	Pause::Instance().Update(elapsedTime,refInputMouse);
 }
 
 // 描画処理
@@ -88,21 +102,21 @@ void RayCastScene::Render(float elapsedTime)
 	{
 		DirectX::XMFLOAT3 s;
 		DirectX::XMFLOAT3 e;
-		float size_x = 1.f;
-		float size_z = 1.f;
-		float add_size = 2.f;
+		float size_x = 10.f;
+		float size_z = 2.f;
+		float add_size = 1.f;
 		for (float x = -size_x; x < size_x; x+=add_size)
 		{
 			for (float z = -size_z; z < size_z; z+=add_size)
 			{
-
-				s = { x,10.f,-4.f+z };
-				e = { x,-10.f,4.f+z };
+				
+				s = { x,5.f,0.f+z };
+				e = { x,-5.f,0.f+z };
 
 				DirectX::XMFLOAT3 hitPosition, hitNormal;
 
 				//if (Collision::RayCast(s, e, stage->GetTransform(),stage.get()->GetModel(), hitPosition, hitNormal))
-				if ( space_division_raycast->RayCast(s, e,  stage->GetModel(), hitPosition, hitNormal))
+				if ( SpaceDivisionRayCast::Instance().RayCast(s, e, hitPosition, hitNormal))
 				{
 					// 交差した位置と法線を表示
 					shapeRenderer->DrawSphere(hitPosition, 0.2f, { 1, 0, 0, 1 });
@@ -131,8 +145,10 @@ void RayCastScene::Render(float elapsedTime)
 	rc.deviceContext = dc;
 	rc.renderState = renderState;
 	rc.camera = &camera;
-	stage.get()->Render(elapsedTime,rc);
-	space_division_raycast->DebugDraw(rc,stage->GetModel());
+	Stage::Instance().Render(elapsedTime,rc);
+	SpaceDivisionRayCast::Instance().DebugDraw(rc);
+
+	Pause::Instance().Render(elapsedTime);
 
 	//timer_->DrawTimer({0,0},{1280,720});
 	//timer_->DrawNumber(17,{640,310},{128,72});
@@ -141,8 +157,8 @@ void RayCastScene::Render(float elapsedTime)
 // GUI描画処理
 void RayCastScene::DrawGUI()
 {
-	stage.get()->DrawGUI();
-	space_division_raycast->DrowImgui();
+	Stage::Instance().DrawGUI();
+	SpaceDivisionRayCast::Instance().DrowImgui();
 }
 
 // レイキャスト

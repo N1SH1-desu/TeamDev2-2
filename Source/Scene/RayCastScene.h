@@ -42,7 +42,5 @@ private:
 	std::unique_ptr<Model>				model;
 	DirectX::XMFLOAT4X4					worldTransform = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 
-	std::unique_ptr<Stage> stage;
-	std::unique_ptr<SpaceDivisionRayCast> space_division_raycast;
 	//std::unique_ptr<number_namager> timer_;
 };

@@ -14,6 +14,8 @@
 #include "PortalManager.h"
 #include"Scene/ProjectScreenScene.h"
 #include"space_division_raycast.h"
+//add_by_nikaido
+#include"pause.h"
 
 // コンストラクタ
 AnimationScene::AnimationScene(int StageNum)
@@ -46,6 +48,10 @@ AnimationScene::AnimationScene(int StageNum)
 	EffectManager::instance().Initialize();
 	//sceneModel = std::make_unique<SceneModel>("Data/Model/TetrisBlock/scene.mdl");
 	sceneScale = { 0.1f, 0.1f, 0.1f };
+
+	//add_by_nikaido_iichiko
+	//SpaceDivisionRayCast::Instance().Load(stage->GetModel());
+	Pause::Instance().SetStageNum(StageNum);
 }
 
 AnimationScene::~AnimationScene() {
@@ -129,8 +135,8 @@ void AnimationScene::Render(float elapsedTime)
 	dc->RSSetState(renderState->GetRasterizerState(RasterizerState::SolidCullNone));
 
 	// グリッド描画
-	primitiveRenderer->DrawGrid(20, 1);
-	primitiveRenderer->Render(dc, Camera::Instance().GetView(), Camera::Instance().GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	//primitiveRenderer->DrawGrid(20, 1);
+	//primitiveRenderer->Render(dc, Camera::Instance().GetView(), Camera::Instance().GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
 	ProjectScreenScene::Instance().Render(elapsedTime);
 
