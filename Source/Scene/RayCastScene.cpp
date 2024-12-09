@@ -60,24 +60,22 @@ void RayCastScene::Update(float elapsedTime)
 		cameraController.SyncControllerToCamera(camera);
 		Stage* stage = &Stage::Instance();
 
-		stage->Update(elapsedTime);
+	stage->Update(elapsedTime);
 
 
-		static Model* cur_model = stage->GetModel();
-		if (cur_model != stage->GetModel())
-		{
-
-			SpaceDivisionRayCast::Instance().Reload(stage->GetModel());
-
-			cur_model = nullptr;
-			cur_model = stage->GetModel();
-		}
-		//timer_->UpdateTimer(elapsedTime);
-	}
-	else
+	static Model* cur_model = stage->GetModel();
+	if (cur_model != stage->GetModel())
 	{
-		Pause::Instance().Update(elapsedTime);
+
+		SpaceDivisionRayCast::Instance().Reload(stage->GetModel());
+
+		cur_model = nullptr;
+		cur_model = stage->GetModel();
 	}
+	//timer_->UpdateTimer(elapsedTime);
+	}
+
+	Pause::Instance().Update(elapsedTime,refInputMouse);
 }
 
 // •`‰æˆ—
@@ -112,8 +110,8 @@ void RayCastScene::Render(float elapsedTime)
 			for (float z = -size_z; z < size_z; z+=add_size)
 			{
 				
-				s = { x,2.f,0.f+z };
-				e = { x,-2.f,0.f+z };
+				s = { x,5.f,0.f+z };
+				e = { x,-5.f,0.f+z };
 
 				DirectX::XMFLOAT3 hitPosition, hitNormal;
 

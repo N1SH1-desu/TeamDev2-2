@@ -14,7 +14,7 @@
 #include "SceneManager.h"
 #include "SceneTitle.h"
 
-#define MANAGER 0
+#define MANAGER 1
 
 // ‚’¼“¯ŠúŠÔŠuİ’è
 static const int syncInterval = 1;
@@ -45,7 +45,7 @@ Framework::Framework(HWND hWnd)
 	//scene = std::make_unique<HitStopScene>();
 
 #if MANAGER
-	SceneManager::Instance().ChangeScene(new SceneTitle);
+	SceneManager::Instance().ChangeScene(new RayCastScene);
 #else
 	scene = std::make_unique<RayCastScene>();
 #endif
