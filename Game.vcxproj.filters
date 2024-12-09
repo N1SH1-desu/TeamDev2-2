@@ -82,6 +82,7 @@
     <ClCompile Include="Source\TrapManager.cpp" />
     <ClCompile Include="Source\pause.cpp" />
     <ClCompile Include="Source\Scene\RayCastScene.cpp" />
+    <ClCompile Include="Source\clear.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\imgui-docking\imconfig.h" />
@@ -163,6 +164,7 @@
     <ClInclude Include="Source\TrapManager.h" />
     <ClInclude Include="Source\pause.h" />
     <ClInclude Include="Source\Scene\RayCastScene.h" />
+    <ClInclude Include="Source\clear.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\Basic.hlsli" />

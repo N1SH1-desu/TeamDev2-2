@@ -131,6 +131,7 @@
     <ClInclude Include="Source\BasicShader.h" />
     <ClInclude Include="Source\Cage.h" />
     <ClInclude Include="Source\Camera.h" />
+    <ClInclude Include="Source\clear.h" />
     <ClInclude Include="Source\KeyManager.h" />
     <ClInclude Include="Source\Collision.h" />
     <ClInclude Include="Source\ControlTetrisBlock.h" />
@@ -209,6 +210,7 @@
     <ClCompile Include="Source\BasicShader.cpp" />
     <ClCompile Include="Source\Cage.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
+    <ClCompile Include="Source\clear.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\Dialog.cpp" />
     <ClCompile Include="Source\FetchModelFromSceneAsset.cpp" />
