@@ -123,7 +123,7 @@ void AnimationScene::Update(float elapsedTime)
 
 	RECT viewport = { 0, 0, static_cast<LONG>(Graphics::Instance().GetScreenWidth()), static_cast<LONG>(Graphics::Instance().GetScreenHeight()) };
 	
-	scenePosition = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size, viewport, Projection, View, World);
+	//scenePosition = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size, viewport, Projection, View, World);
 
 	{
 		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(sceneScale.x, sceneScale.y, sceneScale.z);
@@ -151,8 +151,8 @@ void AnimationScene::Render(float elapsedTime)
 	RenderState* renderState = Graphics::Instance().GetRenderState();
 	PrimitiveRenderer* primitiveRenderer = Graphics::Instance().GetPrimitiveRenderer();
 	ModelRenderer* modelRenderer = Graphics::Instance().GetModelRenderer();
-	Grid2DRenderer* grid2dRenderer = Graphics::Instance().GetGrid2DRenderer();
-	Graphics2D* gfx2D = Graphics::Instance().GetGraphics2D();
+	//Grid2DRenderer* grid2dRenderer = Graphics::Instance().GetGrid2DRenderer();
+	//Graphics2D* gfx2D = Graphics::Instance().GetGraphics2D();
 
 	//// ƒ‚ƒfƒ‹•`‰æ
 	RenderContext rc;
