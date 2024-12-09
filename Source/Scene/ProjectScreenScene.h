@@ -5,10 +5,8 @@
 #include "Camera.h"
 #include "FreeCameraController.h"
 #include "Model.h"
-#include "FetchModelFromSceneAsset.h"
-#include "Tetromino.h"
 #include "KeyInput.h"
-#include "TetroEditerUI.h"
+#include "TetroEditerMode.h"
 
 
 class ProjectScreenScene : public Scene
@@ -16,6 +14,12 @@ class ProjectScreenScene : public Scene
 public:
 	ProjectScreenScene();
 	~ProjectScreenScene() override = default;
+
+	static ProjectScreenScene& Instance() {
+		static ProjectScreenScene instance;
+		return instance;
+	}
+
 
 	// çXêVèàóù
 	void Update(float elapsedTime) override;
@@ -41,10 +45,6 @@ private:
 	std::unique_ptr<Sprite>				sprite;
 	Object								stage;
 	std::vector<Object>					objs;
-	std::unique_ptr<SceneModel>			sceneModels;
-	Tetromino::TetrominoEditor			tetroEditer;
-	
 	Input::KeyInput keyInput;
-
-	TetroEditerUI editerUI;
+	TetroEditerMode editerMode;
 };
