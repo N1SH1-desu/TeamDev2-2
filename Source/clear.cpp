@@ -68,13 +68,13 @@ Clear::Clear()
 
 void Clear::Update(float elapsedTime, InputMouse* mouse)
 {
-    static float timer = 0.f;
+    static float animation_timer = 0.f;
     if (flag_)
     {
-        if (timer <= 1.f)
+        if (animation_timer <= 1.f)
         {
-            clear_scale_ = clear_calc::EaseOutBounce(timer);
-            timer+=elapsedTime;
+            clear_scale_ = clear_calc::EaseOutBounce(animation_timer);
+            animation_timer+=elapsedTime;
         }
         else
         {
@@ -92,6 +92,7 @@ void Clear::Update(float elapsedTime, InputMouse* mouse)
             if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
             {
                 SceneManager::Instance().ChangeScene(new SceneStageSelect);
+                animation_timer = 0.f;
             }
         }
         else
@@ -107,6 +108,7 @@ void Clear::Update(float elapsedTime, InputMouse* mouse)
             if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
             {
                 SceneManager::Instance().ChangeScene(new SceneTitle);
+                animation_timer = 0.f;
             }
         }
         else
@@ -116,7 +118,7 @@ void Clear::Update(float elapsedTime, InputMouse* mouse)
     }
     else
     {
-        timer = 0.f;
+        animation_timer = 0.f;
     }
 }
 
