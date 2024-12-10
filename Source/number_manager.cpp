@@ -10,8 +10,8 @@
 //w:切り出しサイズのy
 inline DirectX::XMFLOAT4 CutNumber(int number)
 {
-    const int number_size_x = 142;
-    const int number_size_y = 210;
+    const float number_size_x = 142;
+    const float number_size_y = 210;
 
     DirectX::XMFLOAT4 cut_number;
 
