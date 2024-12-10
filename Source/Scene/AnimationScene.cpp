@@ -59,6 +59,9 @@ void AnimationScene::Initialize()
 	sceneScale = { 0.1f, 0.1f, 0.1f };
 	//add_by_nikaido_iichiko
 	//SpaceDivisionRayCast::Instance().Load(stage->GetModel());
+
+	pause = false;
+	Pause::Instance().SetPause(pause);
 }
 
 AnimationScene::~AnimationScene() 

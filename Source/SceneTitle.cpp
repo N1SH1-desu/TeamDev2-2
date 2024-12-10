@@ -17,6 +17,8 @@ void SceneTitle::Initialize()
 	Title = std::make_unique<Sprite>(device, "./Data/Sprite/Title.jpg");
 	PlayButton[NORMAL] = std::make_unique<Sprite>(device, "./Data/Sprite/PlayButton.png");
 	PlayButton[HOVER] = std::make_unique<Sprite>(device, "./Data/Sprite/PlayButton_Hover.png");
+
+	Interval = 0.0f;
 }
 
 void SceneTitle::Update(float elapsedTime)
@@ -24,8 +26,10 @@ void SceneTitle::Update(float elapsedTime)
 	function& func = function::getInstance();
 	InputMouse& input = InputMouse::Instance();
 
+	Interval += elapsedTime;
+
 	if (func.Click_Colision(DirectX::XMFLOAT2(550, 480), DirectX::XMFLOAT2(168, 88)) && input.IsLBottonDowned())
-		SceneManager::Instance().ChangeScene(new SceneStageSelect);
+		if (Interval > 0.5f) SceneManager::Instance().ChangeScene(new SceneStageSelect);
 }
 
 void SceneTitle::Render(float elapsedTime)

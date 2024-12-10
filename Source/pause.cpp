@@ -7,6 +7,7 @@
 #include"SceneStageSelect.h"
 #include"SceneManager.h"
 #include"Scene/AnimationScene.h"
+#include "SceneLoading.h"
 
 namespace pause_calc
 {
@@ -108,7 +109,7 @@ void Pause::Update(float elapsedTime)
                 || (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
                 )
             {
-                SceneManager::Instance().ChangeScene(new AnimationScene(stage_nun_));
+                SceneManager::Instance().ChangeScene(new SceneLoading(new AnimationScene(stage_nun_)));
                 scene_changed = true;
             }
         }
