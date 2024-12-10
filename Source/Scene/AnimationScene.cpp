@@ -15,6 +15,8 @@
 //add_by_nikaido
 #include"pause.h"
 
+bool pause = false;
+
 AnimationScene::AnimationScene(int StageNum) : StageNumber(StageNum)
 {
 	EffectManager::instance().Initialize();
@@ -55,10 +57,8 @@ void AnimationScene::Initialize()
 
 	sceneModel = std::make_unique<SceneModel>("Data/Model/TetrisBlock/scene.mdl");
 	sceneScale = { 0.1f, 0.1f, 0.1f };
-
 	//add_by_nikaido_iichiko
 	//SpaceDivisionRayCast::Instance().Load(stage->GetModel());
-	Pause::Instance().SetStageNum(StageNum);
 }
 
 AnimationScene::~AnimationScene() 
@@ -151,6 +151,13 @@ void AnimationScene::Update(float elapsedTime)
 	Stage::Instance().Update(elapsedTime);
 	KeyManager::Instance().Update(elapsedTime);
 	PortalManager::Instance().Update(elapsedTime);
+	Pause::Instance().Update(elapsedTime);
+
+	if (GetAsyncKeyState('P') & 0x01)
+	{
+		pause = !pause;
+		Pause::Instance().SetPause(pause);
+	}
 }
 
 // •`‰æˆ—
@@ -189,6 +196,7 @@ void AnimationScene::Render(float elapsedTime)
 	TrapManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
 	KeyManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
 	PortalManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
+	Pause::Instance().Render(elapsedTime);
 
 	sceneModel->SelectedBlockRender(rc, modelRenderer, sceneTransform, 0u, ShaderId::Lambert);
 }

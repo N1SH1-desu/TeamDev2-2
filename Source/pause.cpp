@@ -68,13 +68,13 @@ void Pause::SetPause(bool flag)
     this->flag_ = flag;
 }
 
-void Pause::Update(float elapsedTime,InputMouse* mouse)
+void Pause::Update(float elapsedTime)
 {
     
 
     if (this->flag_)
     {
-        POINTS mouse_pos = mouse->GetPosition();
+        POINTS mouse_pos = InputMouse::Instance().GetPosition();
 
         bool retry_bool_pos = (
             (base_pos_x_ < mouse_pos.x && mouse_pos.x < (base_pos_x_ + base_size_x_) &&
