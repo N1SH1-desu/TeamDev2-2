@@ -24,6 +24,7 @@ namespace pause_calc
 
 Pause::Pause()
     :flag_{false}
+    ,animation_timer_{0.f}
 {
     ID3D11Device* id = Graphics::Instance().GetDevice();
     HRESULT hr{ S_OK };
@@ -71,6 +72,9 @@ void Pause::SetPause(bool flag)
 void Pause::Update(float elapsedTime)
 {
     
+    //いずれかの処理が行われシーンが変わるならtrue;
+    bool scene_changed = false;
+
 
     if (this->flag_)
     {
@@ -105,6 +109,7 @@ void Pause::Update(float elapsedTime)
                 )
             {
                 SceneManager::Instance().ChangeScene(new AnimationScene(stage_nun_));
+                scene_changed = true;
             }
         }
         else
@@ -119,6 +124,7 @@ void Pause::Update(float elapsedTime)
                 )
             {
                 SceneManager::Instance().ChangeScene(new SceneStageSelect);
+                scene_changed = true;
             }
         }
         else
@@ -133,6 +139,7 @@ void Pause::Update(float elapsedTime)
                 )
             {
                 SceneManager::Instance().ChangeScene(new SceneTitle);
+                scene_changed = true;
             }
 
         }
@@ -146,6 +153,10 @@ void Pause::Update(float elapsedTime)
         GetAsyncKeyState(VK_SPACE);
         for (int i = 0; i < 3; i++)scale_[i] = 1.0f;
     }
+
+    if (scene_changed) {
+        animation_timer_ = 0.f;
+    }
 }
 
 void Pause::Render(float elapsedTime)
@@ -154,7 +165,6 @@ void Pause::Render(float elapsedTime)
     //サンプラーステートの設定
     dc->PSSetSamplers(0, 1, sampler_state_.GetAddressOf());
 
-    static float timer = 0.f;
     static float add_scale = 0;
     static float alpha = 0;
    
@@ -169,11 +179,11 @@ void Pause::Render(float elapsedTime)
 
 
         //0~1までのスケールの遷移のイージング関数
-        if (timer <= 1.f)
+        if (animation_timer_ <= 1.f)
         {
-            add_scale = pause_calc::EaseInOutBack(timer);
-            alpha = pause_calc::EaseInOutBack(timer) * 0.5f;
-            timer += elapsedTime;
+            add_scale = pause_calc::EaseInOutBack(animation_timer_);
+            alpha = pause_calc::EaseInOutBack(animation_timer_) * 0.5f;
+            animation_timer_ += elapsedTime;
         }
         else
         {
@@ -213,11 +223,11 @@ void Pause::Render(float elapsedTime)
     else
     {
         //0~1までのスケールの遷移のイージング関数
-        if (timer >= 0.f)
+        if (animation_timer_ >= 0.f)
         {
-            add_scale = pause_calc::EaseInOutBack(timer);
-            alpha = pause_calc::EaseInOutBack(timer) * 0.5f;
-            timer -= elapsedTime;
+            add_scale = pause_calc::EaseInOutBack(animation_timer_);
+            alpha = pause_calc::EaseInOutBack(animation_timer_) * 0.5f;
+            animation_timer_ -= elapsedTime;
         }
         else
         { 
@@ -227,7 +237,7 @@ void Pause::Render(float elapsedTime)
 
         if (add_scale < 0)add_scale = 0;
 
-        if (timer > 0)
+        if (animation_timer_ > 0)
         {
             //背景
             pause_back_.get()->Render

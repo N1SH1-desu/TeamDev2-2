@@ -17,7 +17,7 @@ private:
     float timer_;
     LARGE_INTEGER frequency_, start_, now_;
 
-    float sprite_depth_ = 0.1;
+    float sprite_depth_ = 0.1f;
 public:
     static NumberManager& Instance() {
         static NumberManager instance_;

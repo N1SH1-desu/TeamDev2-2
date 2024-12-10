@@ -27,6 +27,10 @@ private:
     //現在のステージを保持
     int stage_nun_;
 
+    float animation_timer_ = 0.f;
+
+
+
     //表示する文字
     std::unique_ptr<Sprite> pause_select_;
     std::unique_ptr<Sprite> pause_retry_;
@@ -37,7 +41,7 @@ private:
 
 public:
     Pause();
-    ~Pause() = default;
+    ~Pause() { animation_timer_ = 0.f; }
 
     static Pause& Instance() {
         static Pause pause;
