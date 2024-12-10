@@ -131,6 +131,7 @@
     <ClInclude Include="Source\BasicShader.h" />
     <ClInclude Include="Source\Cage.h" />
     <ClInclude Include="Source\Camera.h" />
+    <ClInclude Include="Source\function.h" />
     <ClInclude Include="Source\KeyManager.h" />
     <ClInclude Include="Source\Collision.h" />
     <ClInclude Include="Source\ControlTetrisBlock.h" />
@@ -160,6 +161,7 @@
     <ClInclude Include="Source\PortalManager.h" />
     <ClInclude Include="Source\ResourceManager.h" />
     <ClInclude Include="Source\Rock.h" />
+    <ClInclude Include="Source\SceneLoading.h" />
     <ClInclude Include="Source\SceneManager.h" />
     <ClInclude Include="Source\SceneStageSelect.h" />
     <ClInclude Include="Source\SceneTitle.h" />
@@ -215,6 +217,7 @@
     <ClCompile Include="Source\fogs.cpp" />
     <ClCompile Include="Source\Framework.cpp" />
     <ClCompile Include="Source\FreeCameraController.cpp" />
+    <ClCompile Include="Source\funtion.cpp" />
     <ClCompile Include="Source\Gfx2D.cpp" />
     <ClCompile Include="Source\Gfx2DSandbox.cpp" />
     <ClCompile Include="Source\Grid2DRenderer.cpp" />
@@ -233,6 +236,7 @@
     <ClCompile Include="Source\PortalManager.cpp" />
     <ClCompile Include="Source\ResourceManager.cpp" />
     <ClCompile Include="Source\Rock.cpp" />
+    <ClCompile Include="Source\SceneLoading.cpp" />
     <ClCompile Include="Source\SceneManager.cpp" />
     <ClCompile Include="Source\SceneStageSelect.cpp" />
     <ClCompile Include="Source\SceneTitle.cpp" />

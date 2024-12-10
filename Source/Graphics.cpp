@@ -4,6 +4,7 @@
 void Graphics::Initialize(HWND hWnd)
 {
 	this->hWnd = hWnd;
+
 	// 画面のサイズを取得する。
 	RECT rc;
 	GetClientRect(hWnd, &rc);

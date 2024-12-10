@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <queue>
 #include <optional>
+#include "Singleton.h"
 
 struct MouseCommand
 {
@@ -24,16 +25,12 @@ struct MouseCommand
 	std::optional<POINTS> position;
 };
 
-class InputMouse
+class InputMouse : public Singleton<InputMouse>
 {
+	friend class Singleton<InputMouse>;
 public:
-	InputMouse(InputMouse&) = delete;
-	InputMouse(InputMouse&&) = delete;
-	InputMouse& operator=(InputMouse&) = delete;
-	InputMouse& operator=(InputMouse&&) = delete;
 
-public:
-	InputMouse(HWND hWnd);
+	void Initialize(HWND hWnd);
 
 	void InQueueCommand(MouseCommand&& mouseCmd) { commandList.push(std::move(mouseCmd)); }
 
@@ -53,4 +50,3 @@ private:
 
 	std::queue<MouseCommand> commandList;
 };
- 

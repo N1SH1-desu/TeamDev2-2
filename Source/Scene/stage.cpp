@@ -71,7 +71,7 @@ void Stage::Update(float elapsedTime)
 
 		if (Interval > 3.0f)
 		{
-			TrapManager::Instance().Register(new Rock("./Data/Model/Rock.mdl", DirectX::XMFLOAT3(1.0f, 10.0f, 1.0f), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f), DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), 1.0f, 1.0f));
+			TrapManager::Instance().Register(new Rock("./Data/Model/Rock/Rock.mdl", DirectX::XMFLOAT3(1.0f, 10.0f, 1.0f), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f), DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), 1.0f, 1.0f));
 			Interval = 0.0f;
 		}
 		break;
@@ -83,10 +83,6 @@ void Stage::Render(float elapsedTime, RenderContext &rc)
 	ID3D11DeviceContext* dc = Graphics::Instance().GetDeviceContext();
 	RenderState* renderState = Graphics::Instance().GetRenderState();
 	PrimitiveRenderer* primitiveRenderer = Graphics::Instance().GetPrimitiveRenderer();
-	// レンダーステート設定
-	dc->OMSetBlendState(renderState->GetBlendState(BlendState::Opaque), nullptr, 0xFFFFFFFF);
-	dc->OMSetDepthStencilState(renderState->GetDepthStencilState(DepthState::TestAndWrite), 0);
-	dc->RSSetState(renderState->GetRasterizerState(RasterizerState::SolidCullNone));
 
 	ModelRenderer* modelRenderer = Graphics::Instance().GetModelRenderer();
 	// モデル描画
@@ -109,38 +105,15 @@ void Stage::DrawGUI()
 	float window_alpha = 0.25f;
 	ImGui::SetNextWindowBgAlpha(window_alpha);
 
-	if (ImGui::Begin(u8"stage", nullptr, ImGuiWindowFlags_NoNavInputs))
+	/*if (ImGui::Begin(u8"stage", nullptr, ImGuiWindowFlags_NoNavInputs))
 	{
-		if (ImGui::Button("0"))
-		{
-			SelectStage(0);
-		}
-
-		if (ImGui::Button("1"))
-		{
-			SelectStage(1);
-		}
-		if (ImGui::Button("2"))
-		{
-			SelectStage(2);
-		}
-		if (ImGui::Button("3"))
-		{
-			SelectStage(3);
-		}
-		if (ImGui::Button("4"))
-		{
-			TrapManager::Instance().Clear();
-			SelectStage(4);
-		}
-		if (ImGui::Button("5"))
-		{
-			SelectStage(5);
-		}
-		if (ImGui::Button("6"))
-		{
-			SelectStage(6);
-		}
+		if (ImGui::Button("0")) SelectStage(0);
+		if (ImGui::Button("1")) SelectStage(1);
+		if (ImGui::Button("2")) SelectStage(2);
+		if (ImGui::Button("3")) SelectStage(3);
+		if (ImGui::Button("4")) SelectStage(4);
+		if (ImGui::Button("5")) SelectStage(5);
+		if (ImGui::Button("6")) SelectStage(6);
 
 		ImGui::Spacing();
 		{
@@ -151,7 +124,7 @@ void Stage::DrawGUI()
 			}
 		}
 	}
-	ImGui::End();
+	ImGui::End();*/
 #endif
 }
 
@@ -159,6 +132,7 @@ void Stage::SelectStage(int selector)
 {
 	if (selector > stage_number::stage_max_num)return;
 
+	now_stage = selector;
 	stage_.model.release();
 	stage_.model = nullptr;
 
@@ -201,9 +175,23 @@ void Stage::ObjectSetting(int selecter)
 	switch (selecter)
 	{
 	case 0:
-		TrapManager::Instance().Register(new PoisonGus("Data/Model/Floor.mdl", DirectX::XMFLOAT3(0.0f, 3.0f, 0.0f), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f)));
-		KeyManager::Instance().Register(new Key("Data/Model/key.mdl", DirectX::XMFLOAT3(3.0f, 0.0f, 0.0f), DirectX::XMFLOAT3(0.03f, 0.03f, 0.03f)));
+		TrapManager::Instance().Register(new PoisonGus("Data/Model/Floor/Floor.mdl", DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f)));
+		KeyManager::Instance().Register(new Key("Data/Model/key.mdl", DirectX::XMFLOAT3(3.0f, 5.0f, 0.0f), DirectX::XMFLOAT3(0.03f, 0.03f, 0.03f)));
 		PortalManager::Instance().Register(new Portal("Data/Model/portal.mdl", DirectX::XMFLOAT3(-3.0f, 0.0f, 0.0f), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f)));
+		break;
+
+	case 2:
+		KeyManager::Instance().Register(new Key("Data/Model/key.mdl", DirectX::XMFLOAT3(0.0f, 2.0f, 0.0f), DirectX::XMFLOAT3(0.03f, 0.03f, 0.03f)));
+		PortalManager::Instance().Register(new Portal("Data/Model/portal.mdl", DirectX::XMFLOAT3(-10.0f, 0.0f, 0.0f), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f)));
+		break;
+
+	case 3:
+		
+		break;
+	case 4:
+		KeyManager::Instance().Register(new Key("Data/Model/key.mdl", DirectX::XMFLOAT3(10.0f, 7.5f, 0.0f), DirectX::XMFLOAT3(0.03f, 0.03f, 0.03f)));
+		KeyManager::Instance().Register(new Key("Data/Model/key.mdl", DirectX::XMFLOAT3(-10.0f, 7.5f, 0.0f), DirectX::XMFLOAT3(0.03f, 0.03f, 0.03f)));
+		PortalManager::Instance().Register(new Portal("Data/Model/portal.mdl", DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), DirectX::XMFLOAT3(0.007f, 0.007f, 0.007f)));
 		break;
 	}
 }

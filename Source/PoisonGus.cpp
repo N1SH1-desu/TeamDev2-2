@@ -43,8 +43,4 @@ void PoisonGus::Render(ModelRenderer* modelRenderer, RenderContext& rc, ShaderId
 	modelRenderer->Render(rc, transform, model.get(), ID);
 
 	EffectManager& effect = EffectManager::instance();
-
-	ImGui::Begin("Gus");
-	ImGui::Text("Play : %d", static_cast<int>(effect.GetEffect(POISON)->IsPlay()));
-	ImGui::End();
 }

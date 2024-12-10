@@ -4,9 +4,9 @@
 #include <Graphics.h>
 #include <cmath>
 
-DirectX::XMFLOAT3 SetBlockPosFromMousePos(InputMouse* input, float grid_size, RECT viewPort, DirectX::XMMATRIX& Projection, DirectX::XMMATRIX& View, DirectX::XMMATRIX& world)
+DirectX::XMFLOAT3 SetBlockPosFromMousePos(float grid_size, RECT viewPort, DirectX::XMMATRIX& Projection, DirectX::XMMATRIX& View, DirectX::XMMATRIX& world)
 {
-    POINTS pos = input->GetPosition();
+    POINTS pos = InputMouse::Instance().GetPosition();
 
     short x = pos.x / (static_cast<short>(grid_size));
     short y = pos.y / (static_cast<short>(grid_size));
@@ -53,10 +53,10 @@ DirectX::XMFLOAT3 SetBlockPosFromMousePos(InputMouse* input, float grid_size, RE
         objectSpacePos.y = value;
     }
 
-    if (ImGui::Begin("Block Property", nullptr))
+   /* if (ImGui::Begin("Block Property", nullptr))
     {
     }
-    ImGui::End();
+    ImGui::End();*/
     
     return objectSpacePos;
 }

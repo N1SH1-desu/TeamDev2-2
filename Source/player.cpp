@@ -74,7 +74,7 @@ void Player::Update(float elapsedTime)
 		DirectX::XMFLOAT3 outPosition;
 		if (Collision::InteresectCylinderVsCylinder(position, radius, height, portal->GetPosition(), portal->GetRadius(), portal->GetHeight(), outPosition) && portal->Enabled())
 		{
-			//PlayerManager::Instance().Remove(this);
+			PlayerManager::Instance().Remove(this);
 		}
 	}
 }
