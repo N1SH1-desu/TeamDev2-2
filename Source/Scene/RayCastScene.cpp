@@ -5,6 +5,7 @@
 #include "Collision.h"
 #include "Scene/RayCastScene.h"
 #include"pause.h"
+#include"clear.h"
 
 
 // コンストラクタ
@@ -39,8 +40,7 @@ RayCastScene::RayCastScene()
 	Stage::Instance().SelectStage(5);
 	SpaceDivisionRayCast::Instance().Load(Stage::Instance().GetModel());
 
-	//timer_ = std::make_unique<number_namager>();
-	//timer_->SetTimer(60);
+	NumberManager::Instance().SetTimer(180);
 }
 
 // 更新処理
@@ -60,22 +60,24 @@ void RayCastScene::Update(float elapsedTime)
 		cameraController.SyncControllerToCamera(camera);
 		Stage* stage = &Stage::Instance();
 
-	stage->Update(elapsedTime);
+		stage->Update(elapsedTime);
 
 
-	static Model* cur_model = stage->GetModel();
-	if (cur_model != stage->GetModel())
-	{
+		static Model* cur_model = stage->GetModel();
+		if (cur_model != stage->GetModel())
+		{
 
-		SpaceDivisionRayCast::Instance().Reload(stage->GetModel());
+			SpaceDivisionRayCast::Instance().Reload(stage->GetModel());
 
-		cur_model = nullptr;
-		cur_model = stage->GetModel();
-	}
-	//timer_->UpdateTimer(elapsedTime);
+			cur_model = nullptr;
+			cur_model = stage->GetModel();
+		}
+		//timer_->UpdateTimer(elapsedTime);
+		NumberManager::Instance().UpdateTimer();
 	}
 
 	Pause::Instance().Update(elapsedTime,refInputMouse);
+	Clear::Instance().Update(elapsedTime,refInputMouse);
 }
 
 // 描画処理
@@ -115,7 +117,7 @@ void RayCastScene::Render(float elapsedTime)
 
 				DirectX::XMFLOAT3 hitPosition, hitNormal;
 
-				//if (Collision::RayCast(s, e, stage->GetTransform(),stage.get()->GetModel(), hitPosition, hitNormal))
+				//if (Collision::RayCast(s, e, Stage::Instance().GetTransform(),Stage::Instance().GetModel(), hitPosition, hitNormal))
 				if ( SpaceDivisionRayCast::Instance().RayCast(s, e, hitPosition, hitNormal))
 				{
 					// 交差した位置と法線を表示
@@ -148,7 +150,10 @@ void RayCastScene::Render(float elapsedTime)
 	Stage::Instance().Render(elapsedTime,rc);
 	SpaceDivisionRayCast::Instance().DebugDraw(rc);
 
+	NumberManager::Instance().DrawTimer({ 0,0 }, { 360.f,120.f });
+	NumberManager::Instance().DrawNumber(12, { 640.f,360.f }, { 160.f,120.f });
 	Pause::Instance().Render(elapsedTime);
+	Clear::Instance().Render(elapsedTime);
 
 	//timer_->DrawTimer({0,0},{1280,720});
 	//timer_->DrawNumber(17,{640,310},{128,72});

@@ -4,6 +4,7 @@
 #include<memory>
 #include<InputMouse.h>
 
+#include"Graphics.h"
 #include"Sprite.h"
 
 //ポーズ画面に切り替えるクラス
@@ -13,13 +14,13 @@ private:
     bool flag_;
 
     Microsoft::WRL::ComPtr<ID3D11SamplerState> sampler_state_;
-    Microsoft::WRL::ComPtr<ID3D11BlendState>   blend_state_;
 
     //座標とサイズ
-    const float base_pos_x_ = 320.f;
-    const float base_pos_y_ = 120.f;
-    const float base_size_x_ = 640.f;
-    const float base_size_y_ = 120.f;
+    float base_pos_x_ = 320.f;
+    float base_pos_y_ = 120.f;
+    float base_size_x_ = 640.f;
+    float base_size_y_ = 120.f;
+
 
     float scale_[3];
 

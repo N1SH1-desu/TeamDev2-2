@@ -2,7 +2,6 @@
 
 #include<Windows.h>
 
-#include"Graphics.h"
 #include"Misc.h"
 #include"SceneTitle.h"
 #include"SceneStageSelect.h"
@@ -48,6 +47,15 @@ Pause::Pause()
         hr = id->CreateSamplerState(&sampler_desc, sampler_state_.GetAddressOf());
     }
 
+    //座標とサイズ
+    float screen_w = Graphics::Instance().GetScreenWidth();
+    float screen_h = Graphics::Instance().GetScreenHeight();
+    base_pos_x_ = screen_w * 0.25f;
+    base_pos_y_ = screen_h / 6.f;
+    base_size_x_ = screen_w * 0.5f;
+    base_size_y_ = screen_h / 6.f;
+
+
     pause_retry_ = std::make_unique<Sprite>(id,".\\Data\\Sprite\\retry.png");
     pause_select_ = std::make_unique<Sprite>(id,".\\Data\\Sprite\\back_to_select.png");
     pause_title_ = std::make_unique<Sprite>(id,".\\Data\\Sprite\\back_to_title.png");
@@ -89,28 +97,15 @@ void Pause::Update(float elapsedTime,InputMouse* mouse)
                 )
             );
 
-        if ((GetAsyncKeyState('0') & 0x8000)
-            || (retry_bool_pos && GetAsyncKeyState(VK_LBUTTON) & 0x8000)
-            )
-        {
-            SceneManager::Instance().ChangeScene(new AnimationScene(stage_nun_));
-        }
-        else if (GetAsyncKeyState('9') & 0x8000
-            || (select_bool_pos && GetAsyncKeyState(VK_LBUTTON) & 0x8000)
-            )
-        {
-            SceneManager::Instance().ChangeScene(new SceneStageSelect);
-        }
-        else if (GetAsyncKeyState('8') & 0x8000
-            || (title_bool_pos && GetAsyncKeyState(VK_LBUTTON) & 0x8000)
-            )
-        {
-            SceneManager::Instance().ChangeScene(new SceneTitle);
-        }
-
         if (retry_bool_pos)
         {
             scale_[0] = 1.2f;
+            if ((GetAsyncKeyState('0') & 0x8000)
+                || (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
+                )
+            {
+                SceneManager::Instance().ChangeScene(new AnimationScene(stage_nun_));
+            }
         }
         else
         {
@@ -119,6 +114,12 @@ void Pause::Update(float elapsedTime,InputMouse* mouse)
         if(select_bool_pos)
         {
             scale_[1] = 1.2f;
+            if (GetAsyncKeyState('9') & 0x8000
+                || (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
+                )
+            {
+                SceneManager::Instance().ChangeScene(new SceneStageSelect);
+            }
         }
         else
         {
@@ -127,6 +128,13 @@ void Pause::Update(float elapsedTime,InputMouse* mouse)
         if (title_bool_pos)
         {
             scale_[2] = 1.2f;
+            if (GetAsyncKeyState('8') & 0x8000
+                || (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
+                )
+            {
+                SceneManager::Instance().ChangeScene(new SceneTitle);
+            }
+
         }
         else
         {
