@@ -223,6 +223,7 @@
     <ClCompile Include="Source\RenderState.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\Sprite.cpp" />
+    <ClCompile Include="Source\StageEditer.cpp" />
     <ClCompile Include="Source\TetroEditerMode.cpp" />
     <ClCompile Include="Source\TetroEditerUI.cpp" />
     <ClCompile Include="Source\Tetromino.cpp" />

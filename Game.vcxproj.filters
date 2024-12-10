@@ -404,6 +404,9 @@
     <ClCompile Include="Source\TetroEditerMode.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\StageEditer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\Sprite.hlsli">
