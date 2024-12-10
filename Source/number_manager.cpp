@@ -73,7 +73,7 @@ void NumberManager::UpdateTimer()
         this->timer_ -= 1.f;
         QueryPerformanceCounter(&start_);
     }
-    ////•‰‰×ŒyŒ¸
+    //•‰‰×ŒyŒ¸(CPU‚Ì§ŒÀ)
     //Sleep(1);
 }
 
