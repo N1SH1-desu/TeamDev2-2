@@ -131,6 +131,7 @@
     <ClInclude Include="Source\BasicShader.h" />
     <ClInclude Include="Source\Cage.h" />
     <ClInclude Include="Source\Camera.h" />
+    <ClInclude Include="Source\clear.h" />
     <ClInclude Include="Source\function.h" />
     <ClInclude Include="Source\KeyManager.h" />
     <ClInclude Include="Source\Collision.h" />
@@ -154,6 +155,7 @@
     <ClInclude Include="Source\ModelResource.h" />
     <ClInclude Include="Source\number_manager.h" />
     <ClInclude Include="Source\Object.h" />
+    <ClInclude Include="Source\pause.h" />
     <ClInclude Include="Source\player.h" />
     <ClInclude Include="Source\PlayerManager.h" />
     <ClInclude Include="Source\PoisonGus.h" />
@@ -168,6 +170,7 @@
     <ClInclude Include="Source\Scene\AnimationScene.h" />
     <ClInclude Include="Source\Scene\AttachWeaponScene.h" />
     <ClInclude Include="Source\Scene\HitStopScene.h" />
+    <ClInclude Include="Source\Scene\RayCastScene.h" />
     <ClInclude Include="Source\Scene\SlideMoveScene.h" />
     <ClInclude Include="Source\Scene\MoveFloorScene.h" />
     <ClInclude Include="Source\Scene\ResourceManagementScene.h" />
@@ -209,6 +212,7 @@
     <ClCompile Include="Source\BasicShader.cpp" />
     <ClCompile Include="Source\Cage.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
+    <ClCompile Include="Source\clear.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\Dialog.cpp" />
     <ClCompile Include="Source\FetchModelFromSceneAsset.cpp" />
@@ -229,6 +233,7 @@
     <ClCompile Include="Source\ModelResource.cpp" />
     <ClCompile Include="Source\number_manager.cpp" />
     <ClCompile Include="Source\Object.cpp" />
+    <ClCompile Include="Source\pause.cpp" />
     <ClCompile Include="Source\player.cpp" />
     <ClCompile Include="Source\PlayerManager.cpp" />
     <ClCompile Include="Source\PoisonGus.cpp" />
@@ -243,6 +248,7 @@
     <ClCompile Include="Source\Scene\AnimationScene.cpp" />
     <ClCompile Include="Source\Scene\AttachWeaponScene.cpp" />
     <ClCompile Include="Source\Scene\HitStopScene.cpp" />
+    <ClCompile Include="Source\Scene\RayCastScene.cpp" />
     <ClCompile Include="Source\Scene\SlideMoveScene.cpp" />
     <ClCompile Include="Source\Scene\MoveFloorScene.cpp" />
     <ClCompile Include="Source\Scene\ResourceManagementScene.cpp" />
@@ -311,6 +317,8 @@
     <FxCompile Include="Shader\SpritePS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AssemblyCode</AssemblerOutput>
+      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AssemblyCode</AssemblerOutput>
     </FxCompile>
     <FxCompile Include="Shader\SpriteVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>

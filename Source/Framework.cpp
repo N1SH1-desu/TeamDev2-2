@@ -7,6 +7,7 @@
 #include "Graphics.h"
 #include "ImGuiRenderer.h"
 
+#include"Scene/RayCastScene.h"
 #include "Scene/AnimationScene.h"
 
 #include "PlayerManager.h"
@@ -46,9 +47,9 @@ Framework::Framework(HWND hWnd)
 	//scene = std::make_unique<HitStopScene>();
 
 #if MANAGER
-	SceneManager::Instance().ChangeScene(new SceneTitle);
+	SceneManager::Instance().ChangeScene(new RayCastScene);
 #else
-	scene = std::make_unique<AnimationScene>();
+	scene = std::make_unique<RayCastScene>();
 #endif
 }
 

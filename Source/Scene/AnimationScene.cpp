@@ -12,6 +12,8 @@
 #include "SceneTitle.h"
 #include "KeyManager.h"
 #include "PortalManager.h"
+//add_by_nikaido
+#include"pause.h"
 
 AnimationScene::AnimationScene(int StageNum) : StageNumber(StageNum)
 {
@@ -53,6 +55,10 @@ void AnimationScene::Initialize()
 
 	sceneModel = std::make_unique<SceneModel>("Data/Model/TetrisBlock/scene.mdl");
 	sceneScale = { 0.1f, 0.1f, 0.1f };
+
+	//add_by_nikaido_iichiko
+	//SpaceDivisionRayCast::Instance().Load(stage->GetModel());
+	Pause::Instance().SetStageNum(StageNum);
 }
 
 AnimationScene::~AnimationScene() 
@@ -175,8 +181,8 @@ void AnimationScene::Render(float elapsedTime)
 	dc->RSSetState(renderState->GetRasterizerState(RasterizerState::SolidCullNone));
 
 	// ƒOƒŠƒbƒh•`‰æ
-	primitiveRenderer->DrawGrid(20, 1);
-	primitiveRenderer->Render(dc, Camera::Instance().GetView(), Camera::Instance().GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	//primitiveRenderer->DrawGrid(20, 1);
+	//primitiveRenderer->Render(dc, Camera::Instance().GetView(), Camera::Instance().GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
 	EffectManager::instance().Render(Camera::Instance().GetView(), Camera::Instance().GetProjection());
 	Stage::Instance().Render(elapsedTime, rc);
@@ -319,7 +325,6 @@ void AnimationScene::Render(float elapsedTime)
 //}
 
 	//}
-	//	stage->DrawGUI();
 
 	//	ImGui::End();
 

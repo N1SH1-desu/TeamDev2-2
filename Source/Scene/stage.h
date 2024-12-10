@@ -10,7 +10,7 @@ namespace stage_number
 {
 	const int stage_max_num = 7;
 
-	
+
 }
 
 class Stage
@@ -20,7 +20,6 @@ public:
 		static Stage instance;
 		return instance;
 	}
-
 
 	struct Object
 	{
@@ -69,7 +68,7 @@ public:
 	0,1,0,0,
 	0,0,1,0
 	,0,0,0,1},
-		{	
+		{
 	1,0,0,0,
 	0,1,0,0,
 	0,0,1,0
@@ -102,7 +101,7 @@ public:
 	0,1,0,0,
 	0,0,1,0
 	,0,0,0,1},
-	{	
+	{
 	1,0,0,0,
 	0,1,0,0,
 	0,0,1,0
@@ -113,7 +112,7 @@ public:
 
 public:
 	Stage();
-	~Stage() {}
+	~Stage() = default;
 
 	void Update(float elapsedTime);
 
@@ -127,6 +126,7 @@ public:
 
 	Model* GetModel() { return stage_.model.get(); }
 
+
 	int GetNumber() { return now_stage; }
 
 	DirectX::XMFLOAT4X4 GetTransform() { return stage_.transform; }
@@ -134,6 +134,7 @@ public:
 
 	//モデルを覆うように似たような地形の簡易マップを呼び出す
 	Model* GetCollisionModel() { return stage_collision_[now_stage].model.get(); }
+
 
 	void ObjectSetting(int selecter);
 };
