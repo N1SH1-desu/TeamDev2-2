@@ -420,8 +420,7 @@ void SpaceDivisionRayCast::DebugDraw(RenderContext&rc)
             polygonColor = { 0, 0, 1, 1 };
         }
         //エリアに保存されているトライアングル情報を出す
-        if (!all_draw_)
-        {
+        
             ////モデルにあるすべての頂点情報とエリアにある頂点情報を確認する
             ////有るものだけを描画する
             //const CollisionMesh::Triangle* triangle = model_divisions_.triangles.data();
@@ -434,24 +433,10 @@ void SpaceDivisionRayCast::DebugDraw(RenderContext&rc)
             //    primitiveRenderer->AddVertex(triangle[areas_triangle[areas_triangle_index]].positions[2], polygonColor);
             //}
             
-        }
         shape_renderer->DrawBox(area[i].bounding_box.Center, boxAngle, area[i].bounding_box.Extents, boxColor);
     }
 
-    //////コチラはモデルから取り出した全ての三角形を描画する
-    ////// 三角形ポリゴン描画
-    //if (all_draw_)
-    //{
-    //    //polygonColor = { 1,1,1,1 };
-    //    //size_t size = model_divisions_[model].triangles.size();
-    //    //CollisionMesh::Triangle* triangle = model_divisions_[model].triangles.data();
-    //    //for (size_t i = 0; i < size; i++)
-    //    //{
-    //    //    primitiveRenderer->AddVertex(triangle[i].positions[0], polygonColor);
-    //    //    primitiveRenderer->AddVertex(triangle[i].positions[1], polygonColor);
-    //    //    primitiveRenderer->AddVertex(triangle[i].positions[2], polygonColor);
-    //    //}
-    //}
+
 
     primitiveRenderer->Render(dc, rc.camera->GetView(), rc.camera->GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
     shape_renderer->Render(dc, rc.camera->GetView(), rc.camera->GetProjection());
@@ -473,7 +458,6 @@ void SpaceDivisionRayCast::DrowImgui()
 
     if (ImGui::Begin("SpaceDivision"))
     {
-        if (ImGui::Button("all_draw_"))all_draw_ = !all_draw_;
 
         ImGui::InputInt("draw_box", &draw_box_);
 
