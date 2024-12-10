@@ -73,11 +73,11 @@ void RayCastScene::Update(float elapsedTime)
 			cur_model = stage->GetModel();
 		}
 		//timer_->UpdateTimer(elapsedTime);
+		NumberManager::Instance().UpdateTimer(elapsedTime);
 	}
 
 	Pause::Instance().Update(elapsedTime,refInputMouse);
 	Clear::Instance().Update(elapsedTime,refInputMouse);
-	NumberManager::Instance().UpdateTimer(elapsedTime);
 }
 
 // •`‰æˆ—
@@ -150,11 +150,10 @@ void RayCastScene::Render(float elapsedTime)
 	Stage::Instance().Render(elapsedTime,rc);
 	SpaceDivisionRayCast::Instance().DebugDraw(rc);
 
-	Pause::Instance().Render(elapsedTime);
-	
-	Clear::Instance().Render(elapsedTime);
-
 	NumberManager::Instance().DrawTimer({ 0,0 }, { 360.f,120.f });
+	NumberManager::Instance().DrawNumber(12, { 640.f,360.f }, { 160.f,120.f });
+	Pause::Instance().Render(elapsedTime);
+	Clear::Instance().Render(elapsedTime);
 
 	//timer_->DrawTimer({0,0},{1280,720});
 	//timer_->DrawNumber(17,{640,310},{128,72});

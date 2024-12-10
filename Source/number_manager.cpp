@@ -55,14 +55,16 @@ void NumberManager::DrawTimer(DirectX::XMFLOAT2 pos, DirectX::XMFLOAT2 size)
     cut_position = CutNumber(tenth_minute);
     sprite_number_.get()->Render(
         dc,
-        pos.x+number_size_x*0, pos.y, 0,number_size_x, size.y,
+        pos.x+number_size_x*0, pos.y, sprite_depth_,
+        number_size_x, size.y,
         cut_position.x, cut_position.y, cut_position.z, cut_position.w,
         DirectX::XMConvertToRadians(0),
         1.f, 1.f, 1.f, 1.f);
     cut_position = CutNumber(first_minute);
     sprite_number_.get()->Render(
         dc,
-        pos.x+number_size_x*1, pos.y, 0, number_size_x, size.y,
+        pos.x+number_size_x*1, pos.y, sprite_depth_, 
+        number_size_x, size.y,
         cut_position.x, cut_position.y, cut_position.z, cut_position.w,
         DirectX::XMConvertToRadians(0),
         1.f, 1.f, 1.f, 1.f);
@@ -70,7 +72,7 @@ void NumberManager::DrawTimer(DirectX::XMFLOAT2 pos, DirectX::XMFLOAT2 size)
     //:を表示するためのスプライト
     sprite_number_.get()->Render(
         dc,
-        pos.x + number_size_x * 2, pos.y, 0,
+        pos.x + number_size_x * 2, pos.y, sprite_depth_,
         size.x * 0.1f, size.y,
         1420, 0, 60, 210,
         DirectX::XMConvertToRadians(0),
@@ -79,14 +81,16 @@ void NumberManager::DrawTimer(DirectX::XMFLOAT2 pos, DirectX::XMFLOAT2 size)
     cut_position = CutNumber(tenth_second);
     sprite_number_.get()->Render(
         dc,
-        pos.x+number_size_x*2+size.x*0.1f, pos.y, 0, number_size_x, size.y,
+        pos.x+number_size_x*2+size.x*0.1f, pos.y, sprite_depth_,
+        number_size_x, size.y,
         cut_position.x, cut_position.y, cut_position.z, cut_position.w,
         DirectX::XMConvertToRadians(0),
         1.f, 1.f, 1.f, 1.f);
     cut_position = CutNumber(first_second);
     sprite_number_.get()->Render(
         dc,
-        pos.x+number_size_x*3+size.x*0.1f, pos.y, 0, number_size_x, size.y,
+        pos.x+number_size_x*3+size.x*0.1f, pos.y, sprite_depth_,
+        number_size_x, size.y,
         cut_position.x, cut_position.y, cut_position.z, cut_position.w,
         DirectX::XMConvertToRadians(0),
         1.f, 1.f, 1.f, 1.f);
@@ -102,7 +106,8 @@ void NumberManager::DrawNumber(int number, DirectX::XMFLOAT2 pos, DirectX::XMFLO
     DirectX::XMFLOAT4 cut_position = CutNumber(tenth);
     sprite_number_.get()->Render(
         dc,
-        pos.x, pos.y, 0, size.x*0.5f, size.y,
+        pos.x, pos.y, sprite_depth_,
+        size.x*0.5f, size.y,
         cut_position.x, cut_position.y, cut_position.z, cut_position.w,
         DirectX::XMConvertToRadians(0),
         1.f, 1.f, 1.f, 1.f);
@@ -110,7 +115,8 @@ void NumberManager::DrawNumber(int number, DirectX::XMFLOAT2 pos, DirectX::XMFLO
     cut_position = CutNumber(first);
     sprite_number_.get()->Render(
         dc,
-        pos.x+size.x*0.5f, pos.y, 0, size.x*0.5f, size.y,
+        pos.x+size.x*0.5f, pos.y, sprite_depth_,
+        size.x*0.5f, size.y,
         cut_position.x, cut_position.y, cut_position.z, cut_position.w,
         DirectX::XMConvertToRadians(0),
         1.f, 1.f, 1.f, 1.f);
