@@ -1,5 +1,6 @@
 #include"number_manager.h"
 
+
 #include"Graphics.h"
 
 //指定された数字から画像の切り出し位置と切り出しサイズを返す
@@ -25,28 +26,66 @@ inline DirectX::XMFLOAT4 CutNumber(int number)
 NumberManager::NumberManager()
 {
     ID3D11Device* id = Graphics::Instance().GetDevice();
+    HRESULT hr{ S_OK };
+    // サンプラーステート設定忘れのエラーコード対策
+    {
+
+        D3D11_SAMPLER_DESC sampler_desc{};
+        sampler_desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+        sampler_desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+        sampler_desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+        sampler_desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+        sampler_desc.MipLODBias = 0;
+        sampler_desc.MaxAnisotropy = 16;
+        sampler_desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+        sampler_desc.BorderColor[0] = 0;
+        sampler_desc.BorderColor[1] = 0;
+        sampler_desc.BorderColor[2] = 0;
+        sampler_desc.BorderColor[3] = 0;
+        sampler_desc.MinLOD = 0;
+        sampler_desc.MaxLOD = D3D11_FLOAT32_MAX;
+        hr = id->CreateSamplerState(&sampler_desc, sampler_state_.GetAddressOf());
+    }
+    
     sprite_number_ = std::make_unique<Sprite>(id, ".\\Data\\Sprite\\number.png");
 }
 
 void NumberManager::SetTimer(int timer)
 {
+    //タイマーを取得
     this->timer_ = static_cast<int>(timer);
-
+    //高精度タイマーの周波数を取得
+    QueryPerformanceFrequency(&frequency_);
+    //計測開始時刻を取得
+    QueryPerformanceCounter(&start_);
 }
 
-void NumberManager::UpdateTimer(float elapsedTime)
+void NumberManager::UpdateTimer()
 {
-    this->timer_ -= elapsedTime;
+    //現在の時間を取得
+    QueryPerformanceCounter(&now_);
+
+    //経過時刻を秒単位で計算
+    float elapsedTime = static_cast<float>(now_.QuadPart - start_.QuadPart) / frequency_.QuadPart;
+
+    if (elapsedTime >= 1.0f)
+    {
+        this->timer_ -= 1.f;
+        QueryPerformanceCounter(&start_);
+    }
+    ////負荷軽減
+    //Sleep(1);
 }
 
 void NumberManager::DrawTimer(DirectX::XMFLOAT2 pos, DirectX::XMFLOAT2 size)
 {
+    ID3D11DeviceContext* dc = Graphics::Instance().GetDeviceContext();
+    dc->PSSetSamplers(0, 1, sampler_state_.GetAddressOf());
+
     int tenth_minute = (static_cast<int>(timer_) / 600 > 0) ? static_cast<int>(timer_) / 600 : 0;
     int first_minute = ((static_cast<int>(timer_) % 600) / 60 > 0) ? (static_cast<int>(timer_) % 600) / 60 : 0;
     int tenth_second = ((static_cast<int>(timer_) % 60) / 10 > 0) ? (static_cast<int>(timer_) % 60) / 10 : 0;
-    int first_second = ((static_cast<int>(timer_) % 10) > 0) ? static_cast<int>(timer_) % 10 : 0;
-    
-    ID3D11DeviceContext* dc = Graphics::Instance().GetDeviceContext();
+    int first_second = ((static_cast<int>(timer_) % 10) > 0) ? static_cast<int>(timer_) % 10 : 0;    
 
     float number_size_x;
     number_size_x = size.x / 4.f;
@@ -99,6 +138,7 @@ void NumberManager::DrawTimer(DirectX::XMFLOAT2 pos, DirectX::XMFLOAT2 size)
 void NumberManager::DrawNumber(int number, DirectX::XMFLOAT2 pos, DirectX::XMFLOAT2 size)
 {
     ID3D11DeviceContext* dc = Graphics::Instance().GetDeviceContext();
+    dc->PSSetSamplers(0, 1, sampler_state_.GetAddressOf());
 
     const int tenth =((number)%100)/10;
     const int first =((number)%10);

@@ -14,7 +14,6 @@ private:
     bool flag_;
 
     Microsoft::WRL::ComPtr<ID3D11SamplerState> sampler_state_;
-    Microsoft::WRL::ComPtr<ID3D11BlendState>   blend_state_;
 
     //座標とサイズ
     float base_pos_x_ = 320.f;

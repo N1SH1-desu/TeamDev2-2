@@ -1,5 +1,5 @@
 #pragma once
-
+#include<windows.h>
 #include<memory>
 
 #include"Sprite.h"
@@ -8,8 +8,14 @@
 class NumberManager
 {
 private:
+    Microsoft::WRL::ComPtr<ID3D11SamplerState> sampler_state_;
+
+
     std::unique_ptr<Sprite> sprite_number_;
+    
+    //タイマーの為の変数たち
     float timer_;
+    LARGE_INTEGER frequency_, start_, now_;
 
     float sprite_depth_ = 0.1;
 public:
@@ -24,7 +30,7 @@ public:
     //タイマーを設定する
     void SetTimer(int timer);
     //タイマーのアップデート
-    void UpdateTimer(float elapsedTime);
+    void UpdateTimer();
 
     //ｚ＝0.1f
     //タイマーの描画

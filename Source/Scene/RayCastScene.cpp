@@ -73,7 +73,7 @@ void RayCastScene::Update(float elapsedTime)
 			cur_model = stage->GetModel();
 		}
 		//timer_->UpdateTimer(elapsedTime);
-		NumberManager::Instance().UpdateTimer(elapsedTime);
+		NumberManager::Instance().UpdateTimer();
 	}
 
 	Pause::Instance().Update(elapsedTime,refInputMouse);
