@@ -167,6 +167,7 @@
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\Shader.h" />
     <ClInclude Include="Source\Sprite.h" />
+    <ClInclude Include="Source\StageEditer.h" />
     <ClInclude Include="Source\TetroEditerMode.h" />
     <ClInclude Include="Source\TetroEditerUI.h" />
     <ClInclude Include="Source\Tetromino.h" />

@@ -34,7 +34,10 @@ ProjectScreenScene::ProjectScreenScene()
 	cameraController.SyncCameraToController(camera);
 
 	sprite = std::make_unique<Sprite>(device);
-	stage.model = std::make_unique<Model>("Data/Model/Stage/ExampleStage.mdl");
+	stage.model = std::make_unique<Model>("Data/Model/Stage/SingleCube.mdl");
+	stage.position = { -6.0f, 0.0f, 0.0f };
+	stage.angle = { 0.0f, DirectX::XMConvertToRadians(180.0f), 0.0f};
+	stage.scale = { 8.0f, 8.0f, 8.0f };
 
 	//sceneModels = std::make_unique<SceneModel>("Data/Model/TetrisBlock/Colors.mdl");
 	//
@@ -67,6 +70,13 @@ void ProjectScreenScene::Update(float elapsedTime)
 	keyInput.Update();
 	POINTS mousePos = refInputMouse->GetPosition();
 	editerMode.Update(elapsedTime, mousePos, keyInput);
+
+	{
+		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(stage.scale.x, stage.scale.y, stage.scale.z);
+		DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(stage.angle.x, stage.angle.y, stage.angle.z);
+		DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(stage.position.x, stage.position.y, stage.position.z);
+		DirectX::XMStoreFloat4x4(&stage.transform, S * R * T);
+	}
 }
 
 // •`‰æˆ—
@@ -94,6 +104,8 @@ void ProjectScreenScene::Render(float elapsedTime)
 	DirectX::XMMATRIX Projection = DirectX::XMLoadFloat4x4(&camera.GetProjection());
 	DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();
 
+	modelRenderer->Render(rc, stage.transform, stage.model.get(), ShaderId::Lambert, true);
+
 	editerMode.Render(rc, d2dContext, modelRenderer);
 }
 
@@ -115,7 +127,9 @@ void ProjectScreenScene::DrawGUI()
 
 		ImGui::SliderFloat3("Block Position", &stage.position.x, -200.0f, 200.0f);
 		ImGui::InputFloat3("Block Pos Input", &stage.position.x);
-		ImGui::SliderFloat3("Block Scale", &stage.scale.x, 0.01f, 10.0f);
+		ImGui::SliderFloat("Block Scale", &stage.scale.x, 0.001f, 0.1f);
+		stage.scale.y = stage.scale.x;
+		stage.scale.z = stage.scale.x;
 		ImGui::SliderFloat3("Block Rotate", &stage.angle.x, 0.0f, 20.0f);
 	}
 	ImGui::End();
