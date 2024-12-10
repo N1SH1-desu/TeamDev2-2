@@ -5,23 +5,28 @@
 #include"Sprite.h"
 
 //いくつかの数字を管理するというより、望みの数字を返す
-class number_namager
+class NumberManager
 {
 private:
     std::unique_ptr<Sprite> sprite_number_;
     float timer_;
 public:
+    static NumberManager& Instance() {
+        static NumberManager instance_;
+        return instance_;
+    }
 
-    number_namager();
-    ~number_namager() = default;
+    NumberManager();
+    ~NumberManager() = default;
 
     //タイマーを設定する
-    void SetTimer(float timer);
+    void SetTimer(int timer);
     //タイマーのアップデート
     void UpdateTimer(float elapsedTime);
 
     //タイマーの描画
     void DrawTimer(DirectX::XMFLOAT2 pos,DirectX::XMFLOAT2 size);
     //入れた数値を描画する
-    void DrawNumber(float number,DirectX::XMFLOAT2 pos,DirectX::XMFLOAT2 size);
+    //二桁の数字まで描画できる
+    void DrawNumber(int number,DirectX::XMFLOAT2 pos,DirectX::XMFLOAT2 size);
 };

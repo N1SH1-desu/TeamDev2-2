@@ -40,16 +40,12 @@ RayCastScene::RayCastScene()
 	Stage::Instance().SelectStage(5);
 	SpaceDivisionRayCast::Instance().Load(Stage::Instance().GetModel());
 
-	//timer_ = std::make_unique<number_namager>();
-	//timer_->SetTimer(60);
+	NumberManager::Instance().SetTimer(180);
 }
 
 // 更新処理
 void RayCastScene::Update(float elapsedTime)
 {
-	// カメラ更新処理
-	cameraController.Update();
-	cameraController.SyncControllerToCamera(camera);
 	static bool pause = false;
 	if (GetAsyncKeyState('P') & 0x01)
 	{
@@ -57,27 +53,31 @@ void RayCastScene::Update(float elapsedTime)
 		Pause::Instance().SetPause(pause);
 	}
 	
-	if(!Pause::Instance().GetPause())
+	if (!Pause::Instance().GetPause())
 	{
-	Stage* stage = &Stage::Instance();
+		// カメラ更新処理
+		cameraController.Update();
+		cameraController.SyncControllerToCamera(camera);
+		Stage* stage = &Stage::Instance();
 
-	stage->Update(elapsedTime);
+		stage->Update(elapsedTime);
 
 
-	static Model* cur_model = stage->GetModel();
-	if (cur_model != stage->GetModel())
-	{
+		static Model* cur_model = stage->GetModel();
+		if (cur_model != stage->GetModel())
+		{
 
-		SpaceDivisionRayCast::Instance().Reload(stage->GetModel());
+			SpaceDivisionRayCast::Instance().Reload(stage->GetModel());
 
-		cur_model = nullptr;
-		cur_model = stage->GetModel();
-	}
-	//timer_->UpdateTimer(elapsedTime);
+			cur_model = nullptr;
+			cur_model = stage->GetModel();
+		}
+		//timer_->UpdateTimer(elapsedTime);
 	}
 
 	Pause::Instance().Update(elapsedTime,refInputMouse);
 	Clear::Instance().Update(elapsedTime,refInputMouse);
+	NumberManager::Instance().UpdateTimer(elapsedTime);
 }
 
 // 描画処理
@@ -153,6 +153,8 @@ void RayCastScene::Render(float elapsedTime)
 	Pause::Instance().Render(elapsedTime);
 	
 	Clear::Instance().Render(elapsedTime);
+
+	NumberManager::Instance().DrawTimer({ 0,0 }, { 360.f,120.f });
 
 	//timer_->DrawTimer({0,0},{1280,720});
 	//timer_->DrawNumber(17,{640,310},{128,72});

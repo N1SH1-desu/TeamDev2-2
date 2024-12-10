@@ -9,7 +9,7 @@
 //w:切り出しサイズのy
 inline DirectX::XMFLOAT4 CutNumber(int number)
 {
-    const int number_size_x = 141;
+    const int number_size_x = 142;
     const int number_size_y = 210;
 
     DirectX::XMFLOAT4 cut_number;
@@ -22,24 +22,24 @@ inline DirectX::XMFLOAT4 CutNumber(int number)
     return cut_number;
 }
 
-number_namager::number_namager()
+NumberManager::NumberManager()
 {
     ID3D11Device* id = Graphics::Instance().GetDevice();
     sprite_number_ = std::make_unique<Sprite>(id, ".\\Data\\Sprite\\number.png");
 }
 
-void number_namager::SetTimer(float timer)
+void NumberManager::SetTimer(int timer)
 {
-    this->timer_ = timer;
+    this->timer_ = static_cast<int>(timer);
 
 }
 
-void number_namager::UpdateTimer(float elapsedTime)
+void NumberManager::UpdateTimer(float elapsedTime)
 {
     this->timer_ -= elapsedTime;
 }
 
-void number_namager::DrawTimer(DirectX::XMFLOAT2 pos, DirectX::XMFLOAT2 size)
+void NumberManager::DrawTimer(DirectX::XMFLOAT2 pos, DirectX::XMFLOAT2 size)
 {
     int tenth_minute = (static_cast<int>(timer_) / 600 > 0) ? static_cast<int>(timer_) / 600 : 0;
     int first_minute = ((static_cast<int>(timer_) % 600) / 60 > 0) ? (static_cast<int>(timer_) % 600) / 60 : 0;
@@ -70,8 +70,9 @@ void number_namager::DrawTimer(DirectX::XMFLOAT2 pos, DirectX::XMFLOAT2 size)
     //:を表示するためのスプライト
     sprite_number_.get()->Render(
         dc,
-        pos.x+number_size_x*2, pos.y, 0, size.x*0.1f, size.y,
-        1415, 0, 70, 210,
+        pos.x + number_size_x * 2, pos.y, 0,
+        size.x * 0.1f, size.y,
+        1420, 0, 60, 210,
         DirectX::XMConvertToRadians(0),
         1.f, 1.f, 1.f, 1.f);
 
@@ -91,12 +92,12 @@ void number_namager::DrawTimer(DirectX::XMFLOAT2 pos, DirectX::XMFLOAT2 size)
         1.f, 1.f, 1.f, 1.f);
 }
 
-void number_namager::DrawNumber(float number, DirectX::XMFLOAT2 pos, DirectX::XMFLOAT2 size)
+void NumberManager::DrawNumber(int number, DirectX::XMFLOAT2 pos, DirectX::XMFLOAT2 size)
 {
     ID3D11DeviceContext* dc = Graphics::Instance().GetDeviceContext();
 
-    const int tenth =(static_cast<int>(number)%100)/10;
-    const int first =(static_cast<int>(number)%10);
+    const int tenth =((number)%100)/10;
+    const int first =((number)%10);
 
     DirectX::XMFLOAT4 cut_position = CutNumber(tenth);
     sprite_number_.get()->Render(
