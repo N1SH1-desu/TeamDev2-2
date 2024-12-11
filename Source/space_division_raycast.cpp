@@ -10,6 +10,7 @@
 #include"ShapeRenderer.h"
 #include"PrimitiveRenderer.h"
 
+//四分木で使う計算
 namespace quad_tree_calc {
     //四分木の最大の深さにおける分割数の計算
     inline constexpr uint64_t MaxSplit(const uint64_t depth)
