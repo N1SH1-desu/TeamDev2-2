@@ -243,6 +243,9 @@
     <ClInclude Include="Source\StageEditer.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\AutoDrivenPlayer.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Framework.cpp">
@@ -405,6 +408,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\StageEditer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AutoDrivenPlayer.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
