@@ -170,8 +170,8 @@ void AnimationScene::Render(float elapsedTime)
 	RenderState* renderState = Graphics::Instance().GetRenderState();
 	PrimitiveRenderer* primitiveRenderer = Graphics::Instance().GetPrimitiveRenderer();
 	ModelRenderer* modelRenderer = Graphics::Instance().GetModelRenderer();
-	Grid2DRenderer* grid2dRenderer = Graphics::Instance().GetGrid2DRenderer();
-	Graphics2D* gfx2D = Graphics::Instance().GetGraphics2D();
+	//Grid2DRenderer* grid2dRenderer = Graphics::Instance().GetGrid2DRenderer();
+	//Graphics2D* gfx2D = Graphics::Instance().GetGraphics2D();
 
 	//// ƒ‚ƒfƒ‹•`‰æ
 	RenderContext rc;
