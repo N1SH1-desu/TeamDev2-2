@@ -11,7 +11,7 @@ void TetroEditerMode::Initialize(ID3D11Device* device, ID2D1DeviceContext* d2dCo
 	tetroBlockModels = std::make_unique<SceneModel>("Data/Model/TetrisBlock/Colors.mdl");
 }
 
-void TetroEditerMode::Update(float elapsedTime, POINTS mousePos, const Input::KeyInput& keyInput)
+void TetroEditerMode::Update(float elapsedTime, POINTS mousePos, const Input::KeyInput& keyInput, const Stage::StageTerrain::StageArray& stageCollision)
 {
 	if (keyInput.GetKeyStatus('G') == Input::Release)
 	{
@@ -22,7 +22,7 @@ void TetroEditerMode::Update(float elapsedTime, POINTS mousePos, const Input::Ke
 
 	if (EditerMode)
 	{
-		tetroEditer.Update(mousePos, keyInput, tetroBlockModels.get());
+		tetroEditer.Update(mousePos, keyInput, tetroBlockModels.get(), stageCollision);
 	}
 
 	static bool hoge = false;

@@ -121,11 +121,12 @@ namespace Stage
 		std::shared_ptr<SceneModel> terrainModels;
 
 	public:
+		using StageArray = std::array<std::array<TerrainElementType, COL_LENGHT>, ROW_LENGHT>;
 		StageTerrain() = default;
 
 		void Initialize(StageNumber number, const int offset = 8.0f, const int xAxisMax = 60.0f, const int yAxisMax = 32.0f);
 
-		std::array<std::array<TerrainElementType, COL_LENGHT>, ROW_LENGHT> GetStagePlaced() { return stagePlaced; }
+		StageArray GetStagePlaced() const { return stagePlaced; }
 
 		void Render(RenderContext& rc, ModelRenderer* mR);
 	};
