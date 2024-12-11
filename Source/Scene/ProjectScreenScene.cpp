@@ -65,6 +65,8 @@ void ProjectScreenScene::Update(float elapsedTime)
 	POINTS mousePos = refInputMouse->GetPosition();
 	editerMode.Update(elapsedTime, mousePos, keyInput, terrain.GetStagePlaced());
 
+	unityChan.Update(elapsedTime, terrain.GetStagePlaced(), editerMode.GetTetroCollideArray());
+
 	{
 		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(stage.scale.x, stage.scale.y, stage.scale.z);
 		DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(stage.angle.x, stage.angle.y, stage.angle.z);
@@ -99,6 +101,8 @@ void ProjectScreenScene::Render(float elapsedTime)
 	DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();
 
 	terrain.Render(rc, modelRenderer);
+
+	unityChan.Render(rc, modelRenderer);
 
 	editerMode.Render(rc, d2dContext, modelRenderer);
 }

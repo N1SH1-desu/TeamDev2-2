@@ -238,8 +238,16 @@ namespace Tetromino
 
 	class TetrominoCollider
 	{
+	private:
+		static constexpr unsigned int ROW_LENGTH = 9u;
+		static constexpr unsigned int COL_LENGTH = 16u;
+		std::array<std::array<uint8_t, COL_LENGTH>, ROW_LENGTH> Placed;
 	public:
 		TetrominoCollider() = default;
+
+		using TetroCollideArray = std::array<std::array<uint8_t, COL_LENGTH>, ROW_LENGTH>;
+
+		TetroCollideArray GetTetroCollidePlaced() { return Placed; }
 
 		bool PlaceTetromino(TetrominoType tetroType,  unsigned int top, unsigned int left, int rotate)
 		{
@@ -276,7 +284,11 @@ namespace Tetromino
 				{
 					if (shapeArray[row][col] != 0)
 					{
-						if (Placed[row + top][col + left] != 0 || row + top >= ROW_LENGTH || col + left >= COL_LENGTH || stageCollision[row + top][col + left] != 0)
+						if (row + top >= ROW_LENGTH || col + left >= COL_LENGTH)
+						{
+							return false;
+						}
+						if (Placed[row + top][col + left] != 0 || stageCollision[row + top][col + left] != 0)
 						{
 							return false;
 						}
@@ -286,12 +298,6 @@ namespace Tetromino
 
 			return true;
 		}
-
-	private:
-		static constexpr unsigned int ROW_LENGTH = 9u;
-		static constexpr unsigned int COL_LENGTH = 16u;
-		int Placed[ROW_LENGTH][COL_LENGTH] = { 0 };
-
 	};
 
 	class TetroRenderer
@@ -360,6 +366,8 @@ namespace Tetromino
 	{
 	public:
 		TetrominoEditor() = default;
+
+		TetrominoCollider GetCollider() { return collider; }
 
 		void Update(const POINTS mousePos, const Input::KeyInput keyFiled, SceneModel* sceneModels, const Stage::StageTerrain::StageArray& stageCollision);
 		void Render(RenderContext& rc, ModelRenderer* mR);

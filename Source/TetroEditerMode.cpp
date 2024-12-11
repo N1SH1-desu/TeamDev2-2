@@ -8,7 +8,7 @@ void TetroEditerMode::Initialize(ID3D11Device* device, ID2D1DeviceContext* d2dCo
 
 	gridRenderer = std::make_unique<Grid2DRenderer>(d2dContext, Graphics::Instance().GetBackBuffer());
 
-	tetroBlockModels = std::make_unique<SceneModel>("Data/Model/TetrisBlock/Colors.mdl");
+	tetroBlockModels = std::make_shared<SceneModel>("Data/Model/TetrisBlock/Colors.mdl");
 }
 
 void TetroEditerMode::Update(float elapsedTime, POINTS mousePos, const Input::KeyInput& keyInput, const Stage::StageTerrain::StageArray& stageCollision)

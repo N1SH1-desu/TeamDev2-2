@@ -8,6 +8,7 @@
 #include "KeyInput.h"
 #include "TetroEditerMode.h"
 #include "StageEditer.h"
+#include "AutoDrivenPlayer.h"
 
 
 class ProjectScreenScene : public Scene
@@ -49,4 +50,6 @@ private:
 	Input::KeyInput keyInput;
 	TetroEditerMode editerMode;
 	Stage::StageTerrain terrain;
+
+	AutoDrivenPlayer unityChan;
 };
