@@ -37,7 +37,7 @@ ProjectScreenScene::ProjectScreenScene()
 
 	editerMode.Initialize(device, d2dContext);
 
-	terrain.Initialize(Stage::Stage1);
+	terrain.Initialize(Stage::Stage5);
 }
 
 // XVˆ—

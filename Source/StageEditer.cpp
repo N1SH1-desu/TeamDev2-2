@@ -12,7 +12,16 @@ void Stage::StageTerrain::Initialize(StageNumber number, const int offset, const
                 return StageData<Stage1>::data;
                 break;
             case Stage::Stage2:
+                return StageData<Stage2>::data;
                 break;
+            case Stage::Stage3:
+                return StageData<Stage3>::data;
+                break;
+            case Stage::Stage4:
+                return StageData<Stage4>::data;
+                break;
+            case Stage5:
+                return StageData<Stage5>::data;
             default:
                 break;
             }
@@ -45,6 +54,16 @@ void Stage::StageTerrain::Initialize(StageNumber number, const int offset, const
                 case Stage::TerrainBlockType::Dirt1x2:
                     return Terrain<TerrainBlockType::Dirt1x2>::field;
                     break;
+                case Stage::TerrainBlockType::Dirt1x3:
+                    return Terrain<TerrainBlockType::Dirt1x3>::field;
+                    break;
+                case Stage::TerrainBlockType::Dirt1x4:
+                    return Terrain<TerrainBlockType::Dirt1x4>::field;
+                    break;
+
+                case Stage::TerrainBlockType::TNone:
+                    return Terrain<TerrainBlockType::TNone>::field;
+                    break;
                 }
         };
 
@@ -52,7 +71,7 @@ void Stage::StageTerrain::Initialize(StageNumber number, const int offset, const
 
         for (int col = 0; col < tArray.size(); col++)
         {
-            if (tArray[col] != 0)
+            if (tArray[col] > 0)
             {
                 if (dataEle.top < ROW_LENGHT && (dataEle.left + col) < COL_LENGHT)
                 {
