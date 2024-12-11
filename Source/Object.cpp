@@ -43,7 +43,7 @@ void Object::Update(float elapsedTime)
 
 void Object::Render(ModelRenderer* modelRenderer, RenderContext& rc, ShaderId ID)
 {
-	modelRenderer->Render(rc, transform, model.get(), ID);
+	modelRenderer->Render(rc, transform, model.get(), ID, true);
 
 #ifdef _DEBUG
 	DrawGUI();

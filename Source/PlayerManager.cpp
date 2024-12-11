@@ -80,7 +80,7 @@ void PlayerManager::Render(ModelRenderer* modelRenderer,RenderContext& rc, Shade
 			1, 0, 0, 1
 		);*/
 
-		modelRenderer->Render(rc, player->transform, player->model, ID);
+		modelRenderer->Render(rc, player->transform, player->model, ID, true);
 	}
 }
 
