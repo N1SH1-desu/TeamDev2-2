@@ -44,7 +44,7 @@ ProjectScreenScene::ProjectScreenScene()
 	stage.position = { 0.0f, 0.0f, 0.0f };
 	stage.angle = { 0.0f, 0.0f, 0.0f };
 	
-	editerUI.Initialize(device);
+	//editerUI.Initialize(device);
 
 	editerMode.Initialize(device, d2dContext);
 }
@@ -99,7 +99,7 @@ void ProjectScreenScene::Update(float elapsedTime)
 		{
 			hoge = !hoge;
 		}
-		editerUI.Update(elapsedTime, hoge);
+		//editerUI.Update(elapsedTime, hoge);
 	}
 	//Player player;
 
@@ -111,15 +111,15 @@ void ProjectScreenScene::Update(float elapsedTime)
 	//}
 
 
-	auto commited = sceneModels->GetCommitedBlocks();
-	if (commited.size() > 0)
-	{
-		for (auto& commitedElement : commited)
-		{
-			std::vector<std::shared_ptr<Model>> models = tetroEditer.GetRenderer()->Getscenemodel()->GetSceneModels();
-			player.B_Raycast(models.at(commitedElement.first), commitedElement.second);
-		}
-	}
+	//auto commited = sceneModels->GetCommitedBlocks();
+	//if (commited.size() > 0)
+	//{
+	//	for (auto& commitedElement : commited)
+	//	{
+	//		std::vector<std::shared_ptr<Model>> models = tetroEditer.GetRenderer()->Getscenemodel()->GetSceneModels();
+	//		player.B_Raycast(models.at(commitedElement.first), commitedElement.second);
+	//	}
+	//}
 	
 }
 
