@@ -78,4 +78,5 @@ private:
 
 	Input::KeyInput keyinput;
 	TetroEditerMode EditerMode;
+	TerrainStage::StageTerrain terrain;
 };

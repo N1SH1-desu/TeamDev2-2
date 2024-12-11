@@ -17,8 +17,6 @@
 	this->state = State::Idle;
 	this->HP = 30;
 	PlayAnimation("Falling", true);
-
-	position.x = 1.0;
 }
 
  Player::~Player() {
@@ -26,18 +24,24 @@
 }
 
 
-void Player::Update(float elapsedTime, SceneModel* scenemodel)
+void Player::Update(float elapsedTime, TerrainStage::StageTerrain& terrain)
 {
 	tt = elapsedTime;
 	InputMove();
 	before_state = state;
 
-	switch (state)
+	velocity.y -= gravity * elapsedTime;
+
+	if (!RayGround(terrain, elapsedTime))
+	{
+		position.y += velocity.y * elapsedTime;
+	}
+
+	/*switch (state)
 	{
 	case State::Idle:
-		position.y -= velocity.y;
 		wal = 0.03f;
-		if (RayGround(Stage::Instance().GetCollisionTransform(), Stage::Instance().GetCollisionModel()))
+		if (RayGround(terrain))
 		{
 			PlayAnimation("Run", true);
 			state = Run;
@@ -45,7 +49,7 @@ void Player::Update(float elapsedTime, SceneModel* scenemodel)
 		break;
 
 	case State::Run:
-		if (RayGround(Stage::Instance().GetCollisionTransform(), Stage::Instance().GetCollisionModel())) {
+		if (RayGround(terrain)) {
 		position.x -= moveSpeed * elapsedTime;
 		onGround;
 		}
@@ -60,7 +64,7 @@ void Player::Update(float elapsedTime, SceneModel* scenemodel)
 	case State::EndJump:
 		position.x -= moveSpeed * elapsedTime;
 		break;
-	}
+	}*/
 
 	if (PC)
 	{
@@ -194,13 +198,9 @@ void Player::UpdateAnimation(float elapsedTime)
 	model->UpdateTransform();
 }
 
-
-
 // トランスフォーム更新処理
 void Player::UpdateTransform(float elapsedTime)
 {
-	velocity.y = gravity * elapsedTime;
-
 		// 行列計算
 		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
 		DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(angle.x, angle.y, angle.z);
@@ -350,21 +350,24 @@ void Player::PoisonC(float elapsedTime)
 	}
 }
 
-bool Player::RayGround(DirectX::XMFLOAT4X4 transform, Model* model)
+bool Player::RayGround(TerrainStage::StageTerrain& StageTerrain, float elapsedTime)
 {
+	DirectX::XMFLOAT3 start, end;
+	start = end = position;
 
-	const DirectX::XMFLOAT3 s = { position.x,position.y + 0.5f,position.z };
-	const DirectX::XMFLOAT3 e = { position.x,position.y - 0.3f,position.z };
+	start.y += 0.5f;
+	end.y -= velocity.y * elapsedTime;
 
-	DirectX::XMFLOAT3 p, n;
+	auto TerrainModel = StageTerrain.GetTerrainModels();
 
-	if (Collision::RayCast(s, e, transform, model, p, n))
+	DirectX::XMFLOAT3 hitPosition, hitNormal;
+
+	for (auto& Transform : StageTerrain.GetTerrainAndWorlds())
 	{
-		// 交点のY座標をプレイヤーに位置に設定する
-		velocity.y = 0;
-		position.y = p.y;
-		return onGround = true;
+		if (Collision::RayCast(start, end, Transform.second, TerrainModel->GetSceneModels().at(Transform.first).get(), hitPosition, hitNormal))
+			return true;
 	}
-	return onGround=false;
+
+	return false;
 }
 

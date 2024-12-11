@@ -44,7 +44,7 @@ namespace Tetromino
 
 
 
-	void TetrominoEditor::Update(const POINTS mousePos, const Input::KeyInput keyFiled, SceneModel* sceneModels, const Stage::StageTerrain::StageArray& stageCollision)
+	void TetrominoEditor::Update(const POINTS mousePos, const Input::KeyInput keyFiled, SceneModel* sceneModels, const TerrainStage::StageTerrain::StageArray& stageCollision)
 	{
 		static int x = 0;
 		static int y = 0;

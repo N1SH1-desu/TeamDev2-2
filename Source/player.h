@@ -8,7 +8,7 @@
 #include "Model.h"
 #include"Mathf.h"
 #include "FetchModelFromSceneAsset.h"
-
+#include "StageEditer.h"
 
 //player
 class Player 
@@ -28,7 +28,7 @@ public:
 	// ƒWƒƒƒ“ƒv“ü—Íˆ—
 	bool InputJump();
 
-	void Update(float elapsedTime, SceneModel* scenemodel);
+	void Update(float elapsedTime, TerrainStage::StageTerrain& terrain);
 
 	DirectX::XMFLOAT3 GetPosition() { return position; }
 	void SetPosition(const DirectX::XMFLOAT3& position) { this->position = position; }
@@ -53,7 +53,7 @@ public:
 
 	void PoisonC(float elapsedTime);
 
-	bool RayGround(DirectX::XMFLOAT4X4 transform, Model* model);
+	bool RayGround(TerrainStage::StageTerrain& StageTerrain, float elapsedTime);
 
 public:
 	Model* model = nullptr;
@@ -93,7 +93,7 @@ public:
 	DirectX::XMFLOAT3					scale = { 0.01f, 0.01f, 0.01f };
 
 	DirectX::XMFLOAT3					velocity = { 0, 0, 0 };
-	float								gravity = 5.0f;
+	float								gravity = 10.0f;
 	float								acceleration = 50.0f;
 	float								deceleration = 20.0f;
 	float								turnSpeed = DirectX::XMConvertToRadians(720);

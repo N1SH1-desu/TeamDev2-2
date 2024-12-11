@@ -56,8 +56,6 @@ void AnimationScene::Initialize()
 	cube2.angle = { 0, 0, 0 };
 	cube2.scale = { 2, 2, 2 };
 
-	Stage::Instance().SelectStage(StageNumber);
-
 	sceneModel = std::make_unique<SceneModel>("Data/Model/TetrisBlock/scene.mdl");
 	sceneScale = { 0.1f, 0.1f, 0.1f };
 
@@ -66,6 +64,7 @@ void AnimationScene::Initialize()
 	ID2D1DeviceContext* dc_2D = Graphics::Instance().GetGraphics2D()->GetContext();
 
 	EditerMode.Initialize(device, dc_2D);
+	terrain.Initialize(static_cast<TerrainStage::StageNumber>(StageNumber));
 
 
 	//add_by_nikaido_iichiko
@@ -90,7 +89,7 @@ void AnimationScene::Update(float elapsedTime)
 	//UpdateTransform(elapsedTime);
 	if (timer > 1&& Co < 9)
 	{
-		PlayerManager::Instance().Register(new Player(DirectX::XMFLOAT3(0.0f, 5, 0), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f), DirectX::XMFLOAT3(0.0f, -90.0f, 0.0f)));
+		PlayerManager::Instance().Register(new Player(DirectX::XMFLOAT3(-20.0f, 44, 0), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f), DirectX::XMFLOAT3(0.0f, -90.0f, 0.0f)));
 		timer = 0;
 		Co++;
 	}
@@ -152,21 +151,20 @@ void AnimationScene::Update(float elapsedTime)
 		DirectX::XMStoreFloat4x4(&sceneTransform, S * R * T);
 	}
 
-	PlayerManager::Instance().Update(elapsedTime, sceneModel.get());
+	PlayerManager::Instance().Update(elapsedTime, terrain);
 	cube.UpdateTransform();
 	cube2.UpdateTransform();
 	timer += elapsedTime;
 
 	TrapManager::Instance().Update(elapsedTime);
 	EffectManager::instance().Update(elapsedTime);
-	Stage::Instance().Update(elapsedTime);
 	KeyManager::Instance().Update(elapsedTime);
 	PortalManager::Instance().Update(elapsedTime);
 	Pause::Instance().Update(elapsedTime);
 
 	POINTS mousePos = InputMouse::Instance().GetPosition();
 	keyinput.Update();
-	EditerMode.Update(elapsedTime, mousePos, keyinput);
+	EditerMode.Update(elapsedTime, mousePos, keyinput, terrain.GetStagePlaced());
 
 	if (keyinput.GetKeyStatus('P') == Input::Release)
 	{
@@ -208,7 +206,6 @@ void AnimationScene::Render(float elapsedTime)
 	//primitiveRenderer->Render(dc, Camera::Instance().GetView(), Camera::Instance().GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
 	EffectManager::instance().Render(Camera::Instance().GetView(), Camera::Instance().GetProjection());
-	Stage::Instance().Render(elapsedTime, rc);
 	TrapManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
 	KeyManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
 	PortalManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
@@ -217,6 +214,8 @@ void AnimationScene::Render(float elapsedTime)
 	sceneModel->SelectedBlockRender(rc, modelRenderer, sceneTransform, 0u, ShaderId::Lambert);
 
 	EditerMode.Render(rc, dc_2D, modelRenderer);
+
+	terrain.Render(rc, modelRenderer);
 }
 
 //// GUIï`âÊèàóù

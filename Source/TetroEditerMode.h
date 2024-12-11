@@ -12,7 +12,7 @@ public:
 	TetroEditerMode() = default;
 
 	void Initialize(ID3D11Device* device, ID2D1DeviceContext* d2dContext);
-	void Update(float elapsedTime, POINTS mousePos, const Input::KeyInput& keyInput, const Stage::StageTerrain::StageArray& stageCollision);
+	void Update(float elapsedTime, POINTS mousePos, const Input::KeyInput& keyInput, const TerrainStage::StageTerrain::StageArray& stageCollision);
 	void Render(RenderContext rc, ID2D1DeviceContext* d2dContext, ModelRenderer* mRenderer);
 
 private:

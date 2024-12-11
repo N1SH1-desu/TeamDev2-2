@@ -11,7 +11,7 @@ void TetroEditerMode::Initialize(ID3D11Device* device, ID2D1DeviceContext* d2dCo
 	tetroBlockModels = std::make_unique<SceneModel>("Data/Model/TetrisBlock/Colors.mdl");
 }
 
-void TetroEditerMode::Update(float elapsedTime, POINTS mousePos, const Input::KeyInput& keyInput, const Stage::StageTerrain::StageArray& stageCollision)
+void TetroEditerMode::Update(float elapsedTime, POINTS mousePos, const Input::KeyInput& keyInput, const TerrainStage::StageTerrain::StageArray& stageCollision)
 {
 	if (keyInput.GetKeyStatus('G') == Input::Release)
 	{

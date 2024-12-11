@@ -265,7 +265,7 @@ namespace Tetromino
 
 		}
 
-		bool DetectionCollide(TetrominoType tetroType, unsigned int top, unsigned int left, unsigned int rotate, const Stage::StageTerrain::StageArray& stageCollision)
+		bool DetectionCollide(TetrominoType tetroType, unsigned int top, unsigned int left, unsigned int rotate, const TerrainStage::StageTerrain::StageArray& stageCollision)
 		{
 			TetroArray shapeArray{};
 			CheckRotate(shapeArray, tetroType, rotate);
@@ -361,7 +361,7 @@ namespace Tetromino
 	public:
 		TetrominoEditor() = default;
 
-		void Update(const POINTS mousePos, const Input::KeyInput keyFiled, SceneModel* sceneModels, const Stage::StageTerrain::StageArray& stageCollision);
+		void Update(const POINTS mousePos, const Input::KeyInput keyFiled, SceneModel* sceneModels, const TerrainStage::StageTerrain::StageArray& stageCollision);
 		void Render(RenderContext& rc, ModelRenderer* mR);
 
 	private:

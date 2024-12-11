@@ -2,7 +2,7 @@
 #include <array>
 #include "FetchModelFromSceneAsset.h"
 
-namespace Stage
+namespace TerrainStage
 {
 	enum StageNumber
 	{
@@ -206,5 +206,9 @@ namespace Stage
 		StageArray GetStagePlaced() const { return stagePlaced; }
 
 		void Render(RenderContext& rc, ModelRenderer* mR);
+
+		//プレイヤーの方でSceneModel参照するために追記 間違ってたらごめん
+		SceneModel* GetTerrainModels() { return terrainModels.get(); }
+		std::vector<std::pair<UINT, DirectX::XMFLOAT4X4>>& GetTerrainAndWorlds() { return terrainAndWorlds; }
 	};
 }
