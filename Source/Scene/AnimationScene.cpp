@@ -18,6 +18,7 @@
 
 bool pause = false;
 
+
 AnimationScene::AnimationScene(int StageNum) : StageNumber(StageNum)
 {
 	EffectManager::instance().Initialize();
@@ -61,14 +62,6 @@ void AnimationScene::Initialize()
 
 	sceneModel = std::make_unique<SceneModel>("Data/Model/TetrisBlock/scene.mdl");
 	sceneScale = { 0.1f, 0.1f, 0.1f };
-
-	pause = false;
-	Pause::Instance().SetPause(pause);
-	ID2D1DeviceContext* dc_2D = Graphics::Instance().GetGraphics2D()->GetContext();
-
-	EditerMode.Initialize(device, dc_2D);
-
-
 	//add_by_nikaido_iichiko
 	SpaceDivisionRayCast::Instance().Load(Stage::Instance().GetCollisionModel());
 
@@ -78,6 +71,16 @@ void AnimationScene::Initialize()
 
 	//audio
 	game_bgm_ = Audio::Instance().LoadAudioSource("./Data/Audio/game.wav");
+
+	pause = false;
+	Pause::Instance().SetPause(pause);
+	ID2D1DeviceContext* dc_2D = Graphics::Instance().GetGraphics2D()->GetContext();
+
+	EditerMode.Initialize(device, dc_2D);
+
+
+	//add_by_nikaido_iichiko
+	//SpaceDivisionRayCast::Instance().Load(stage->GetModel());
 }
 
 AnimationScene::~AnimationScene() 
@@ -174,15 +177,18 @@ void AnimationScene::Update(float elapsedTime)
 	PortalManager::Instance().Update(elapsedTime);
 	Pause::Instance().Update(elapsedTime);
 
-	POINTS mousePos = InputMouse::Instance().GetPosition();
-	keyinput.Update();
-	EditerMode.Update(elapsedTime, mousePos, keyinput);
-
-	if (keyinput.GetKeyStatus('P') == Input::Release)
+	if (GetAsyncKeyState('P') & 0x01)
 	{
-		pause = !pause;
-		Pause::Instance().SetPause(pause);
+		POINTS mousePos = InputMouse::Instance().GetPosition();
+		keyinput.Update();
+		EditerMode.Update(elapsedTime, mousePos, keyinput);
 	}
+
+	//if (keyinput.GetKeyStatus('P') == Input::Release)
+	//{
+	//	pause = !pause;
+	//	Pause::Instance().SetPause(pause);
+	//}
 }
 
 // •`‰æˆ—
@@ -193,6 +199,8 @@ void AnimationScene::Render(float elapsedTime)
 	PrimitiveRenderer* primitiveRenderer = Graphics::Instance().GetPrimitiveRenderer();
 	ModelRenderer* modelRenderer = Graphics::Instance().GetModelRenderer();
 	//Grid2DRenderer* grid2dRenderer = Graphics::Instance().GetGrid2DRenderer();
+	//Graphics2D* gfx2D = Graphics::Instance().GetGraphics2D();
+
 	Graphics2D* gfx2D = Graphics::Instance().GetGraphics2D();
 	ID2D1DeviceContext* dc_2D = Graphics::Instance().GetGraphics2D()->GetContext();
 
@@ -225,6 +233,7 @@ void AnimationScene::Render(float elapsedTime)
 	Pause::Instance().Render(elapsedTime);
 
 	sceneModel->SelectedBlockRender(rc, modelRenderer, sceneTransform, 0u, ShaderId::Lambert);
+	//SpaceDivisionRayCast::Instance().DebugDraw(rc);
 
 	EditerMode.Render(rc, dc_2D, modelRenderer);
 }

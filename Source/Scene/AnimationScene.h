@@ -11,6 +11,8 @@
 #include "stage.h"
 #include "KeyInput.h"
 #include "TetroEditerMode.h"
+//add_by_nikaido
+#include"Audio/Audio.h"
 
 class AnimationScene : public Scene
 {
