@@ -13,6 +13,7 @@
 #include "PlayerManager.h"
 #include "SceneManager.h"
 #include "SceneTitle.h"
+#include "InputMouse.h"
 
 #define MANAGER 1
 
@@ -21,11 +22,12 @@ static const int syncInterval = 1;
 
 // コンストラクタ
 Framework::Framework(HWND hWnd)
-	: hWnd(hWnd),
-	mouse(hWnd)
+	: hWnd(hWnd)
 {
 	// グラフィックス初期化
 	Graphics::Instance().Initialize(hWnd);
+	InputMouse::Instance().Initialize(hWnd);
+
 
 	// IMGUI初期化
 	ImGuiRenderer::Initialize(hWnd, Graphics::Instance().GetDevice(), Graphics::Instance().GetDeviceContext());
@@ -45,7 +47,7 @@ Framework::Framework(HWND hWnd)
 	//scene = std::make_unique<HitStopScene>();
 
 #if MANAGER
-	SceneManager::Instance().ChangeScene(new RayCastScene);
+	SceneManager::Instance().ChangeScene(new SceneTitle);
 #else
 	scene = std::make_unique<RayCastScene>();
 #endif
@@ -66,10 +68,10 @@ void Framework::Update(float elapsedTime)
 	// IMGUIフレーム開始処理	
 	ImGuiRenderer::NewFrame();
 
-	mouse.ProcessCommand();
+	InputMouse::Instance().ProcessCommand();
 
 #if MANAGER
-	SceneManager::Instance().Update(elapsedTime, &mouse);
+	SceneManager::Instance().Update(elapsedTime);
 #else
 	scene->SetInputMouse(&mouse);
 	scene->Update(elapsedTime);
@@ -93,7 +95,6 @@ void Framework::Render(float elapsedTime)
 
 #if MANAGER
 	SceneManager::Instance().Render(elapsedTime);
-	SceneManager::Instance().DrawGUI();
 #else
 	scene->Render(elapsedTime);
 	scene->DrawGUI();
@@ -216,6 +217,7 @@ int Framework::Run()
 // メッセージハンドラ
 LRESULT CALLBACK Framework::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	InputMouse& mouse = InputMouse::Instance();
 	if (ImGuiRenderer::HandleMessage(hWnd, msg, wParam, lParam))
 		return true;
 

@@ -8,17 +8,23 @@ public:
 	Scene() = default;
 	virtual ~Scene() = default;
 
+	virtual void Initialize(){}
+
 	// XVˆ—
 	virtual void Update(float elapsedTime) {}
 
 	// •`‰æˆ—
 	virtual void Render(float elapsedTime) {}
 
+	virtual void Finalize(){}
+
 	// GUI•`‰æˆ—
 	virtual void DrawGUI() {}
 
-	void SetInputMouse(InputMouse* ref) { refInputMouse = ref; }
+	bool IsReady() const { return ready; }
 	
+	void SetReady() { ready = true; }
 protected:
 	InputMouse* refInputMouse;
+	bool ready = false;
 };

@@ -15,8 +15,14 @@
 //add_by_nikaido
 #include"pause.h"
 
-// コンストラクタ
-AnimationScene::AnimationScene(int StageNum)
+bool pause = false;
+
+AnimationScene::AnimationScene(int StageNum) : StageNumber(StageNum)
+{
+	EffectManager::instance().Initialize();
+}
+
+void AnimationScene::Initialize()
 {
 	ID3D11Device* device = Graphics::Instance().GetDevice();
 	float screenWidth = Graphics::Instance().GetScreenWidth();
@@ -35,8 +41,7 @@ AnimationScene::AnimationScene(int StageNum)
 		{ 0, 1, 0 }			// 上ベクトル
 	);
 	cameraController.SyncCameraToController(Camera::Instance());
-	PlayerManager::Instance().Register(new Player(DirectX::XMFLOAT3(0, 3, 0), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f), DirectX::XMFLOAT3(0, 180, 0)));
-
+	
 	timer = 0;
 	cube.model = std::make_unique<Model>("Data/Model/Cube/Cube.mdl");
 	cube.position = { -8,1, 0 };
@@ -48,18 +53,19 @@ AnimationScene::AnimationScene(int StageNum)
 	cube2.angle = { 0, 0, 0 };
 	cube2.scale = { 2, 2, 2 };
 
-	Stage::Instance().SelectStage(StageNum);
+	Stage::Instance().SelectStage(StageNumber);
 
-	EffectManager::instance().Initialize();
 	sceneModel = std::make_unique<SceneModel>("Data/Model/TetrisBlock/scene.mdl");
 	sceneScale = { 0.1f, 0.1f, 0.1f };
-
 	//add_by_nikaido_iichiko
 	//SpaceDivisionRayCast::Instance().Load(stage->GetModel());
-	Pause::Instance().SetStageNum(StageNum);
+
+	pause = false;
+	Pause::Instance().SetPause(pause);
 }
 
-AnimationScene::~AnimationScene() {
+AnimationScene::~AnimationScene() 
+{
 	PlayerManager::Instance().Clear();
 }
 
@@ -129,7 +135,7 @@ void AnimationScene::Update(float elapsedTime)
 
 	RECT viewport = { 0, 0, static_cast<LONG>(Graphics::Instance().GetScreenWidth()), static_cast<LONG>(Graphics::Instance().GetScreenHeight()) };
 	
-	scenePosition = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size, viewport, Projection, View, World);
+	scenePosition = SetBlockPosFromMousePos(Grid2DRenderer::grid_size, viewport, Projection, View, World);
 
 	{
 		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(sceneScale.x, sceneScale.y, sceneScale.z);
@@ -148,6 +154,13 @@ void AnimationScene::Update(float elapsedTime)
 	Stage::Instance().Update(elapsedTime);
 	KeyManager::Instance().Update(elapsedTime);
 	PortalManager::Instance().Update(elapsedTime);
+	Pause::Instance().Update(elapsedTime);
+
+	if (GetAsyncKeyState('P') & 0x01)
+	{
+		pause = !pause;
+		Pause::Instance().SetPause(pause);
+	}
 }
 
 // 描画処理
@@ -186,6 +199,7 @@ void AnimationScene::Render(float elapsedTime)
 	TrapManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
 	KeyManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
 	PortalManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
+	Pause::Instance().Render(elapsedTime);
 
 	sceneModel->SelectedBlockRender(rc, modelRenderer, sceneTransform, 0u, ShaderId::Lambert);
 }

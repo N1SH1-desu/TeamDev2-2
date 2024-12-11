@@ -16,6 +16,7 @@ public:
 	AnimationScene(int StageNum);
 	~AnimationScene();
 
+	void Initialize() override;
 	// XVˆ—
 	void Update(float elapsedTime) override;
 
@@ -70,4 +71,6 @@ private:
 	int										Co = 0;
 
 	std::unique_ptr<Stage> stage = nullptr;
+
+	int StageNumber = 0;
 };

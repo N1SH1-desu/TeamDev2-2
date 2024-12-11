@@ -66,7 +66,7 @@ Clear::Clear()
     base_y_ = Graphics::Instance().GetScreenHeight() / 6.f;
 }
 
-void Clear::Update(float elapsedTime, InputMouse* mouse)
+void Clear::Update(float elapsedTime)
 {
     static float animation_timer = 0.f;
     if (flag_)
@@ -81,7 +81,7 @@ void Clear::Update(float elapsedTime, InputMouse* mouse)
             clear_scale_ = 1.0f;
         }
 
-        POINTS mouse_pos = mouse->GetPosition();
+        POINTS mouse_pos = InputMouse::Instance().GetPosition();
         
         bool select_pos =
             (((base_x_ * 2.f) < mouse_pos.x && mouse_pos.x < ((base_x_ * 2.f) + base_x_ * 4.f))

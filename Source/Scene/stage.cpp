@@ -134,12 +134,26 @@ void Stage::ObjectSetting(int selecter)
 	//KeyManager::Instance().Clear();
 	//PortalManager::Instance().Clear();
 
-	//switch (selecter)
-	//{
-	//case 0:
-	//	TrapManager::Instance().Register(new PoisonGus("Data/Model/Floor.mdl", DirectX::XMFLOAT3(0.0f, 3.0f, 0.0f), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f)));
-	//	KeyManager::Instance().Register(new Key("Data/Model/key.mdl", DirectX::XMFLOAT3(3.0f, 0.0f, 0.0f), DirectX::XMFLOAT3(0.03f, 0.03f, 0.03f)));
-	//	PortalManager::Instance().Register(new Portal("Data/Model/portal.mdl", DirectX::XMFLOAT3(-3.0f, 0.0f, 0.0f), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f)));
-	//	break;
-	//}
+	switch (selecter)
+	{
+	case 0:
+		TrapManager::Instance().Register(new PoisonGus("Data/Model/Floor/Floor.mdl", DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f)));
+		KeyManager::Instance().Register(new Key("Data/Model/key.mdl", DirectX::XMFLOAT3(3.0f, 5.0f, 0.0f), DirectX::XMFLOAT3(0.03f, 0.03f, 0.03f)));
+		PortalManager::Instance().Register(new Portal("Data/Model/portal.mdl", DirectX::XMFLOAT3(-3.0f, 0.0f, 0.0f), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f)));
+		break;
+
+	case 2:
+		KeyManager::Instance().Register(new Key("Data/Model/key.mdl", DirectX::XMFLOAT3(0.0f, 2.0f, 0.0f), DirectX::XMFLOAT3(0.03f, 0.03f, 0.03f)));
+		PortalManager::Instance().Register(new Portal("Data/Model/portal.mdl", DirectX::XMFLOAT3(-10.0f, 0.0f, 0.0f), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f)));
+		break;
+
+	case 3:
+		
+		break;
+	case 4:
+		KeyManager::Instance().Register(new Key("Data/Model/key.mdl", DirectX::XMFLOAT3(10.0f, 7.5f, 0.0f), DirectX::XMFLOAT3(0.03f, 0.03f, 0.03f)));
+		KeyManager::Instance().Register(new Key("Data/Model/key.mdl", DirectX::XMFLOAT3(-10.0f, 7.5f, 0.0f), DirectX::XMFLOAT3(0.03f, 0.03f, 0.03f)));
+		PortalManager::Instance().Register(new Portal("Data/Model/portal.mdl", DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), DirectX::XMFLOAT3(0.007f, 0.007f, 0.007f)));
+		break;
+	}
 }

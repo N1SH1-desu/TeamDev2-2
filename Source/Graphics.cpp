@@ -4,6 +4,7 @@
 void Graphics::Initialize(HWND hWnd)
 {
 	this->hWnd = hWnd;
+
 	// 画面のサイズを取得する。
 	RECT rc;
 	GetClientRect(hWnd, &rc);
@@ -129,12 +130,9 @@ void Graphics::Initialize(HWND hWnd)
 	primitiveRenderer = std::make_unique<PrimitiveRenderer>(device.Get());
 	shapeRenderer = std::make_unique<ShapeRenderer>(device.Get());
 	modelRenderer = std::make_unique<ModelRenderer>(device.Get());
+	endlessGridRenderer = std::make_unique<EndlessGridRenderer>(device.Get());
 
-	d2dGraphics = std::make_unique<Graphics2D>(device.Get());
-
-	Microsoft::WRL::ComPtr<IDXGISurface> dxgiBackBuffer;
-	swapchain->GetBuffer(0, IID_PPV_ARGS(&dxgiBackBuffer));
-	grid2DRenderer = std::make_unique<Grid2DRenderer>(d2dGraphics->GetContext(), dxgiBackBuffer.Get());
+	graphics2D = std::make_unique<Graphics2D>(device.Get());
 }
 
 // クリア

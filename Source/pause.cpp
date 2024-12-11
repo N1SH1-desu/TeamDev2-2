@@ -7,6 +7,7 @@
 #include"SceneStageSelect.h"
 #include"SceneManager.h"
 #include"Scene/AnimationScene.h"
+#include "SceneLoading.h"
 
 namespace pause_calc
 {
@@ -69,7 +70,7 @@ void Pause::SetPause(bool flag)
     this->flag_ = flag;
 }
 
-void Pause::Update(float elapsedTime,InputMouse* mouse)
+void Pause::Update(float elapsedTime)
 {
     
     //‚¢‚¸‚ê‚©‚Ìˆ—‚ªs‚í‚êƒV[ƒ“‚ª•Ï‚í‚é‚È‚çtrue;
@@ -78,7 +79,7 @@ void Pause::Update(float elapsedTime,InputMouse* mouse)
 
     if (this->flag_)
     {
-        POINTS mouse_pos = mouse->GetPosition();
+        POINTS mouse_pos = InputMouse::Instance().GetPosition();
 
         bool retry_bool_pos = (
             (base_pos_x_ < mouse_pos.x && mouse_pos.x < (base_pos_x_ + base_size_x_) &&
@@ -108,7 +109,7 @@ void Pause::Update(float elapsedTime,InputMouse* mouse)
                 || (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
                 )
             {
-                SceneManager::Instance().ChangeScene(new AnimationScene(stage_nun_));
+                SceneManager::Instance().ChangeScene(new SceneLoading(new AnimationScene(stage_nun_)));
                 scene_changed = true;
             }
         }

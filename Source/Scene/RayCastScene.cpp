@@ -76,8 +76,8 @@ void RayCastScene::Update(float elapsedTime)
 		NumberManager::Instance().UpdateTimer();
 	}
 
-	Pause::Instance().Update(elapsedTime,refInputMouse);
-	Clear::Instance().Update(elapsedTime,refInputMouse);
+	Pause::Instance().Update(elapsedTime);
+	Clear::Instance().Update(elapsedTime);
 }
 
 // •`‰æˆ—
