@@ -51,7 +51,7 @@ private:
 	struct QuadTreeNode {
 		DirectX::XMFLOAT3 center;	//この四分木の中心
 		DirectX::XMFLOAT3 half_size; //四分木空間の
-		float depth;
+		int depth;
 		bool is_leaf;				//depth＝＝0ならtrue;
 		//最大深度
 		static const int node_depth_ = 4;
