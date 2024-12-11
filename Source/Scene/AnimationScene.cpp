@@ -14,9 +14,16 @@
 #include "PortalManager.h"
 //add_by_nikaido
 #include"pause.h"
+#include"space_division_raycast.h"
 
-// コンストラクタ
-AnimationScene::AnimationScene(int StageNum)
+bool pause = false;
+
+AnimationScene::AnimationScene(int StageNum) : StageNumber(StageNum)
+{
+	EffectManager::instance().Initialize();
+}
+
+void AnimationScene::Initialize()
 {
 	ID3D11Device* device = Graphics::Instance().GetDevice();
 	float screenWidth = Graphics::Instance().GetScreenWidth();
@@ -35,8 +42,7 @@ AnimationScene::AnimationScene(int StageNum)
 		{ 0, 1, 0 }			// 上ベクトル
 	);
 	cameraController.SyncCameraToController(Camera::Instance());
-	PlayerManager::Instance().Register(new Player(DirectX::XMFLOAT3(0, 3, 0), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f), DirectX::XMFLOAT3(0, 180, 0)));
-
+	
 	timer = 0;
 	cube.model = std::make_unique<Model>("Data/Model/Cube/Cube.mdl");
 	cube.position = { -8,1, 0 };
@@ -48,19 +54,25 @@ AnimationScene::AnimationScene(int StageNum)
 	cube2.angle = { 0, 0, 0 };
 	cube2.scale = { 2, 2, 2 };
 
-	Stage::Instance().SelectStage(StageNum);
+	Stage::Instance().SelectStage(StageNumber);
 
-	EffectManager::instance().Initialize();
 	sceneModel = std::make_unique<SceneModel>("Data/Model/TetrisBlock/scene.mdl");
 	sceneScale = { 0.1f, 0.1f, 0.1f };
-
 	//add_by_nikaido_iichiko
-	//SpaceDivisionRayCast::Instance().Load(stage->GetModel());
-	Pause::Instance().SetStageNum(StageNum);
+	SpaceDivisionRayCast::Instance().Load(Stage::Instance().GetCollisionModel());
+
+	pause = false;
+	Pause::Instance().SetPause(pause);
+	Pause::Instance().SetStageNum(StageNumber);
+
+	//audio
+	game_bgm_ = Audio::Instance().LoadAudioSource("./Data/Audio/game.wav");
 }
 
-AnimationScene::~AnimationScene() {
+AnimationScene::~AnimationScene() 
+{
 	PlayerManager::Instance().Clear();
+	SpaceDivisionRayCast::Instance().Clear();
 }
 
 // 更新処理
@@ -71,6 +83,7 @@ void AnimationScene::Update(float elapsedTime)
 	cameraController.SyncControllerToCamera(Camera::Instance());
 	//player->Update(elapsedTime);
 
+	game_bgm_->Play(true);
 
 	//// トランスフォーム更新処理
 	//UpdateTransform(elapsedTime);
@@ -102,16 +115,16 @@ void AnimationScene::Update(float elapsedTime)
 
 	//	else
 	//	{
-			if (Collision::InteresectCylinderVsCylinder(player->GetPosition(), 2.0f, 2.0f, cube.position, 2.0f, length, outPosition))
-			{
-				player->PlayAnimation("Running", true);
-				player->state = Player::State::Run;
-			}
-			else if (player->state == Player::State::Run && !player->onGround)
-			{
-				player->PlayAnimation("Jump", true);
-				player->state = Player::State::Idle;
-			}
+			//if (Collision::InteresectCylinderVsCylinder(player->GetPosition(), 2.0f, 2.0f, cube.position, 2.0f, length, outPosition))
+			//{
+			//	player->PlayAnimation("Running", true);
+			//	player->state = Player::State::Run;
+			//}
+			//else if (player->state == Player::State::Run && !player->onGround)
+			//{
+			//	player->PlayAnimation("Jump", true);
+			//	player->state = Player::State::Idle;
+			//}
 	//	}
 
 	//	if (Collision::InteresectCylinderVsCylinder(player->GetPosition(), 2.0f, 2.0f, cube2.position, 2.0f, 2.0f, outPosition))
@@ -129,7 +142,7 @@ void AnimationScene::Update(float elapsedTime)
 
 	RECT viewport = { 0, 0, static_cast<LONG>(Graphics::Instance().GetScreenWidth()), static_cast<LONG>(Graphics::Instance().GetScreenHeight()) };
 	
-	scenePosition = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size, viewport, Projection, View, World);
+	scenePosition = SetBlockPosFromMousePos(Grid2DRenderer::grid_size, viewport, Projection, View, World);
 
 	{
 		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(sceneScale.x, sceneScale.y, sceneScale.z);
@@ -148,6 +161,13 @@ void AnimationScene::Update(float elapsedTime)
 	Stage::Instance().Update(elapsedTime);
 	KeyManager::Instance().Update(elapsedTime);
 	PortalManager::Instance().Update(elapsedTime);
+	Pause::Instance().Update(elapsedTime);
+
+	if (GetAsyncKeyState('P') & 0x01)
+	{
+		pause = !pause;
+		Pause::Instance().SetPause(pause);
+	}
 }
 
 // 描画処理
@@ -157,8 +177,8 @@ void AnimationScene::Render(float elapsedTime)
 	RenderState* renderState = Graphics::Instance().GetRenderState();
 	PrimitiveRenderer* primitiveRenderer = Graphics::Instance().GetPrimitiveRenderer();
 	ModelRenderer* modelRenderer = Graphics::Instance().GetModelRenderer();
-	Grid2DRenderer* grid2dRenderer = Graphics::Instance().GetGrid2DRenderer();
-	Graphics2D* gfx2D = Graphics::Instance().GetGraphics2D();
+	//Grid2DRenderer* grid2dRenderer = Graphics::Instance().GetGrid2DRenderer();
+	//Graphics2D* gfx2D = Graphics::Instance().GetGraphics2D();
 
 	//// モデル描画
 	RenderContext rc;
@@ -186,8 +206,10 @@ void AnimationScene::Render(float elapsedTime)
 	TrapManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
 	KeyManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
 	PortalManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
+	Pause::Instance().Render(elapsedTime);
 
 	sceneModel->SelectedBlockRender(rc, modelRenderer, sceneTransform, 0u, ShaderId::Lambert);
+	SpaceDivisionRayCast::Instance().DebugDraw(rc);
 }
 
 //// GUI描画処理

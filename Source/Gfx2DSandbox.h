@@ -7,6 +7,7 @@ class Gfx2DSandbox
 public:
     Gfx2DSandbox(ID2D1DeviceContext* context, IDXGISurface* targetSurface);
     virtual ~Gfx2DSandbox() = default;
+    virtual void Update(float elapsedTime) {};
     void Draw(ID2D1DeviceContext* context);
      virtual void Excecute(ID2D1DeviceContext* context) = 0;
 private:

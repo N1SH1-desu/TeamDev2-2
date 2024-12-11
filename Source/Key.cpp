@@ -42,7 +42,5 @@ void Key::Behavior(float elapsedTime)
 
 void Key::DrawGUI()
 {
-	ImGui::Begin("easing");
-	ImGui::InputFloat3("angle", &angle.x);
-	ImGui::End();
+	
 }

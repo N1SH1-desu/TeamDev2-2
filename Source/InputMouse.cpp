@@ -1,12 +1,9 @@
 #include "InputMouse.h"
 #include "Graphics.h"
 
-InputMouse::InputMouse(HWND hWnd) :
-	hWnd(hWnd),
-	mousePosition(),
-	isLBottonDown(),
-	isRBottonDown()
+void InputMouse::Initialize(HWND hWnd)
 {
+	this->hWnd = hWnd;
 }
 
 void InputMouse::ProcessCommand()

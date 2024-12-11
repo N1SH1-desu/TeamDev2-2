@@ -67,7 +67,7 @@ void PlayerManager::Render(ModelRenderer* modelRenderer,RenderContext& rc, Shade
 		const float gaugeWidth = player->HP;
 		const float gaugeHeight = 5.0f;
 
-		sprite->Render(dc,
+		/*sprite->Render(dc,
 			screenPosition.x - 15.0f, screenPosition.y, 0,
 			30.0f, gaugeHeight,
 			0,
@@ -78,16 +78,10 @@ void PlayerManager::Render(ModelRenderer* modelRenderer,RenderContext& rc, Shade
 			gaugeWidth, gaugeHeight,
 			0,
 			1, 0, 0, 1
-		);
+		);*/
 
 		modelRenderer->Render(rc, player->transform, player->model, ID);
 	}
-
-	ImGui::Begin("Data");
-
-	/*ImGui::Text("onGround : %d", players[0]->onGround);
-	ImGui::Text("State : %d", players[0]->state);*/
-	ImGui::End();
 }
 
 

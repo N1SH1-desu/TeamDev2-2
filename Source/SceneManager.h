@@ -16,13 +16,11 @@ public:
 		return instance;
 	}
 
-	void Update(float elapsedTime, InputMouse* mouse);
+	void Update(float elapsedTime);
 	void Render(float elapsedTime);
 	void Clear();
 
 	void ChangeScene(Scene* scene);
-	void DrawGUI() { currentScene->DrawGUI(); }
-
 private:
 	std::unique_ptr<Scene> currentScene = nullptr;
 	std::unique_ptr<Scene> nextScene = nullptr;

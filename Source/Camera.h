@@ -19,12 +19,13 @@ public:
 
 	// パースペクティブ設定
 	void SetPerspectiveFov(float fovY, float aspect, float nearZ, float farZ);
+	void SetOrthoGraphic(float viewWidth, float viewHeight, float nearZ, float farZ);
 
 	// ビュー行列取得
 	const DirectX::XMFLOAT4X4& GetView() const { return view; }
 
 	// プロジェクション行列取得
-	const DirectX::XMFLOAT4X4& GetProjection() const { return projection; }
+	const DirectX::XMFLOAT4X4& GetProjection(bool ortho = false) const { return ortho == false ? projection : projectionOrtho; }
 
 	// 視点取得
 	const DirectX::XMFLOAT3& GetEye() const { return eye; }
@@ -44,6 +45,7 @@ public:
 private:
 	DirectX::XMFLOAT4X4		view;
 	DirectX::XMFLOAT4X4		projection;
+	DirectX::XMFLOAT4X4		projectionOrtho;
 
 	DirectX::XMFLOAT3		eye;
 	DirectX::XMFLOAT3		focus;
