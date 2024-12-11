@@ -37,7 +37,7 @@ public:
     }
 
     //マウスの位置が欲しいので引数に入れている
-    void Update(float elapsedTime, InputMouse* mouse);
+    void Update(float elapsedTime);
     void Render(float elapsedTime);
 
     void SetClearFlag(bool flag) { this->flag_ = flag; }

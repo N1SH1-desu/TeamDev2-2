@@ -47,7 +47,7 @@ Framework::Framework(HWND hWnd)
 	//scene = std::make_unique<HitStopScene>();
 
 #if MANAGER
-	SceneManager::Instance().ChangeScene(new RayCastScene);
+	SceneManager::Instance().ChangeScene(new SceneTitle);
 #else
 	scene = std::make_unique<RayCastScene>();
 #endif

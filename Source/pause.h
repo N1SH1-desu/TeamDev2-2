@@ -54,7 +54,7 @@ public:
     bool GetPause() { return flag_; }
 
     //ポーズ画面の更新処理
-    void Update(float elapsedTime,InputMouse*mouse);
+    void Update(float elapsedTime);
 
     //ポーズ画面を描画する
     void Render(float elapsedTime);
