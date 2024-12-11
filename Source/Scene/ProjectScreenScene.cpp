@@ -11,7 +11,7 @@ ProjectScreenScene::ProjectScreenScene()
 	ID3D11Device* device = Graphics::Instance().GetDevice();
 	float screenWidth = Graphics::Instance().GetScreenWidth();
 	float screenHeight = Graphics::Instance().GetScreenHeight();
-	ID2D1DeviceContext* d2dContext = Graphics::Instance().GetGfx2D()->GetContext();
+	ID2D1DeviceContext* d2dContext = Graphics::Instance().GetGraphics2D()->GetContext();
 
 	// カメラ設定
 	camera.SetPerspectiveFov(
@@ -65,7 +65,7 @@ void ProjectScreenScene::Update(float elapsedTime)
 	POINTS mousePos = refInputMouse->GetPosition();
 	editerMode.Update(elapsedTime, mousePos, keyInput);
 
-	stage.position = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size, viewport, Projection, View, World);
+	//stage.position = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size, viewport, Projection, View, World);
 
 	// ステージ行列更新処理
 	{
@@ -85,7 +85,7 @@ void ProjectScreenScene::Render(float elapsedTime)
 	PrimitiveRenderer* primitiveRenderer = Graphics::Instance().GetPrimitiveRenderer();
 	ShapeRenderer* shapeRenderer = Graphics::Instance().GetShapeRenderer();
 	EndlessGridRenderer* gridRenderer = Graphics::Instance().GetEndlessGridRenderer();
-	ID2D1DeviceContext* d2dContext = Graphics::Instance().GetGfx2D()->GetContext();
+	//ID2D1DeviceContext* d2dContext = Graphics::Instance().GetGfx2D()->GetContext();
 
 	// モデル描画
 	RenderContext rc;
@@ -103,7 +103,7 @@ void ProjectScreenScene::Render(float elapsedTime)
 
 	terrain.Render(rc, modelRenderer);
 
-	editerMode.Render(rc, d2dContext, modelRenderer);
+	//editerMode.Render(rc, d2dContext, modelRenderer);
 }
 
 // GUI描画処理

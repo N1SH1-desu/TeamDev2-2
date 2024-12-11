@@ -36,10 +36,13 @@ void AnimationScene::Initialize()
 		1000.0f								// ファークリップ
 	);
 	Camera::Instance().SetLookAt(
-		{ 0, 0, 27 },		// 視点
-		{ 0, 1, 0 },		// 注視点
+		{ 0, 0, -20 },		// 視点
+		{ 0, 0, 0 },		// 注視点
 		{ 0, 1, 0 }			// 上ベクトル
 	);
+
+	Camera::Instance().SetOrthoGraphic(128.0f, 72.0f, 0.1f, 1000.0f);
+
 	cameraController.SyncCameraToController(Camera::Instance());
 	
 	timer = 0;
@@ -60,6 +63,11 @@ void AnimationScene::Initialize()
 
 	pause = false;
 	Pause::Instance().SetPause(pause);
+	ID2D1DeviceContext* dc_2D = Graphics::Instance().GetGraphics2D()->GetContext();
+
+	EditerMode.Initialize(device, dc_2D);
+
+
 	//add_by_nikaido_iichiko
 	//SpaceDivisionRayCast::Instance().Load(stage->GetModel());
 }
@@ -144,7 +152,7 @@ void AnimationScene::Update(float elapsedTime)
 		DirectX::XMStoreFloat4x4(&sceneTransform, S * R * T);
 	}
 
-	PlayerManager::Instance().Update(elapsedTime);
+	PlayerManager::Instance().Update(elapsedTime, sceneModel.get());
 	cube.UpdateTransform();
 	cube2.UpdateTransform();
 	timer += elapsedTime;
@@ -155,6 +163,10 @@ void AnimationScene::Update(float elapsedTime)
 	KeyManager::Instance().Update(elapsedTime);
 	PortalManager::Instance().Update(elapsedTime);
 	Pause::Instance().Update(elapsedTime);
+
+	POINTS mousePos = InputMouse::Instance().GetPosition();
+	keyinput.Update();
+	EditerMode.Update(elapsedTime, mousePos, keyinput);
 
 	if (GetAsyncKeyState('P') & 0x01)
 	{
@@ -170,8 +182,9 @@ void AnimationScene::Render(float elapsedTime)
 	RenderState* renderState = Graphics::Instance().GetRenderState();
 	PrimitiveRenderer* primitiveRenderer = Graphics::Instance().GetPrimitiveRenderer();
 	ModelRenderer* modelRenderer = Graphics::Instance().GetModelRenderer();
-	Grid2DRenderer* grid2dRenderer = Graphics::Instance().GetGrid2DRenderer();
+	//Grid2DRenderer* grid2dRenderer = Graphics::Instance().GetGrid2DRenderer();
 	Graphics2D* gfx2D = Graphics::Instance().GetGraphics2D();
+	ID2D1DeviceContext* dc_2D = Graphics::Instance().GetGraphics2D()->GetContext();
 
 	//// モデル描画
 	RenderContext rc;
@@ -202,6 +215,8 @@ void AnimationScene::Render(float elapsedTime)
 	Pause::Instance().Render(elapsedTime);
 
 	sceneModel->SelectedBlockRender(rc, modelRenderer, sceneTransform, 0u, ShaderId::Lambert);
+
+	EditerMode.Render(rc, dc_2D, modelRenderer);
 }
 
 //// GUI描画処理

@@ -6,6 +6,7 @@
 #include"PlayerManager.h"
 #include"Scene/stage.h"
 #include "PortalManager.h"
+#include "FetchModelFromSceneAsset.h"
 
  Player::Player(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale, DirectX::XMFLOAT3 angle) 
  {
@@ -16,6 +17,8 @@
 	this->state = State::Idle;
 	this->HP = 30;
 	PlayAnimation("Falling", true);
+
+	position.x = 1.0;
 }
 
  Player::~Player() {
@@ -23,7 +26,7 @@
 }
 
 
-void Player::Update(float elapsedTime)
+void Player::Update(float elapsedTime, SceneModel* scenemodel)
 {
 	tt = elapsedTime;
 	InputMove();

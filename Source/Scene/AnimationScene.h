@@ -9,6 +9,8 @@
 #include "stage.h"
 #include "FetchModelFromSceneAsset.h"
 #include "stage.h"
+#include "KeyInput.h"
+#include "TetroEditerMode.h"
 
 class AnimationScene : public Scene
 {
@@ -73,4 +75,7 @@ private:
 	std::unique_ptr<Stage> stage = nullptr;
 
 	int StageNumber = 0;
+
+	Input::KeyInput keyinput;
+	TetroEditerMode EditerMode;
 };
