@@ -33,6 +33,11 @@ namespace clear_calc
 
 Clear::Clear()
 {
+   
+}
+
+void Clear::Initialize()
+{
     ID3D11Device* id = Graphics::Instance().GetDevice();
 
     HRESULT hr{ S_OK };
@@ -65,7 +70,9 @@ Clear::Clear()
     base_x_ = Graphics::Instance().GetScreenWidth() * 0.125f;
     base_y_ = Graphics::Instance().GetScreenHeight() / 6.f;
 
-    this->sound_ = Audio::Instance().LoadAudioSource("./Data/Audio/clear.wav");
+    //this->sound_ = Audio::Instance().LoadAudioSource("./Data/Audio/clear.wav");
+
+    flag_ = false;
 }
 
 void Clear::Update(float elapsedTime)
@@ -74,7 +81,7 @@ void Clear::Update(float elapsedTime)
     if (flag_)
     {
         //auido
-        this->sound_->Play(false);
+        //this->sound_->Play(false);
 
         if (animation_timer <= 1.f)
         {

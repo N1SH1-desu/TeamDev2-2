@@ -41,7 +41,7 @@ void SceneStageSelect::Initialize()
 		StageImage_Hover[i] = std::make_unique<Sprite>(device, filePath_Hover[i]);
 	}
 
-	this->bgm_ = Audio::Instance().LoadAudioSource("./Data/Audio/select.wav");
+	//this->bgm_ = Audio::Instance().LoadAudioSource("./Data/Audio/select.wav");
 
 	Interval = 0.0f;
 }
@@ -51,22 +51,26 @@ void SceneStageSelect::Update(float elapsedTime)
 	function& func = function::getInstance();
 	InputMouse& mouse = InputMouse::Instance();
 
-	this->bgm_->Play(true);
+	//this->bgm_->Play(true);
 
 	for (int i = 0; i < 3; i++)
 	{
 		//クリック処理
-		if (Interval > 0.5f)
-			if (func.Click_Colision(DirectX::XMFLOAT2((i * DISPLAY_MARGIN) + 360, 300), DirectX::XMFLOAT2(BUTTON_SIZE, BUTTON_SIZE)) && mouse.IsLBottonDowned())
-				SceneManager::Instance().ChangeScene(new SceneLoading(new AnimationScene(i)));
+		if (Interval > 0.5f && func.Click_Colision(DirectX::XMFLOAT2((i * DISPLAY_MARGIN) + 360, 300), DirectX::XMFLOAT2(BUTTON_SIZE, BUTTON_SIZE)) && mouse.IsLBottonDowned())
+		{
+			SceneManager::Instance().ChangeScene(new SceneLoading(new AnimationScene(i)));
+			//this->bgm_->Stop();
+		}
 	}
 
 	for (int i = 0; i < 2; i++)
 	{
 		//クリック処理
-		if (Interval > 0.5f)
-			if (func.Click_Colision(DirectX::XMFLOAT2((i * DISPLAY_MARGIN) + 360, 500), DirectX::XMFLOAT2(BUTTON_SIZE, BUTTON_SIZE)) && mouse.IsLBottonDowned())
-				SceneManager::Instance().ChangeScene(new SceneLoading(new AnimationScene(i + 3)));
+		if (Interval > 0.5f && func.Click_Colision(DirectX::XMFLOAT2((i * DISPLAY_MARGIN) + 360, 500), DirectX::XMFLOAT2(BUTTON_SIZE, BUTTON_SIZE)) && mouse.IsLBottonDowned())
+		{
+			SceneManager::Instance().ChangeScene(new SceneLoading(new AnimationScene(i + 3)));
+			//this->bgm_->Stop();
+		}
 	}
 }
 

@@ -23,6 +23,9 @@ public:
 		static PlayerManager instance;
 		return instance;
 	}
+
+	void Initialize();
+
 	void Update(float elapsedTime, TerrainStage::StageTerrain& terrain);
 
 	void Register(Player* player);
@@ -40,7 +43,7 @@ public:
 	void Render(ModelRenderer* modelRenderer,RenderContext& rc, ShaderId ID);
 
 
-
+	bool generate = false;
 private:
 	std::vector<Player*> players;
 	std::set<Player*> remove;

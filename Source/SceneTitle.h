@@ -23,5 +23,5 @@ private:
 
 	float Interval = 0.0f;
 
-	std::unique_ptr<AudioSource> audio_bgm_;
+	//std::unique_ptr<AudioSource> audio_bgm_;
 };

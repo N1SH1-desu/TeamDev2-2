@@ -20,4 +20,5 @@ public:
 
     //プレイヤーの方でモデル参照するために追記 間違ってたらごめん
     std::vector<std::shared_ptr<Model>>& GetSceneModels() { return sceneModels; }
+    std::vector<std::pair<UINT, DirectX::XMFLOAT4X4>>& GetCommitedBlocks() { return commitedBlocks; }
 };

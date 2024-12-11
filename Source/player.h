@@ -53,7 +53,9 @@ public:
 
 	void PoisonC(float elapsedTime);
 
-	bool RayGround(TerrainStage::StageTerrain& StageTerrain, float elapsedTime);
+	void Clear_Judge();
+
+	void UpdateVerticalMove(TerrainStage::StageTerrain& StageTerrain, float elapsedTime);
 
 public:
 	Model* model = nullptr;

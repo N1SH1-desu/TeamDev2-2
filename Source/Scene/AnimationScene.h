@@ -25,6 +25,7 @@ public:
 	// •`‰æˆ—
 	void Render(float elapsedTime) override;
 
+	void ObjectSetting(int StageNum);
 
 	// GUI•`‰æˆ—
 	//void DrawGUI() override;
