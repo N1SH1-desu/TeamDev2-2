@@ -37,7 +37,7 @@ ProjectScreenScene::ProjectScreenScene()
 
 	editerMode.Initialize(device, d2dContext);
 
-	terrain.Initialize(Stage::Stage1);
+	terrain.Initialize(Stage::Stage5);
 }
 
 // XVˆ—
@@ -63,7 +63,7 @@ void ProjectScreenScene::Update(float elapsedTime)
 
 	keyInput.Update();
 	POINTS mousePos = refInputMouse->GetPosition();
-	editerMode.Update(elapsedTime, mousePos, keyInput);
+	editerMode.Update(elapsedTime, mousePos, keyInput, terrain.GetStagePlaced());
 
 	//stage.position = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size, viewport, Projection, View, World);
 

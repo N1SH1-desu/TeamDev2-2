@@ -9,6 +9,7 @@
 #include "FetchModelFromSceneAsset.h"
 #include "InputMouse.h"
 #include "KeyInput.h"
+#include "StageEditer.h"
 
 namespace Tetromino
 {
@@ -242,10 +243,10 @@ namespace Tetromino
 
 		bool PlaceTetromino(TetrominoType tetroType,  unsigned int top, unsigned int left, int rotate)
 		{
-			if (!DetectionCollide(tetroType, top, left, rotate))
-			{
-				return false;
-			}
+			//if (!DetectionCollide(tetroType, top, left, rotate))
+			//{
+			//	return false;
+			//}
 
 			TetroArray shapeArray{};
 			CheckRotate(shapeArray, tetroType, rotate);
@@ -264,7 +265,7 @@ namespace Tetromino
 
 		}
 
-		bool DetectionCollide(TetrominoType tetroType, unsigned int top, unsigned int left, unsigned int rotate)
+		bool DetectionCollide(TetrominoType tetroType, unsigned int top, unsigned int left, unsigned int rotate, const Stage::StageTerrain::StageArray& stageCollision)
 		{
 			TetroArray shapeArray{};
 			CheckRotate(shapeArray, tetroType, rotate);
@@ -275,7 +276,7 @@ namespace Tetromino
 				{
 					if (shapeArray[row][col] != 0)
 					{
-						if (Placed[row + top][col + left] != 0 || row + top >= ROW_LENGTH || col + left >= COL_LENGTH)
+						if (Placed[row + top][col + left] != 0 || row + top >= ROW_LENGTH || col + left >= COL_LENGTH || stageCollision[row + top][col + left] != 0)
 						{
 							return false;
 						}
@@ -360,7 +361,7 @@ namespace Tetromino
 	public:
 		TetrominoEditor() = default;
 
-		void Update(const POINTS mousePos, const Input::KeyInput keyFiled, SceneModel* sceneModels);
+		void Update(const POINTS mousePos, const Input::KeyInput keyFiled, SceneModel* sceneModels, const Stage::StageTerrain::StageArray& stageCollision);
 		void Render(RenderContext& rc, ModelRenderer* mR);
 
 	private:

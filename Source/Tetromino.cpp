@@ -44,7 +44,7 @@ namespace Tetromino
 
 
 
-	void TetrominoEditor::Update(const POINTS mousePos, const Input::KeyInput keyFiled, SceneModel* sceneModels)
+	void TetrominoEditor::Update(const POINTS mousePos, const Input::KeyInput keyFiled, SceneModel* sceneModels, const Stage::StageTerrain::StageArray& stageCollision)
 	{
 		static int x = 0;
 		static int y = 0;
@@ -68,7 +68,7 @@ namespace Tetromino
 		int xGrid = mousePos.x / static_cast<SHORT>(Grid2DRenderer::grid_size);
 		int yGrid = mousePos.y / static_cast<SHORT>(Grid2DRenderer::grid_size);
 
-		if (collider.DetectionCollide(static_cast<Tetromino::TetrominoType>(tetroType), yGrid, xGrid, rotate))
+		if (collider.DetectionCollide(static_cast<Tetromino::TetrominoType>(tetroType), yGrid, xGrid, rotate, stageCollision))
 		{
 			x = xGrid;
 			y = yGrid;
