@@ -64,6 +64,8 @@ Clear::Clear()
     //スクリーン準拠の割合を入れておく。
     base_x_ = Graphics::Instance().GetScreenWidth() * 0.125f;
     base_y_ = Graphics::Instance().GetScreenHeight() / 6.f;
+
+    this->sound_ = Audio::Instance().LoadAudioSource("./Data/Audio/clear.wav");
 }
 
 void Clear::Update(float elapsedTime)
@@ -71,6 +73,9 @@ void Clear::Update(float elapsedTime)
     static float animation_timer = 0.f;
     if (flag_)
     {
+        //auido
+        this->sound_->Play(false);
+
         if (animation_timer <= 1.f)
         {
             clear_scale_ = clear_calc::EaseOutBounce(animation_timer);
