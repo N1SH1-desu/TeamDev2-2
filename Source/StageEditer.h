@@ -1,5 +1,6 @@
 #pragma once
 #include <array>
+#include "FetchModelFromSceneAsset.h"
 
 namespace Stage
 {
@@ -11,17 +12,33 @@ namespace Stage
 
 	enum class TerrainBlockType
 	{
-		T1x1,
-		T1x2,
-		T1x3,
-		T1x4,
+		GrassSingle,
+		Grass1x2,
+		Grass1x3,
+		Grass1x4,
 
-		T2x1,
-		T2x2,
-		T2x3,
-		T2x4,
+		DirtSingle,
+		Dirt1x2,
+		Dirt1x3,
+		Dirt1x4,
 
 		TNone,
+	};
+
+	enum TerrainElementType
+	{
+		TET_GrassLC = 0x1,
+		TET_GrassRC,
+		TET_GrassMid,
+
+		TET_DirtLC,
+		TET_DirtRC,
+		TET_DirtMid,
+
+		TET_GrassSingle,
+		TET_DirtSingle,
+
+		TET_None = 0x0,
 	};
 
 
@@ -30,33 +47,54 @@ namespace Stage
 	{
 	};
 
-	using TerrainArray = std::array<std::array<uint8_t, 6>, 3>;
+	using TerrainArray = std::array<TerrainElementType, 6>;
 
 	template<>
-	struct Terrain<TerrainBlockType::T1x1>
+	struct Terrain<TerrainBlockType::GrassSingle>
 	{
-		static constexpr TerrainArray filed = { { {1}, {0}, {0} } };
+		static constexpr TerrainArray filed = { TET_GrassSingle };
 	};
 	template<>
-	struct Terrain<TerrainBlockType::T1x2>
+	struct Terrain<TerrainBlockType::Grass1x2>
 	{
-		static constexpr TerrainArray field = { 1, 1 };
+		static constexpr TerrainArray field = { TET_GrassLC, TET_GrassRC};
 	};
 	template<>
-	struct Terrain<TerrainBlockType::T1x3>
+	struct Terrain<TerrainBlockType::Grass1x3>
 	{
-		static constexpr TerrainArray field = { 1, 1, 1 };
+		static constexpr TerrainArray field = { TET_GrassLC, TET_GrassMid, TET_GrassRC};
 	};
 	template<>
-	struct Terrain<TerrainBlockType::T1x4>
+	struct Terrain<TerrainBlockType::Grass1x4>
 	{
-		static constexpr TerrainArray field = { 1, 1, 1, 1 };
+		static constexpr TerrainArray field = { TET_GrassLC, TET_GrassMid, TET_GrassMid, TET_GrassRC};
+	};
+	template<>
+	struct Terrain<TerrainBlockType::DirtSingle>
+	{
+		static constexpr TerrainArray field = { TET_DirtSingle };
+	};
+	template<>
+	struct Terrain<TerrainBlockType::Dirt1x2>
+	{
+		static constexpr TerrainArray field = { TET_DirtLC, TET_DirtRC };
+	};
+	template<>
+	struct Terrain<TerrainBlockType::Dirt1x3>
+	{
+		static constexpr TerrainArray field = { TET_DirtLC, TET_DirtMid, TET_DirtRC };
+	};
+	template<>
+	struct Terrain<TerrainBlockType::Dirt1x4>
+	{
+		static constexpr TerrainArray field = { TET_DirtLC, TET_DirtMid, TET_DirtMid, TET_DirtRC };
 	};
 
 	struct TerrainData
 	{
 		TerrainBlockType type = TerrainBlockType::TNone;
-		unsigned int topleft[2] = { 0, 0 };
+		unsigned int top = { 0};
+		unsigned int left = { 0};
 	};
 	template<StageNumber>
 	struct StageData
@@ -66,23 +104,29 @@ namespace Stage
 	template<>
 	struct StageData<StageNumber::Stage1>
 	{
-		static constexpr std::array<TerrainData, 1> data = {};
+		static constexpr std::array<TerrainData, 2> data = {{
+			{TerrainBlockType::Grass1x3, 3, 2},
+			{TerrainBlockType::Dirt1x2, 4, 2},
+		}};
 	};
 
-	class StageTerrainCollision
+	class StageTerrain
 	{
 	private:
 		static constexpr unsigned int ROW_LENGHT = 9u;
 		static constexpr unsigned int COL_LENGHT = 16u;
-		std::array<std::array<int, COL_LENGHT>, ROW_LENGHT> stagePlaced = {};
+		std::array<std::array<TerrainElementType, COL_LENGHT>, ROW_LENGHT> stagePlaced = {};
+		std::vector<std::pair<UINT, DirectX::XMFLOAT4X4>> terrainAndWorlds;
 		StageNumber stageNumber;
+		std::shared_ptr<SceneModel> terrainModels;
 
 	public:
-		StageTerrainCollision() = default;
+		StageTerrain() = default;
 
-		void Initialize(StageNumber number);
+		void Initialize(StageNumber number, const int offset = 8.0f, const int xAxisMax = 60.0f, const int yAxisMax = 32.0f);
 
-		std::array<std::array<int, COL_LENGHT>, ROW_LENGHT> GetStagePlaced() { return stagePlaced; }
-		auto GetStageData();
+		std::array<std::array<TerrainElementType, COL_LENGHT>, ROW_LENGHT> GetStagePlaced() { return stagePlaced; }
+
+		void Render(RenderContext& rc, ModelRenderer* mR);
 	};
 }

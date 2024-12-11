@@ -1,7 +1,9 @@
 #include "StageEditer.h"
 
-void Stage::StageTerrainCollision::Initialize(StageNumber number)
+void Stage::StageTerrain::Initialize(StageNumber number, const int offset, const int xAxisMax, const int yAxisMax)
 {
+    terrainModels = std::make_shared<SceneModel>("Data/Model/Stage/Terrains.mdl");
+
     auto GetStageData = [](StageNumber number) ->const auto
         {
             switch (number)
@@ -24,48 +26,72 @@ void Stage::StageTerrainCollision::Initialize(StageNumber number)
             {
                 switch (type)
                 {
-                case Stage::TerrainBlockType::T1x1:
-                    return Terrain<TerrainBlockType::T1x1>::filed;
+                case Stage::TerrainBlockType::GrassSingle:
+                    return Terrain<TerrainBlockType::GrassSingle>::filed;
                     break;
-                case Stage::TerrainBlockType::T1x2:
+                case Stage::TerrainBlockType::Grass1x2:
+                    return Terrain<TerrainBlockType::Grass1x2>::field;
                     break;
-                case Stage::TerrainBlockType::T1x3:
+                case Stage::TerrainBlockType::Grass1x3:
+                    return Terrain<TerrainBlockType::Grass1x3>::field;
                     break;
-                case Stage::TerrainBlockType::T1x4:
+                case Stage::TerrainBlockType::Grass1x4:
+                    return Terrain<TerrainBlockType::Grass1x4>::field;
                     break;
-                case Stage::TerrainBlockType::T2x1:
+
+                case Stage::TerrainBlockType::DirtSingle:
+                    return Terrain<TerrainBlockType::DirtSingle>::field;
                     break;
-                case Stage::TerrainBlockType::T2x2:
-                    break;
-                case Stage::TerrainBlockType::T2x3:
-                    break;
-                case Stage::TerrainBlockType::T2x4:
-                    break;
-                case Stage::TerrainBlockType::TNone:
-                    break;
-                default:
+                case Stage::TerrainBlockType::Dirt1x2:
+                    return Terrain<TerrainBlockType::Dirt1x2>::field;
                     break;
                 }
         };
 
         TerrainArray tArray = GetTerrainArray(dataEle.type);
 
-        for (int row = 0; row < tArray.size(); row++)
+        for (int col = 0; col < tArray.size(); col++)
         {
-            for (int col = 0; col < tArray[row].size(); col++)
+            if (tArray[col] != 0)
             {
-                if (tArray[row][col] != 0)
+                if (dataEle.top < ROW_LENGHT && (dataEle.left + col) < COL_LENGHT)
                 {
-                    if (row + dataEle.topleft[0] < ROW_LENGHT && col + dataEle.topleft[1] < COL_LENGHT)
-                    {
-                        stagePlaced[row + dataEle.topleft[0]][col + dataEle.topleft[1]] = 1;
-                    }
+                    stagePlaced[dataEle.top][dataEle.left + col] = tArray[col];
                 }
+            }
+        }
+    }
+
+    for (int row = 0; row < stagePlaced.size(); row++)
+    {
+        for (int col = 0; col < stagePlaced[row].size(); col++)
+        {
+            if (stagePlaced[row][col] != TerrainElementType::TET_None)
+            {
+                float x = -xAxisMax + col * offset;
+                if (x >= xAxisMax) x = xAxisMax;
+
+                float y = yAxisMax - row * offset;
+                if (y <= -yAxisMax) y = -yAxisMax;
+
+                DirectX::XMFLOAT4X4 worldTransform{};
+                DirectX::XMMATRIX S = DirectX::XMMatrixScaling(8.5f, 8.5f, 8.5f);
+                DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(DirectX::XMConvertToRadians(90.0f), DirectX::XMConvertToRadians(180.0f), 0.0f);
+                DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(x, y, 0.0f);
+                DirectX::XMStoreFloat4x4(&worldTransform, S * R * T);
+
+                UINT index = static_cast<UINT>(stagePlaced[row][col]);
+                std::pair<UINT, DirectX::XMFLOAT4X4>&& pair = { index - 1, worldTransform };
+
+                terrainAndWorlds.emplace_back(pair);
+                terrainModels->CommitBlock({ index - 1, worldTransform });
             }
         }
     }
 }
 
-auto Stage::StageTerrainCollision::GetStageData()
+void Stage::StageTerrain::Render(RenderContext& rc, ModelRenderer* mR)
 {
+    terrainModels->RenderCommitedBlocks(rc, mR, ShaderId::Lambert, true);
 }
+

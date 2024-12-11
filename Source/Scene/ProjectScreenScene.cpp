@@ -34,16 +34,10 @@ ProjectScreenScene::ProjectScreenScene()
 	cameraController.SyncCameraToController(camera);
 
 	sprite = std::make_unique<Sprite>(device);
-	stage.model = std::make_unique<Model>("Data/Model/Stage/SingleCube.mdl");
-	stage.position = { -6.0f, 0.0f, 0.0f };
-	stage.angle = { 0.0f, DirectX::XMConvertToRadians(180.0f), 0.0f};
-	stage.scale = { 8.0f, 8.0f, 8.0f };
-
-	//sceneModels = std::make_unique<SceneModel>("Data/Model/TetrisBlock/Colors.mdl");
-	//
-	//editerUI.Initialize(device);
 
 	editerMode.Initialize(device, d2dContext);
+
+	terrain.Initialize(Stage::Stage1);
 }
 
 // XVˆ—
@@ -104,7 +98,7 @@ void ProjectScreenScene::Render(float elapsedTime)
 	DirectX::XMMATRIX Projection = DirectX::XMLoadFloat4x4(&camera.GetProjection());
 	DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();
 
-	modelRenderer->Render(rc, stage.transform, stage.model.get(), ShaderId::Lambert, true);
+	terrain.Render(rc, modelRenderer);
 
 	editerMode.Render(rc, d2dContext, modelRenderer);
 }
