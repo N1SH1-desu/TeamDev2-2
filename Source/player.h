@@ -106,7 +106,7 @@ public:
 
 	bool								hitWall = false;
 
-	float								moveSpeed = 5.0f;
+	float								moveSpeed = 8.0f;
 
 	bool								jumpC = false;
 	bool PC = false;

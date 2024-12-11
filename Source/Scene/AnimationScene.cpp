@@ -105,7 +105,7 @@ void AnimationScene::Update(float elapsedTime)
 	//UpdateTransform(elapsedTime);
 	if (timer > 1&& Co < 5)
 	{
-		PlayerManager::Instance().Register(new Player(DirectX::XMFLOAT3(-20.0f, 44, 0), DirectX::XMFLOAT3(0.04f, 0.04f, 0.04f), DirectX::XMFLOAT3(0.0f, 90.0f, 0.0f)));
+		PlayerManager::Instance().Register(new Player(Generatepos, DirectX::XMFLOAT3(0.04f, 0.04f, 0.04f), DirectX::XMFLOAT3(0.0f, 90.0f, 0.0f)));
 		timer = 0;
 		Co++;
 	}
@@ -239,12 +239,49 @@ void AnimationScene::Render(float elapsedTime)
 
 void AnimationScene::ObjectSetting(int StageNum)
 {
+	PortalManager::Instance().Clear();
+	KeyManager::Instance().Clear();
+
 	switch (StageNum)
 	{
 	case 0:
+		Generatepos = { -60.0f, 30.0f, 0.0f };
+
 		PortalManager::Instance().Register(new Portal("Data/Model/portal/portal.mdl", DirectX::XMFLOAT3(60.0f, -20.0f, 0.0f), DirectX::XMFLOAT3(0.03f, 0.03f, 0.03f)));
-		KeyManager::Instance().Register(new Key("Data/Model/key/key.mdl", DirectX::XMFLOAT3(60.0f, 27.0f, 0.0f), DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f)));
-		KeyManager::Instance().Register(new Key("Data/Model/key/key.mdl", DirectX::XMFLOAT3(10.0f, 7.5f, 0.0f), DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f)));
+		KeyManager::Instance().Register(new Key("Data/Model/key/key.mdl", DirectX::XMFLOAT3(60.0f, 28.0f, 0.0f), DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f)));
+		KeyManager::Instance().Register(new Key("Data/Model/key/key.mdl", DirectX::XMFLOAT3(-60.0f, -20.0f, 0.0f), DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f)));
+		break;
+
+	case 1:
+		Generatepos = { -10.0f, 25.0f, 0.0f };
+
+		PortalManager::Instance().Register(new Portal("Data/Model/portal/portal.mdl", DirectX::XMFLOAT3(-60.0f, -28.0f, 0.0f), DirectX::XMFLOAT3(0.03f, 0.03f, 0.03f)));
+		KeyManager::Instance().Register(new Key("Data/Model/key/key.mdl", DirectX::XMFLOAT3(60.0f, 4.0f, 0.0f), DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f)));
+		KeyManager::Instance().Register(new Key("Data/Model/key/key.mdl", DirectX::XMFLOAT3(-60.0f, 4.5f, 0.0f), DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f)));
+		break;
+
+	case 2:
+		Generatepos = { -15.0f, 30.0f, 0.0f };
+
+		PortalManager::Instance().Register(new Portal("Data/Model/portal/portal.mdl", DirectX::XMFLOAT3(-60.0f, -28.0f, 0.0f), DirectX::XMFLOAT3(0.03f, 0.03f, 0.03f)));
+		KeyManager::Instance().Register(new Key("Data/Model/key/key.mdl", DirectX::XMFLOAT3(25.0f, -3.0f, 0.0f), DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f)));
+		KeyManager::Instance().Register(new Key("Data/Model/key/key.mdl", DirectX::XMFLOAT3(-60.0f, 4.5f, 0.0f), DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f)));
+		break;
+
+	case 3:
+		Generatepos = { -10.0f, -25.0f, 0.0f };
+
+		PortalManager::Instance().Register(new Portal("Data/Model/portal/portal.mdl", DirectX::XMFLOAT3(-55.0f, 28.0f, 0.0f), DirectX::XMFLOAT3(0.03f, 0.03f, 0.03f)));
+		KeyManager::Instance().Register(new Key("Data/Model/key/key.mdl", DirectX::XMFLOAT3(25.0f, 28.0f, 0.0f), DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f)));
+		KeyManager::Instance().Register(new Key("Data/Model/key/key.mdl", DirectX::XMFLOAT3(-60.0f, 4.5f, 0.0f), DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f)));
+		break;
+
+	case 4:
+		Generatepos = { 40.0f, 0.0f, 0.0f };
+
+		PortalManager::Instance().Register(new Portal("Data/Model/portal/portal.mdl", DirectX::XMFLOAT3(-55.0f, 28.0f, 0.0f), DirectX::XMFLOAT3(0.03f, 0.03f, 0.03f)));
+		KeyManager::Instance().Register(new Key("Data/Model/key/key.mdl", DirectX::XMFLOAT3(52.0f, 28.0f, 0.0f), DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f)));
+		KeyManager::Instance().Register(new Key("Data/Model/key/key.mdl", DirectX::XMFLOAT3(-50.0f, 11.0f, 0.0f), DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f)));
 		break;
 	}
 }

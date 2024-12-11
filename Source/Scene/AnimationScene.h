@@ -36,6 +36,7 @@ private:
 
 	FreeCameraController				cameraController;
 
+	DirectX::XMFLOAT3 Generatepos;
 	struct Object
 	{
 		DirectX::XMFLOAT3		position = { 0, 0, 0 };
