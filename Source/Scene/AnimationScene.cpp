@@ -168,7 +168,7 @@ void AnimationScene::Update(float elapsedTime)
 	keyinput.Update();
 	EditerMode.Update(elapsedTime, mousePos, keyinput);
 
-	if (GetAsyncKeyState('P') & 0x01)
+	if (keyinput.GetKeyStatus('P') == Input::Release)
 	{
 		pause = !pause;
 		Pause::Instance().SetPause(pause);
