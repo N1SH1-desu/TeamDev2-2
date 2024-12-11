@@ -14,6 +14,7 @@
 #include "PortalManager.h"
 //add_by_nikaido
 #include"pause.h"
+#include"space_division_raycast.h"
 
 bool pause = false;
 
@@ -58,15 +59,20 @@ void AnimationScene::Initialize()
 	sceneModel = std::make_unique<SceneModel>("Data/Model/TetrisBlock/scene.mdl");
 	sceneScale = { 0.1f, 0.1f, 0.1f };
 	//add_by_nikaido_iichiko
-	//SpaceDivisionRayCast::Instance().Load(stage->GetModel());
+	SpaceDivisionRayCast::Instance().Load(Stage::Instance().GetCollisionModel());
 
 	pause = false;
 	Pause::Instance().SetPause(pause);
+	Pause::Instance().SetStageNum(StageNumber);
+
+	//audio
+	game_bgm_ = Audio::Instance().LoadAudioSource("./Data/Audio/game.wav");
 }
 
 AnimationScene::~AnimationScene() 
 {
 	PlayerManager::Instance().Clear();
+	SpaceDivisionRayCast::Instance().Clear();
 }
 
 // 更新処理
@@ -77,6 +83,7 @@ void AnimationScene::Update(float elapsedTime)
 	cameraController.SyncControllerToCamera(Camera::Instance());
 	//player->Update(elapsedTime);
 
+	game_bgm_->Play(true);
 
 	//// トランスフォーム更新処理
 	//UpdateTransform(elapsedTime);
@@ -108,16 +115,16 @@ void AnimationScene::Update(float elapsedTime)
 
 	//	else
 	//	{
-			if (Collision::InteresectCylinderVsCylinder(player->GetPosition(), 2.0f, 2.0f, cube.position, 2.0f, length, outPosition))
-			{
-				player->PlayAnimation("Running", true);
-				player->state = Player::State::Run;
-			}
-			else if (player->state == Player::State::Run && !player->onGround)
-			{
-				player->PlayAnimation("Jump", true);
-				player->state = Player::State::Idle;
-			}
+			//if (Collision::InteresectCylinderVsCylinder(player->GetPosition(), 2.0f, 2.0f, cube.position, 2.0f, length, outPosition))
+			//{
+			//	player->PlayAnimation("Running", true);
+			//	player->state = Player::State::Run;
+			//}
+			//else if (player->state == Player::State::Run && !player->onGround)
+			//{
+			//	player->PlayAnimation("Jump", true);
+			//	player->state = Player::State::Idle;
+			//}
 	//	}
 
 	//	if (Collision::InteresectCylinderVsCylinder(player->GetPosition(), 2.0f, 2.0f, cube2.position, 2.0f, 2.0f, outPosition))
@@ -202,6 +209,7 @@ void AnimationScene::Render(float elapsedTime)
 	Pause::Instance().Render(elapsedTime);
 
 	sceneModel->SelectedBlockRender(rc, modelRenderer, sceneTransform, 0u, ShaderId::Lambert);
+	SpaceDivisionRayCast::Instance().DebugDraw(rc);
 }
 
 //// GUI描画処理

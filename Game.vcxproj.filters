@@ -11,355 +11,79 @@
     <FxCompile Include="Shader\PrimitiveRendererVS.hlsl" />
     <FxCompile Include="Shader\SpritePS.hlsl" />
     <FxCompile Include="Shader\SpriteVS.hlsl" />
+    <FxCompile Include="Shader\GridPS.hlsl" />
+    <FxCompile Include="Shader\GridVS.hlsl" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Framework.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\HighResolutionTimer.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Misc.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="External\imgui-docking\imconfig.h">
-      <Filter>External\imgui-docking</Filter>
-    </ClInclude>
-    <ClInclude Include="External\imgui-docking\imgui.h">
-      <Filter>External\imgui-docking</Filter>
-    </ClInclude>
-    <ClInclude Include="External\imgui-docking\imgui_impl_dx11.h">
-      <Filter>External\imgui-docking</Filter>
-    </ClInclude>
-    <ClInclude Include="External\imgui-docking\imgui_impl_win32.h">
-      <Filter>External\imgui-docking</Filter>
-    </ClInclude>
-    <ClInclude Include="External\imgui-docking\imgui_internal.h">
-      <Filter>External\imgui-docking</Filter>
-    </ClInclude>
-    <ClInclude Include="External\imgui-docking\imstb_rectpack.h">
-      <Filter>External\imgui-docking</Filter>
-    </ClInclude>
-    <ClInclude Include="External\imgui-docking\imstb_textedit.h">
-      <Filter>External\imgui-docking</Filter>
-    </ClInclude>
-    <ClInclude Include="External\imgui-docking\imstb_truetype.h">
-      <Filter>External\imgui-docking</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ImGuiRenderer.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Graphics.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Sprite.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GpuResourceUtils.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\RenderState.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Camera.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ShapeRenderer.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\RenderContext.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Model.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Shader.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TransformUtils.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\FreeCameraController.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PrimitiveRenderer.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\BasicShader.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="External\ImGuizmo\ImCurveEdit.h">
-      <Filter>External\ImGuizmo</Filter>
-    </ClInclude>
-    <ClInclude Include="External\ImGuizmo\ImGradient.h">
-      <Filter>External\ImGuizmo</Filter>
-    </ClInclude>
-    <ClInclude Include="External\ImGuizmo\ImGuizmo.h">
-      <Filter>External\ImGuizmo</Filter>
-    </ClInclude>
-    <ClInclude Include="External\ImGuizmo\ImSequencer.h">
-      <Filter>External\ImGuizmo</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Dialog.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Light.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\LambertShader.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModelRenderer.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SphereCast\Include\SphereCast.h">
-      <Filter>External\SphereCast</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModelResource.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\RayCastScene.h">
-      <Filter>Source\01_レイキャスト</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Collision.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\SlideMoveScene.h">
-      <Filter>Source\03_壁ずり移動</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\MoveFloorScene.h">
-      <Filter>Source\09_移動床</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\TerrainAlignScene.h">
-      <Filter>Source\10_地形に沿う姿勢制御</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\AnimationScene.h">
-      <Filter>Source\04_アニメーション</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\AttachWeaponScene.h">
-      <Filter>Source\09_移動床\06_アタッチメント</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\ProjectScreenScene.h">
-      <Filter>Source\05_スクリーン座標変換</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ResourceManager.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\ResourceManagementScene.h">
-      <Filter>Source\11_リソース管理</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\UIAnimScene.h">
-      <Filter>Source\08_UI演出</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\HitStopScene.h">
-      <Filter>Source\07_ヒットストップ</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Timer.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\LandWalkScene.h">
-      <Filter>Source\02_地上歩行</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Gfx2D.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Gfx2DSandbox.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Grid2DRenderer.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\InputMouse.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\FetchModelFromSceneAsset.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ControlTetrisBlock.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\EndlessGridRenderer.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Tetromino.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\KeyInput.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TetroEditerUI.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TetroEditerMode.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\StageEditer.h">
-      <Filter>Source</Filter>
-    </ClInclude>
+    <ClInclude Include="External\imgui-docking\imconfig.h" />
+    <ClInclude Include="External\imgui-docking\imgui.h" />
+    <ClInclude Include="External\imgui-docking\imgui_impl_dx11.h" />
+    <ClInclude Include="External\imgui-docking\imgui_impl_win32.h" />
+    <ClInclude Include="External\imgui-docking\imgui_internal.h" />
+    <ClInclude Include="External\imgui-docking\imstb_rectpack.h" />
+    <ClInclude Include="External\imgui-docking\imstb_textedit.h" />
+    <ClInclude Include="External\imgui-docking\imstb_truetype.h" />
+    <ClInclude Include="External\ImGuizmo\ImCurveEdit.h" />
+    <ClInclude Include="External\ImGuizmo\ImGradient.h" />
+    <ClInclude Include="External\ImGuizmo\ImGuizmo.h" />
+    <ClInclude Include="External\ImGuizmo\ImSequencer.h" />
+    <ClInclude Include="External\SphereCast\Include\SphereCast.h" />
+    <ClInclude Include="Source\BasicShader.h" />
+    <ClInclude Include="Source\Camera.h" />
+    <ClInclude Include="Source\clear.h" />
+    <ClInclude Include="Source\Collision.h" />
+    <ClInclude Include="Source\ControlTetrisBlock.h" />
+    <ClInclude Include="Source\Dialog.h" />
+    <ClInclude Include="Source\EndlessGridRenderer.h" />
+    <ClInclude Include="Source\FetchModelFromSceneAsset.h" />
+    <ClInclude Include="Source\Framework.h" />
+    <ClInclude Include="Source\FreeCameraController.h" />
+    <ClInclude Include="Source\Gfx2D.h" />
+    <ClInclude Include="Source\Gfx2DSandbox.h" />
+    <ClInclude Include="Source\Grid2DRenderer.h" />
+    <ClInclude Include="Source\InputMouse.h" />
+    <ClInclude Include="Source\KeyInput.h" />
+    <ClInclude Include="Source\Light.h" />
+    <ClInclude Include="Source\ModelRenderer.h" />
+    <ClInclude Include="Source\LambertShader.h" />
+    <ClInclude Include="Source\ModelResource.h" />
+    <ClInclude Include="Source\pause.h" />
+    <ClInclude Include="Source\ResourceManager.h" />
+    <ClInclude Include="Source\Scene\AnimationScene.h" />
+    <ClInclude Include="Source\Scene\AttachWeaponScene.h" />
+    <ClInclude Include="Source\Scene\HitStopScene.h" />
+    <ClInclude Include="Source\Scene\RayCastScene.h" />
+    <ClInclude Include="Source\Scene\SlideMoveScene.h" />
+    <ClInclude Include="Source\Scene\MoveFloorScene.h" />
+    <ClInclude Include="Source\Scene\ResourceManagementScene.h" />
+    <ClInclude Include="Source\Scene\LandWalkScene.h" />
+    <ClInclude Include="Source\Scene\TerrainAlignScene.h" />
+    <ClInclude Include="Source\Scene\ProjectScreenScene.h" />
+    <ClInclude Include="Source\Scene\UIAnimScene.h" />
+    <ClInclude Include="Source\ShapeRenderer.h" />
+    <ClInclude Include="Source\GpuResourceUtils.h" />
+    <ClInclude Include="Source\Graphics.h" />
+    <ClInclude Include="Source\HighResolutionTimer.h" />
+    <ClInclude Include="Source\ImGuiRenderer.h" />
+    <ClInclude Include="Source\Misc.h" />
+    <ClInclude Include="Source\Model.h" />
+    <ClInclude Include="Source\PrimitiveRenderer.h" />
+    <ClInclude Include="Source\RenderContext.h" />
+    <ClInclude Include="Source\RenderState.h" />
+    <ClInclude Include="Source\Scene.h" />
+    <ClInclude Include="Source\Shader.h" />
+    <ClInclude Include="Source\Sprite.h" />
+    <ClInclude Include="Source\StageEditer.h" />
+    <ClInclude Include="Source\TetroEditerMode.h" />
+    <ClInclude Include="Source\TetroEditerUI.h" />
+    <ClInclude Include="Source\Tetromino.h" />
+    <ClInclude Include="Source\Timer.h" />
+    <ClInclude Include="Source\TransformUtils.h" />
+    <ClInclude Include="Source\Audio\Audio.h" />
+    <ClInclude Include="Source\Audio\AudioResource.h" />
+    <ClInclude Include="Source\Audio\AudioSource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Framework.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Main.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="External\imgui-docking\imgui.cpp">
-      <Filter>External\imgui-docking</Filter>
-    </ClCompile>
-    <ClCompile Include="External\imgui-docking\imgui_demo.cpp">
-      <Filter>External\imgui-docking</Filter>
-    </ClCompile>
-    <ClCompile Include="External\imgui-docking\imgui_draw.cpp">
-      <Filter>External\imgui-docking</Filter>
-    </ClCompile>
-    <ClCompile Include="External\imgui-docking\imgui_impl_dx11.cpp">
-      <Filter>External\imgui-docking</Filter>
-    </ClCompile>
-    <ClCompile Include="External\imgui-docking\imgui_impl_win32.cpp">
-      <Filter>External\imgui-docking</Filter>
-    </ClCompile>
-    <ClCompile Include="External\imgui-docking\imgui_widgets.cpp">
-      <Filter>External\imgui-docking</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ImGuiRenderer.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Graphics.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Sprite.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GpuResourceUtils.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\RenderState.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Camera.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ShapeRenderer.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Model.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\TransformUtils.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\FreeCameraController.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\PrimitiveRenderer.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\BasicShader.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="External\ImGuizmo\ImCurveEdit.cpp">
-      <Filter>External\ImGuizmo</Filter>
-    </ClCompile>
-    <ClCompile Include="External\ImGuizmo\ImGradient.cpp">
-      <Filter>External\ImGuizmo</Filter>
-    </ClCompile>
-    <ClCompile Include="External\ImGuizmo\ImGuizmo.cpp">
-      <Filter>External\ImGuizmo</Filter>
-    </ClCompile>
-    <ClCompile Include="External\ImGuizmo\ImSequencer.cpp">
-      <Filter>External\ImGuizmo</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Dialog.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\LambertShader.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModelRenderer.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModelResource.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene\RayCastScene.cpp">
-      <Filter>Source\01_レイキャスト</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Collision.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene\SlideMoveScene.cpp">
-      <Filter>Source\03_壁ずり移動</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene\MoveFloorScene.cpp">
-      <Filter>Source\09_移動床</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene\TerrainAlignScene.cpp">
-      <Filter>Source\10_地形に沿う姿勢制御</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene\AnimationScene.cpp">
-      <Filter>Source\04_アニメーション</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene\AttachWeaponScene.cpp">
-      <Filter>Source\09_移動床\06_アタッチメント</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene\ProjectScreenScene.cpp">
-      <Filter>Source\05_スクリーン座標変換</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ResourceManager.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene\ResourceManagementScene.cpp">
-      <Filter>Source\11_リソース管理</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene\UIAnimScene.cpp">
-      <Filter>Source\08_UI演出</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene\HitStopScene.cpp">
-      <Filter>Source\07_ヒットストップ</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Timer.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene\LandWalkScene.cpp">
-      <Filter>Source\02_地上歩行</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Gfx2D.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Gfx2DSandbox.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Grid2DRenderer.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\InputMouse.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\FetchModelFromSceneAsset.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\EndlessGridRenderer.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Tetromino.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\KeyInput.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\TetroEditerUI.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\TetroEditerMode.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="External\imgui-docking\imgui.cpp" />
     <ClCompile Include="External\imgui-docking\imgui_demo.cpp" />
     <ClCompile Include="External\imgui-docking\imgui_draw.cpp" />
@@ -489,6 +213,64 @@
     <ClCompile Include="Source\PortalManager.cpp" />
     <ClCompile Include="Source\funtion.cpp" />
     <ClCompile Include="Source\SceneLoading.cpp" />
+    <ClCompile Include="External\imgui-docking\imgui.cpp" />
+    <ClCompile Include="External\imgui-docking\imgui_demo.cpp" />
+    <ClCompile Include="External\imgui-docking\imgui_draw.cpp" />
+    <ClCompile Include="External\imgui-docking\imgui_impl_dx11.cpp" />
+    <ClCompile Include="External\imgui-docking\imgui_impl_win32.cpp" />
+    <ClCompile Include="External\imgui-docking\imgui_widgets.cpp" />
+    <ClCompile Include="External\ImGuizmo\ImCurveEdit.cpp" />
+    <ClCompile Include="External\ImGuizmo\ImGradient.cpp" />
+    <ClCompile Include="External\ImGuizmo\ImGuizmo.cpp" />
+    <ClCompile Include="External\ImGuizmo\ImSequencer.cpp" />
+    <ClCompile Include="Source\BasicShader.cpp" />
+    <ClCompile Include="Source\Camera.cpp" />
+    <ClCompile Include="Source\clear.cpp" />
+    <ClCompile Include="Source\Collision.cpp" />
+    <ClCompile Include="Source\Dialog.cpp" />
+    <ClCompile Include="Source\EndlessGridRenderer.cpp" />
+    <ClCompile Include="Source\FetchModelFromSceneAsset.cpp" />
+    <ClCompile Include="Source\Framework.cpp" />
+    <ClCompile Include="Source\FreeCameraController.cpp" />
+    <ClCompile Include="Source\Gfx2D.cpp" />
+    <ClCompile Include="Source\Gfx2DSandbox.cpp" />
+    <ClCompile Include="Source\Grid2DRenderer.cpp" />
+    <ClCompile Include="Source\InputMouse.cpp" />
+    <ClCompile Include="Source\KeyInput.cpp" />
+    <ClCompile Include="Source\ModelRenderer.cpp" />
+    <ClCompile Include="Source\LambertShader.cpp" />
+    <ClCompile Include="Source\ModelResource.cpp" />
+    <ClCompile Include="Source\pause.cpp" />
+    <ClCompile Include="Source\ResourceManager.cpp" />
+    <ClCompile Include="Source\Scene\AnimationScene.cpp" />
+    <ClCompile Include="Source\Scene\AttachWeaponScene.cpp" />
+    <ClCompile Include="Source\Scene\HitStopScene.cpp" />
+    <ClCompile Include="Source\Scene\RayCastScene.cpp" />
+    <ClCompile Include="Source\Scene\SlideMoveScene.cpp" />
+    <ClCompile Include="Source\Scene\MoveFloorScene.cpp" />
+    <ClCompile Include="Source\Scene\ResourceManagementScene.cpp" />
+    <ClCompile Include="Source\Scene\LandWalkScene.cpp" />
+    <ClCompile Include="Source\Scene\TerrainAlignScene.cpp" />
+    <ClCompile Include="Source\Scene\ProjectScreenScene.cpp" />
+    <ClCompile Include="Source\Scene\UIAnimScene.cpp" />
+    <ClCompile Include="Source\ShapeRenderer.cpp" />
+    <ClCompile Include="Source\GpuResourceUtils.cpp" />
+    <ClCompile Include="Source\Graphics.cpp" />
+    <ClCompile Include="Source\ImGuiRenderer.cpp" />
+    <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\Model.cpp" />
+    <ClCompile Include="Source\PrimitiveRenderer.cpp" />
+    <ClCompile Include="Source\RenderState.cpp" />
+    <ClCompile Include="Source\Scene.cpp" />
+    <ClCompile Include="Source\Sprite.cpp" />
+    <ClCompile Include="Source\TetroEditerMode.cpp" />
+    <ClCompile Include="Source\TetroEditerUI.cpp" />
+    <ClCompile Include="Source\Tetromino.cpp" />
+    <ClCompile Include="Source\Timer.cpp" />
+    <ClCompile Include="Source\TransformUtils.cpp" />
+    <ClCompile Include="Source\Audio\Audio.cpp" />
+    <ClCompile Include="Source\Audio\AudioResource.cpp" />
+    <ClCompile Include="Source\Audio\AudioSource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\imgui-docking\imconfig.h" />
@@ -639,30 +421,6 @@
     <ClInclude Include="Source\PortalManager.h" />
     <ClInclude Include="Source\function.h" />
     <ClInclude Include="Source\SceneLoading.h" />
-    <None Include="Shader\Sprite.hlsli">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shader\ShapeRenderer.hlsli">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shader\Skinning.hlsli">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shader\PrimitiveRenderer.hlsli">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shader\Basic.hlsli">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shader\Lambert.hlsli">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shader\Scene.hlsli">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="Shader\Grid.hlsli">
-      <Filter>Shader</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\SpriteVS.hlsl">
@@ -695,11 +453,15 @@
     <FxCompile Include="Shader\LambertVS.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\GridVS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\GridPS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shader\Basic.hlsli" />
+    <None Include="Shader\Grid.hlsli" />
+    <None Include="Shader\Lambert.hlsli" />
+    <None Include="Shader\Scene.hlsli" />
+    <None Include="Shader\ShapeRenderer.hlsli" />
+    <None Include="Shader\PrimitiveRenderer.hlsli" />
+    <None Include="Shader\Skinning.hlsli" />
+    <None Include="Shader\Sprite.hlsli" />
   </ItemGroup>
 </Project>

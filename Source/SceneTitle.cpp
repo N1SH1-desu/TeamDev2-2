@@ -18,18 +18,25 @@ void SceneTitle::Initialize()
 	PlayButton[NORMAL] = std::make_unique<Sprite>(device, "./Data/Sprite/PlayButton.png");
 	PlayButton[HOVER] = std::make_unique<Sprite>(device, "./Data/Sprite/PlayButton_Hover.png");
 
+	audio_bgm_ = Audio::Instance().LoadAudioSource("./Data/Audio/title.wav");
+
 	Interval = 0.0f;
 }
 
 void SceneTitle::Update(float elapsedTime)
 {
+	this->audio_bgm_->Play(true);
+
 	function& func = function::getInstance();
 	InputMouse& input = InputMouse::Instance();
 
 	Interval += elapsedTime;
 
 	if (func.Click_Colision(DirectX::XMFLOAT2(550, 480), DirectX::XMFLOAT2(168, 88)) && input.IsLBottonDowned())
+	{ 
 		if (Interval > 0.5f) SceneManager::Instance().ChangeScene(new SceneStageSelect);
+		this->audio_bgm_->Stop();
+	}
 }
 
 void SceneTitle::Render(float elapsedTime)

@@ -41,6 +41,8 @@ void SceneStageSelect::Initialize()
 		StageImage_Hover[i] = std::make_unique<Sprite>(device, filePath_Hover[i]);
 	}
 
+	this->bgm_ = Audio::Instance().LoadAudioSource("./Data/Audio/select.wav");
+
 	Interval = 0.0f;
 }
 
@@ -48,6 +50,8 @@ void SceneStageSelect::Update(float elapsedTime)
 {
 	function& func = function::getInstance();
 	InputMouse& mouse = InputMouse::Instance();
+
+	this->bgm_->Play(true);
 
 	for (int i = 0; i < 3; i++)
 	{

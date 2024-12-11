@@ -59,6 +59,8 @@ Framework::~Framework()
 	// IMGUIèIóπâª
 	ImGuiRenderer::Finalize();
 
+	SceneManager::Instance().Clear();
+
 	PlayerManager::Instance().AllDelete();
 }
 

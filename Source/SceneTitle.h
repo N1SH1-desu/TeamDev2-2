@@ -1,7 +1,9 @@
 #pragma once
+#include <memory>
+
 #include "Scene.h"
 #include "Sprite.h"
-#include <memory>
+#include"Audio/Audio.h"
 
 class SceneTitle : public Scene
 {
@@ -20,4 +22,6 @@ private:
 	std::unique_ptr<Sprite> PlayButton[2];
 
 	float Interval = 0.0f;
+
+	std::unique_ptr<AudioSource> audio_bgm_;
 };

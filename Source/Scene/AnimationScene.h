@@ -73,4 +73,7 @@ private:
 	std::unique_ptr<Stage> stage = nullptr;
 
 	int StageNumber = 0;
+
+	//add_by_nikaidio
+	std::unique_ptr<AudioSource>      game_bgm_;
 };

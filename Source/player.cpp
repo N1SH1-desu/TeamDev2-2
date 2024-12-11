@@ -7,6 +7,8 @@
 #include"Scene/stage.h"
 #include "PortalManager.h"
 
+#include"space_division_raycast.h"
+
  Player::Player(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale, DirectX::XMFLOAT3 angle) 
  {
 	model = new Model("./Data/Model/UnityChan/UnityChan.mdl");
@@ -67,16 +69,18 @@ void Player::Update(float elapsedTime)
 	// トランスフォーム更新処理
 	UpdateTransform(elapsedTime);
 
-	for (int i = 0; i < PortalManager::Instance().GetObjectCount(); i++)
-	{
-		auto portal = PortalManager::Instance().GetObject_(i);
+	//for (int i = 0; i < PortalManager::Instance().GetObjectCount(); i++)
+	//{
+	//	auto portal = PortalManager::Instance().GetObject_(i);
 
-		DirectX::XMFLOAT3 outPosition;
-		if (Collision::InteresectCylinderVsCylinder(position, radius, height, portal->GetPosition(), portal->GetRadius(), portal->GetHeight(), outPosition) && portal->Enabled())
-		{
-			PlayerManager::Instance().Remove(this);
-		}
-	}
+	//	DirectX::XMFLOAT3 outPosition;
+	//	if (Collision::InteresectCylinderVsCylinder(position, radius, height, portal->GetPosition(), portal->GetRadius(), portal->GetHeight(), outPosition) && portal->Enabled())
+	//	{
+	//		PlayerManager::Instance().Remove(this);
+	//	}
+	//}
+
+	
 }
 void Player::PlayAnimation(int index, bool loop)
 {
@@ -355,7 +359,8 @@ bool Player::RayGround(DirectX::XMFLOAT4X4 transform, Model* model)
 
 	DirectX::XMFLOAT3 p, n;
 
-	if (Collision::RayCast(s, e, transform, model, p, n))
+	//if (Collision::RayCast(s, e, transform, model, p, n))
+	if (SpaceDivisionRayCast::Instance().RayCast(s, e, p, n))
 	{
 		// 交点のY座標をプレイヤーに位置に設定する
 		velocity.y = 0;

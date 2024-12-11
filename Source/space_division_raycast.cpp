@@ -384,6 +384,7 @@ bool SpaceDivisionRayCast::RayCast(
     float distance = DirectX::XMVectorGetX(DirectX::XMVector3Length(vec));
 
     if (distance <= 0.0f)return false;
+    if (model_divisions_.triangles.size() <= 0)return false;
 
             ////¬‚³‚¢AABB‚ÆƒŒƒC‚ÌŒð·”»’è‚ðŽæ‚é
             //const CollisionMesh& collision_mesh = model_divisions_[model];

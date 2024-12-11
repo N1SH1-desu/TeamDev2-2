@@ -21,4 +21,6 @@ private:
 	std::unique_ptr<Sprite> StageImage_Hover[6];
 
 	float Interval = 0.0f;
+
+	std::unique_ptr<AudioSource>	bgm_;
 };
