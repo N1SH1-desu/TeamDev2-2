@@ -57,6 +57,9 @@ void AnimationScene::Initialize()
 
 	sceneModel = std::make_unique<SceneModel>("Data/Model/TetrisBlock/scene.mdl");
 	sceneScale = { 0.1f, 0.1f, 0.1f };
+
+	pause = false;
+	Pause::Instance().SetPause(pause);
 	//add_by_nikaido_iichiko
 	//SpaceDivisionRayCast::Instance().Load(stage->GetModel());
 }
