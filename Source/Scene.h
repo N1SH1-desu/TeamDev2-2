@@ -17,7 +17,10 @@ public:
 	// GUI•`‰æˆ—
 	virtual void DrawGUI() {}
 
-	void SetInputMouse(InputMouse* ref) { refInputMouse = ref; }
+	void SetInputMouse(InputMouse* ref) 
+	{ 
+		refInputMouse = ref;
+	}
 	
 protected:
 	InputMouse* refInputMouse;

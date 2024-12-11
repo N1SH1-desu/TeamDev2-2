@@ -3,6 +3,8 @@
 
 SceneModel::SceneModel(const char* sceneFile)
 {
+    commitedBlocks = {};
+
     scene = std::make_shared<Model>(sceneFile);
 
     const ModelResource* resource =  scene->GetResource();

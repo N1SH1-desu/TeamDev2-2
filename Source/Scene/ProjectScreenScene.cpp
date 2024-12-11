@@ -42,6 +42,7 @@ ProjectScreenScene::ProjectScreenScene()
 	stage.angle = { 0.0f, 0.0f, 0.0f };
 	
 	editerUI.Initialize(device);
+
 }
 
 // XVˆ—
@@ -94,6 +95,26 @@ void ProjectScreenScene::Update(float elapsedTime)
 		}
 		editerUI.Update(elapsedTime, hoge);
 	}
+	//Player player;
+
+	//int i = 0;
+	//for (auto& model : tetroEditer.GetRenderer()->Getscenemodel()->GetSceneModels())
+	//{
+	//	player.B_Raycast(model, tetroEditer.GetRenderer()->Getscenemodel()->GetCommitedBlocks().at(i).second);
+	//	i++;
+	//}
+
+
+	auto commited = sceneModels->GetCommitedBlocks();
+	if (commited.size() > 0)
+	{
+		for (auto& commitedElement : commited)
+		{
+			std::vector<std::shared_ptr<Model>> models = tetroEditer.GetRenderer()->Getscenemodel()->GetSceneModels();
+			player.B_Raycast(models.at(commitedElement.first), commitedElement.second);
+		}
+	}
+	
 }
 
 // •`‰æˆ—

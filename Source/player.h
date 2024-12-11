@@ -24,8 +24,6 @@ public:
 	// ˆÚ“®“ü—Íˆ—
 	bool InputMove();
 
-	// ƒWƒƒƒ“ƒv“ü—Íˆ—
-	bool InputJump();
 
 	void Update(float elapsedTime);
 
@@ -51,6 +49,8 @@ public:
 	void HitP();
 
 	void PoisonC(float elapsedTime);
+
+	void B_Raycast(std::shared_ptr<Model> model,DirectX::XMFLOAT4X4 transform);
 
 	bool RayGround(DirectX::XMFLOAT4X4 transform, Model* model);
 

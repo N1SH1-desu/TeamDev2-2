@@ -15,6 +15,7 @@
 #include"Scene/ProjectScreenScene.h"
 #include"space_division_raycast.h"
 
+
 // コンストラクタ
 AnimationScene::AnimationScene(int StageNum)
 {
@@ -27,7 +28,7 @@ AnimationScene::AnimationScene(int StageNum)
 		DirectX::XMConvertToRadians(45),	// 画角
 		screenWidth / screenHeight,			// 画面アスペクト比
 		0.1f,								// ニアクリップ
-		1000.0f								// ファークリップ
+		10000.0f								// ファークリップ
 	);
 	Camera::Instance().SetLookAt(
 		{ 0, 0, 27 },		// 視点
@@ -59,8 +60,7 @@ void AnimationScene::Update(float elapsedTime)
 	cameraController.Update();
 	cameraController.SyncControllerToCamera(Camera::Instance());
 	//player->Update(elapsedTime);
-
-	ProjectScreenScene::Instance().Update(elapsedTime);
+	
 
 	//// トランスフォーム更新処理
 	//UpdateTransform(elapsedTime);
@@ -99,6 +99,9 @@ void AnimationScene::Update(float elapsedTime)
 	Stage::Instance().Update(elapsedTime);
 	KeyManager::Instance().Update(elapsedTime);
 	PortalManager::Instance().Update(elapsedTime);
+	ProjectScreenScene::Instance().SetInputMouse(this->refInputMouse);
+	ProjectScreenScene::Instance().Update(elapsedTime);
+
 }
 
 // 描画処理
@@ -132,13 +135,13 @@ void AnimationScene::Render(float elapsedTime)
 	primitiveRenderer->DrawGrid(20, 1);
 	primitiveRenderer->Render(dc, Camera::Instance().GetView(), Camera::Instance().GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
-	ProjectScreenScene::Instance().Render(elapsedTime);
 
 	EffectManager::instance().Render(Camera::Instance().GetView(), Camera::Instance().GetProjection());
 	Stage::Instance().Render(elapsedTime, rc);
 	TrapManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
 	KeyManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
 	PortalManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
+	ProjectScreenScene::Instance().Render(elapsedTime);
 
 	//sceneModel->SelectedBlockRender(rc, modelRenderer, sceneTransform, 0u, ShaderId::Lambert);
 }

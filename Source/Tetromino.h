@@ -346,6 +346,7 @@ namespace Tetromino
 		void RenderCommitedTetromino(RenderContext& rc, ModelRenderer* mR, ShaderId id = ShaderId::Basic, bool ortho = false);
 
 		const std::vector<DirectX::XMFLOAT4X4>& GetTransforms() const { return transforms; }
+		SceneModel* Getscenemodel()const { return sceneModel; }
 
 	private:
 		std::vector<DirectX::XMFLOAT4X4> transforms;
@@ -362,6 +363,8 @@ namespace Tetromino
 
 		void Update(const POINTS mousePos, const Input::KeyInput keyFiled, SceneModel* sceneModels);
 		void Render(RenderContext& rc, ModelRenderer* mR);
+
+		TetroRenderer* GetRenderer() { return &renderer; }
 
 	private:
 		TetrominoCollider collider;

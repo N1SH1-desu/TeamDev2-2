@@ -6,6 +6,7 @@
 #include"PlayerManager.h"
 #include"Scene/stage.h"
 #include "PortalManager.h"
+#include"FetchModelFromSceneAsset.h"
 
  Player::Player(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale, DirectX::XMFLOAT3 angle) 
  {
@@ -43,16 +44,19 @@ void Player::Update(float elapsedTime)
 
 	case State::Run:
 		if (RayGround(Stage::Instance().GetCollisionTransform(), Stage::Instance().GetCollisionModel())) {
+			PlayAnimation("Run", true);
 		position.x -= moveSpeed * elapsedTime;
 		onGround;
 		}
 		else {
 		position.y -= velocity.y;
+		PlayAnimation("Falling", true);
 		}
 		break;
 
 	case State::Jump:
 		position.y += wal;
+		PlayAnimation("Climing", true);
 		break;
 	case State::EndJump:
 		position.x -= moveSpeed * elapsedTime;
@@ -210,112 +214,105 @@ void Player::UpdateTransform(float elapsedTime)
 // 移動入力処理
 bool Player::InputMove()
 {
-		// 入力処理
-		float axisX = 0.0f;
-		float axisY = 0.0f;
-		/*if (GetAsyncKeyState('W') & 0x8000) axisY += 1.0f;
-		if (GetAsyncKeyState('S') & 0x8000) axisY -= 1.0f;*/
+	// 入力処理
+	float axisX = 0.0f;
+	float axisY = 0.0f;
+	/*if (GetAsyncKeyState('W') & 0x8000) axisY += 1.0f;
+	if (GetAsyncKeyState('S') & 0x8000) axisY -= 1.0f;*/
 
-		if (onGround==true)axisX -= moveSpeed;
+	if (onGround == true)axisX -= moveSpeed;
 
-		/*if (GetAsyncKeyState('A') & 0x8000) axisX -= 1.0f;*/
+	/*if (GetAsyncKeyState('A') & 0x8000) axisX -= 1.0f;*/
 
-		// カメラの方向
-		const DirectX::XMFLOAT3& cameraFront = camera.GetFront();
-		const DirectX::XMFLOAT3& camemraRight = camera.GetRight();
-		float cameraFrontLengthXZ = sqrtf(cameraFront.x * cameraFront.x + cameraFront.z * cameraFront.z);
-		float cameraRightLengthXZ = sqrtf(camemraRight.x * camemraRight.x + camemraRight.z * camemraRight.z);
-		float cameraFrontX = cameraFront.x / cameraFrontLengthXZ;
-		float cameraFrontZ = cameraFront.z / cameraFrontLengthXZ;
-		float cameraRightX = camemraRight.x / cameraRightLengthXZ;
-		float cameraRightZ = camemraRight.z / cameraRightLengthXZ;
+	// カメラの方向
+	const DirectX::XMFLOAT3& cameraFront = camera.GetFront();
+	const DirectX::XMFLOAT3& camemraRight = camera.GetRight();
+	float cameraFrontLengthXZ = sqrtf(cameraFront.x * cameraFront.x + cameraFront.z * cameraFront.z);
+	float cameraRightLengthXZ = sqrtf(camemraRight.x * camemraRight.x + camemraRight.z * camemraRight.z);
+	float cameraFrontX = cameraFront.x / cameraFrontLengthXZ;
+	float cameraFrontZ = cameraFront.z / cameraFrontLengthXZ;
+	float cameraRightX = camemraRight.x / cameraRightLengthXZ;
+	float cameraRightZ = camemraRight.z / cameraRightLengthXZ;
 
-		// 移動ベクトル
-		moveVecX = cameraFrontX * axisY + cameraRightX * axisX*tt;
-		moveVecZ = cameraFrontZ * axisY + cameraRightZ * axisX*tt;
-		float vecLength = sqrtf(moveVecX * moveVecX + moveVecZ * moveVecZ);
+	// 移動ベクトル
+	moveVecX = cameraFrontX * axisY + cameraRightX * axisX * tt;
+	moveVecZ = cameraFrontZ * axisY + cameraRightZ * axisX * tt;
+	float vecLength = sqrtf(moveVecX * moveVecX + moveVecZ * moveVecZ);
 
-		// 壁ずり移動処理
-		if (vecLength > 0)
+	// 壁ずり移動処理
+	if (vecLength > 0)
+	{
+		//レイの始点と終点を求める
+		DirectX::XMFLOAT3 s = {
+		   position.x,
+		   position.y + 0.5f,
+		   position.z
+		};
+
+		DirectX::XMFLOAT3 e = {
+		   position.x + moveVecX,
+		   position.y + 0.5f,
+		   position.z + moveVecZ
+		};
+
+		DirectX::XMFLOAT3 p, n;
+		//ステージとレイキャストを行い、交点と法線を求める
+		if (Collision::RayCast(s, e, Stage::Instance().GetCollisionTransform(), Stage::Instance().GetCollisionModel(), p, n))
 		{
-			//レイの始点と終点を求める
-			DirectX::XMFLOAT3 s = {
-			   position.x,
-			   position.y + 0.5f,
-			   position.z
-			};
+			// 交点のY座標をプレイヤーに位置に設定する
+			velocity.y = 0;
+			position.y = p.y - 0.5f;
+			//交点から終点へのベクトルを求める
+			DirectX::XMVECTOR P = DirectX::XMLoadFloat3(&p);
+			DirectX::XMVECTOR E = DirectX::XMLoadFloat3(&e);
+			DirectX::XMVECTOR PE = DirectX::XMVectorSubtract(E, P);
 
-			DirectX::XMFLOAT3 e = {
-			   position.x + moveVecX,
-			   position.y + 0.5f,
-			   position.z + moveVecZ
-			};
+			//三角関数から終点へのベクトルを求める
+			DirectX::XMVECTOR N = DirectX::XMLoadFloat3(&n);
+			DirectX::XMVECTOR A = DirectX::XMVector3Dot(N, PE);
+			//壁までの長さを少しだけ長くなるように補正する
+			float a = -DirectX::XMVectorGetX(A) + 0.001f;
 
-			DirectX::XMFLOAT3 p, n;
-			//ステージとレイキャストを行い、交点と法線を求める
-			if (Collision::RayCast(s, e, Stage::Instance().GetCollisionTransform(), Stage::Instance().GetCollisionModel(), p, n)) {
-				//交点から終点へのベクトルを求める
-				DirectX::XMVECTOR P = DirectX::XMLoadFloat3(&p);
-				DirectX::XMVECTOR E = DirectX::XMLoadFloat3(&e);
-				DirectX::XMVECTOR PE = DirectX::XMVectorSubtract(E, P);
+			//壁ずりベクトルを求める
+			DirectX::XMVECTOR R = DirectX::XMVectorAdd(PE, DirectX::XMVectorScale(N, a));
 
-				//三角関数から終点へのベクトルを求める
-				DirectX::XMVECTOR N = DirectX::XMLoadFloat3(&n);
-				DirectX::XMVECTOR A = DirectX::XMVector3Dot(N, PE);
-				//壁までの長さを少しだけ長くなるように補正する
-				float a = -DirectX::XMVectorGetX(A) + 0.001f;
+			//壁ずり後の位置を求める
+			DirectX::XMVECTOR Q = DirectX::XMVectorAdd(P, R);
+			DirectX::XMFLOAT3 q;
+			DirectX::XMStoreFloat3(&q, Q);
 
-				//壁ずりベクトルを求める
-				DirectX::XMVECTOR R = DirectX::XMVectorAdd(PE, DirectX::XMVectorScale(N, a));
+			Walltime += tt;
 
-				//壁ずり後の位置を求める
-				DirectX::XMVECTOR Q = DirectX::XMVectorAdd(P, R);
-				DirectX::XMFLOAT3 q;
-				DirectX::XMStoreFloat3(&q, Q);
-
-				Walltime += tt;
-
-				if (Walltime < 0.5f) {
-					PlayAnimation("Climing", true);
-					state = State::Jump;
-				}
-				else
-				{
-					turn();
-					PlayAnimation("Run", true);
-					state = State::Run;
-					Walltime = 0.0f;
-				}
-				//HitP();
+			if (Walltime < 1.5f) {
+				PlayAnimation("Climing", true);
+				state = State::Jump;
 			}
-			//	else if (before_state == State::Jump)
-			//	{
-			//		PlayAnimation("Run", true);
-			//		state = State::EndJump;
-			//		Walltime = 0.0f;
-			//	}
-			//}
-			//else if(before_state == State::Jump)
-			//{
-			//	PlayAnimation("Run", true);
-			//	state = State::Run;
-			//}
+			else
+			{
+				turn();
+				PlayAnimation("Run", true);
+				state = State::Run;
+				Walltime = 0.0f;
+			}
+			//HitP();
 		}
+		else if (before_state == State::Jump)
+		{
+			PlayAnimation("Run", true);
+			state = State::EndJump;
+			Walltime = 0.0f;
+		}
+		else if (before_state == State::EndJump)
+		{
+			PlayAnimation("Run", true);
+			state = State::Run;
+		}
+	}
+
 	return true;
 
 }
 
-// ジャンプ入力処理
-bool Player::InputJump()
-{
-	if (jumpC==true)
-	{
-			velocity.y = jumpSpeed;
-			velocity.x += 1.0f;
-		return true;
-	}
-	return false;
-}
 
 void Player::turn() {
 		angle.y *= -1.0f;
@@ -347,6 +344,72 @@ void Player::PoisonC(float elapsedTime)
 		PT = 0;
 	}
 }
+
+void Player::B_Raycast(std::shared_ptr<Model> model, DirectX::XMFLOAT4X4 transform)
+{
+	DirectX::XMFLOAT3 s = {
+   position.x,
+   position.y + 0.5f,
+   position.z
+	};
+
+	DirectX::XMFLOAT3 e = {
+	   position.x + -100,
+	   position.y + 0.5f,
+	   position.z
+	};
+
+	DirectX::XMFLOAT3 p, n;
+	if (Collision::RayCast(s, e, transform, model.get(), p, n)) {
+		//交点から終点へのベクトルを求める
+		DirectX::XMVECTOR P = DirectX::XMLoadFloat3(&p);
+		DirectX::XMVECTOR E = DirectX::XMLoadFloat3(&e);
+		DirectX::XMVECTOR PE = DirectX::XMVectorSubtract(E, P);
+
+		//三角関数から終点へのベクトルを求める
+		DirectX::XMVECTOR N = DirectX::XMLoadFloat3(&n);
+		DirectX::XMVECTOR A = DirectX::XMVector3Dot(N, PE);
+		//壁までの長さを少しだけ長くなるように補正する
+		float a = -DirectX::XMVectorGetX(A) + 0.001f;
+
+		//壁ずりベクトルを求める
+		DirectX::XMVECTOR R = DirectX::XMVectorAdd(PE, DirectX::XMVectorScale(N, a));
+
+		//壁ずり後の位置を求める
+		DirectX::XMVECTOR Q = DirectX::XMVectorAdd(P, R);
+		DirectX::XMFLOAT3 q;
+		DirectX::XMStoreFloat3(&q, Q);
+
+		Walltime += tt;
+
+		if (Walltime < 1.5f) {
+			PlayAnimation("Climing", true);
+			state = State::Jump;
+		}
+		else
+		{
+			turn();
+			PlayAnimation("Run", true);
+			state = State::Run;
+			Walltime = 0.0f;
+		}
+		//HitP();
+	}
+	else if (before_state == State::Jump)
+	{
+		PlayAnimation("Run", true);
+		state = State::EndJump;
+		Walltime = 0.0f;
+	}
+	else if (before_state == State::EndJump)
+	{
+		PlayAnimation("Run", true);
+		state = State::Run;
+	}
+
+}
+
+
 
 bool Player::RayGround(DirectX::XMFLOAT4X4 transform, Model* model)
 {

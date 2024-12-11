@@ -9,6 +9,7 @@
 #include "Tetromino.h"
 #include "KeyInput.h"
 #include "TetroEditerUI.h"
+#include"player.h"
 
 
 class ProjectScreenScene : public Scene
@@ -31,6 +32,8 @@ public:
 
 	// GUI•`‰æˆ—
 	void DrawGUI() override;
+
+	Player player;
 
 private:
 	struct Object
