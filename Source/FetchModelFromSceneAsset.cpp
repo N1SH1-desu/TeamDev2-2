@@ -21,15 +21,15 @@ SceneModel::SceneModel(const char* sceneFile)
     }
 }
 
-void SceneModel::SelectedBlockRender(RenderContext& rc, ModelRenderer* renderer, DirectX::XMFLOAT4X4 worldTransform, UINT index, ShaderId id)
+void SceneModel::SelectedBlockRender(RenderContext& rc, ModelRenderer* renderer, DirectX::XMFLOAT4X4 worldTransform, UINT index, ShaderId id, bool isOrtho)
 {
-    renderer->Render(rc, worldTransform, sceneModels.at(index).get(), id);
+    renderer->Render(rc, worldTransform, sceneModels.at(index).get(), id, isOrtho);
 }
 
-void SceneModel::RenderCommitedBlocks(RenderContext& rc, ModelRenderer* renderer, ShaderId id)
+void SceneModel::RenderCommitedBlocks(RenderContext& rc, ModelRenderer* renderer, ShaderId id, bool ortho)
 {
     for (std::pair<UINT, DirectX::XMFLOAT4X4>& blockData : commitedBlocks)
     {
-        renderer->Render(rc, blockData.second, sceneModels.at(blockData.first).get(), id);
+        renderer->Render(rc, blockData.second, sceneModels.at(blockData.first).get(), id, ortho);
     }
 }

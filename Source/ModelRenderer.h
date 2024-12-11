@@ -23,7 +23,7 @@ public:
 	~ModelRenderer() {}
 
 	// ï`âÊé¿çs
-	void Render(const RenderContext& rc, const DirectX::XMFLOAT4X4& worldTransform, const Model* model, ShaderId shaderId);
+	void Render(const RenderContext& rc, const DirectX::XMFLOAT4X4& worldTransform, const Model* model, ShaderId shaderId, bool ortho = false);
 
 private:
 	struct CbScene

@@ -137,6 +137,7 @@
     <ClInclude Include="Source\Collision.h" />
     <ClInclude Include="Source\ControlTetrisBlock.h" />
     <ClInclude Include="Source\Dialog.h" />
+    <ClInclude Include="Source\EndlessGridRenderer.h" />
     <ClInclude Include="Source\FetchModelFromSceneAsset.h" />
     <ClInclude Include="Source\Effect.h" />
     <ClInclude Include="Source\EffectManager.h" />
@@ -147,6 +148,7 @@
     <ClInclude Include="Source\Gfx2DSandbox.h" />
     <ClInclude Include="Source\Grid2DRenderer.h" />
     <ClInclude Include="Source\InputMouse.h" />
+    <ClInclude Include="Source\KeyInput.h" />
     <ClInclude Include="Source\Key.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\Mathf.h" />
@@ -193,6 +195,10 @@
     <ClInclude Include="Source\Shader.h" />
     <ClInclude Include="Source\space_division_raycast.h" />
     <ClInclude Include="Source\Sprite.h" />
+    <ClInclude Include="Source\StageEditer.h" />
+    <ClInclude Include="Source\TetroEditerMode.h" />
+    <ClInclude Include="Source\TetroEditerUI.h" />
+    <ClInclude Include="Source\Tetromino.h" />
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\TransformUtils.h" />
     <ClInclude Include="Source\Trap.h" />
@@ -215,6 +221,7 @@
     <ClCompile Include="Source\clear.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\Dialog.cpp" />
+    <ClCompile Include="Source\EndlessGridRenderer.cpp" />
     <ClCompile Include="Source\FetchModelFromSceneAsset.cpp" />
     <ClCompile Include="Source\Effect.cpp" />
     <ClCompile Include="Source\EffectManager.cpp" />
@@ -228,6 +235,7 @@
     <ClCompile Include="Source\InputMouse.cpp" />
     <ClCompile Include="Source\Key.cpp" />
     <ClCompile Include="Source\Mathf.cpp" />
+    <ClCompile Include="Source\KeyInput.cpp" />
     <ClCompile Include="Source\ModelRenderer.cpp" />
     <ClCompile Include="Source\LambertShader.cpp" />
     <ClCompile Include="Source\ModelResource.cpp" />
@@ -268,12 +276,17 @@
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\space_division_raycast.cpp" />
     <ClCompile Include="Source\Sprite.cpp" />
+    <ClCompile Include="Source\StageEditer.cpp" />
+    <ClCompile Include="Source\TetroEditerMode.cpp" />
+    <ClCompile Include="Source\TetroEditerUI.cpp" />
+    <ClCompile Include="Source\Tetromino.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\TransformUtils.cpp" />
     <ClCompile Include="Source\TrapManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\Basic.hlsli" />
+    <None Include="Shader\Grid.hlsli" />
     <None Include="Shader\Lambert.hlsli" />
     <None Include="Shader\Scene.hlsli" />
     <None Include="Shader\ShapeRenderer.hlsli" />
@@ -287,6 +300,14 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="Shader\BasicVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\GridPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\GridVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>

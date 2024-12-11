@@ -26,7 +26,7 @@ ModelRenderer::ModelRenderer(ID3D11Device* device)
 }
 
 // •`‰æŽÀs
-void ModelRenderer::Render(const RenderContext& rc, const DirectX::XMFLOAT4X4& worldTransform, const Model* model, ShaderId shaderId)
+void ModelRenderer::Render(const RenderContext& rc, const DirectX::XMFLOAT4X4& worldTransform, const Model* model, ShaderId shaderId, bool ortho)
 {
 	ID3D11DeviceContext* dc = rc.deviceContext;
 
@@ -37,7 +37,7 @@ void ModelRenderer::Render(const RenderContext& rc, const DirectX::XMFLOAT4X4& w
 
 		CbScene cbScene{};
 		DirectX::XMMATRIX V = DirectX::XMLoadFloat4x4(&rc.camera->GetView());
-		DirectX::XMMATRIX P = DirectX::XMLoadFloat4x4(&rc.camera->GetProjection());
+		DirectX::XMMATRIX P = DirectX::XMLoadFloat4x4(&rc.camera->GetProjection(ortho));
 		DirectX::XMStoreFloat4x4(&cbScene.viewProjection, V * P);
 		const DirectionalLight& directionalLight = lightManager->GetDirectionalLight();
 		cbScene.lightDirection.x = directionalLight.direction.x;

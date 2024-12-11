@@ -11,6 +11,7 @@ ProjectScreenScene::ProjectScreenScene()
 	ID3D11Device* device = Graphics::Instance().GetDevice();
 	float screenWidth = Graphics::Instance().GetScreenWidth();
 	float screenHeight = Graphics::Instance().GetScreenHeight();
+	ID2D1DeviceContext* d2dContext = Graphics::Instance().GetGfx2D()->GetContext();
 
 	// カメラ設定
 	camera.SetPerspectiveFov(
@@ -19,19 +20,24 @@ ProjectScreenScene::ProjectScreenScene()
 		0.1f,								// ニアクリップ
 		1000.0f								// ファークリップ
 	);
+	camera.SetOrthoGraphic(
+		128.0,
+		72.0,
+		0.1f,
+		1000.0f
+	);
 	camera.SetLookAt(
-		{ 0, 0, -30 },		// 視点
+		{ 0, 0, -20 },		// 視点
 		{ 0, 0, 0 },		// 注視点
 		{ 0, 1, 0 }			// 上ベクトル
 	);
 	cameraController.SyncCameraToController(camera);
 
 	sprite = std::make_unique<Sprite>(device);
-	stage.model = std::make_unique<Model>("Data/Model/Stage/ExampleStage.mdl");
 
-	sceneModels = std::make_unique<SceneModel>("Data/Model/TetrisBlock/scene.mdl");
+	editerMode.Initialize(device, d2dContext);
 
-	stage.scale = { 0.1f, 0.1f, 0.1f };
+	terrain.Initialize(Stage::Stage1);
 }
 
 // 更新処理
@@ -55,13 +61,11 @@ void ProjectScreenScene::Update(float elapsedTime)
 
 	}
 
-	DirectX::XMMATRIX Projection = DirectX::XMLoadFloat4x4(&camera.GetProjection());	
-	DirectX::XMMATRIX View = DirectX::XMLoadFloat4x4(&camera.GetView());
-	DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();
+	keyInput.Update();
+	POINTS mousePos = refInputMouse->GetPosition();
+	editerMode.Update(elapsedTime, mousePos, keyInput);
 
-	RECT viewport = { 0, 0, static_cast<LONG>(Graphics::Instance().GetScreenWidth()), static_cast<LONG>(Graphics::Instance().GetScreenHeight()) };
-
-	//stage.position = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size, viewport, Projection, View, World);
+	stage.position = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size, viewport, Projection, View, World);
 
 	// ステージ行列更新処理
 	{
@@ -69,15 +73,6 @@ void ProjectScreenScene::Update(float elapsedTime)
 		DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(stage.angle.x, stage.angle.y, stage.angle.z);
 		DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(stage.position.x, stage.position.y, stage.position.z);
 		DirectX::XMStoreFloat4x4(&stage.transform, S * R * T);
-	}
-
-	// オブジェクト行列更新処理
-	for (Object& obj : objs)
-	{
-		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(obj.scale.x, obj.scale.y, obj.scale.z);
-		DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(obj.angle.x, obj.angle.y, obj.angle.z);
-		DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(obj.position.x, obj.position.y, obj.position.z);
-		DirectX::XMStoreFloat4x4(&obj.transform, S * R * T);
 	}
 }
 
@@ -87,15 +82,16 @@ void ProjectScreenScene::Render(float elapsedTime)
 	ID3D11DeviceContext* dc = Graphics::Instance().GetDeviceContext();
 	RenderState* renderState = Graphics::Instance().GetRenderState();
 	ModelRenderer* modelRenderer = Graphics::Instance().GetModelRenderer();
-	Graphics2D* d2dGraphics = Graphics::Instance().GetGraphics2D();
-	Grid2DRenderer* gridRenderer = Graphics::Instance().GetGrid2DRenderer();
+	PrimitiveRenderer* primitiveRenderer = Graphics::Instance().GetPrimitiveRenderer();
+	ShapeRenderer* shapeRenderer = Graphics::Instance().GetShapeRenderer();
+	EndlessGridRenderer* gridRenderer = Graphics::Instance().GetEndlessGridRenderer();
+	ID2D1DeviceContext* d2dContext = Graphics::Instance().GetGfx2D()->GetContext();
 
 	// モデル描画
 	RenderContext rc;
 	rc.deviceContext = dc;
 	rc.renderState = renderState;
 	rc.camera = &camera;
-	//modelRenderer->Render(rc, stage.transform, stage.model.get(), ShaderId::Lambert);
 
 	// スクリーンサイズ取得
 	float screenWidth = Graphics::Instance().GetScreenWidth();
@@ -105,14 +101,9 @@ void ProjectScreenScene::Render(float elapsedTime)
 	DirectX::XMMATRIX Projection = DirectX::XMLoadFloat4x4(&camera.GetProjection());
 	DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();
 
-	for (const Object& obj : objs)
-	{
-		modelRenderer->Render(rc, obj.transform, obj.model.get(), ShaderId::Lambert);
-	}
+	terrain.Render(rc, modelRenderer);
 
-	sceneModels->SelectedBlockRender(rc, modelRenderer, stage.transform, 0u, ShaderId::Lambert);
-
-	gridRenderer->Draw(d2dGraphics->GetContext());
+	editerMode.Render(rc, d2dContext, modelRenderer);
 }
 
 // GUI描画処理
@@ -131,9 +122,12 @@ void ProjectScreenScene::DrawGUI()
 		int v[2] = { pos.x, pos.y };
 		ImGui::InputInt2("Mouse Position", v);
 
-		ImGui::InputFloat3("Block Position", &stage.position.x);
-		ImGui::InputFloat3("Block Scale", &stage.scale.x);
-		ImGui::InputFloat3("Block Rotate", &stage.angle.x);
+		ImGui::SliderFloat3("Block Position", &stage.position.x, -200.0f, 200.0f);
+		ImGui::InputFloat3("Block Pos Input", &stage.position.x);
+		ImGui::SliderFloat("Block Scale", &stage.scale.x, 0.001f, 0.1f);
+		stage.scale.y = stage.scale.x;
+		stage.scale.z = stage.scale.x;
+		ImGui::SliderFloat3("Block Rotate", &stage.angle.x, 0.0f, 20.0f);
 	}
 	ImGui::End();
 }
