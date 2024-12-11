@@ -128,9 +128,6 @@
     <ClInclude Include="External\ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="External\ImGuizmo\ImSequencer.h" />
     <ClInclude Include="External\SphereCast\Include\SphereCast.h" />
-    <ClInclude Include="Source\Audio\Audio.h" />
-    <ClInclude Include="Source\Audio\AudioResource.h" />
-    <ClInclude Include="Source\Audio\AudioSource.h" />
     <ClInclude Include="Source\BasicShader.h" />
     <ClInclude Include="Source\Cage.h" />
     <ClInclude Include="Source\Camera.h" />
@@ -218,9 +215,6 @@
     <ClCompile Include="External\ImGuizmo\ImGradient.cpp" />
     <ClCompile Include="External\ImGuizmo\ImGuizmo.cpp" />
     <ClCompile Include="External\ImGuizmo\ImSequencer.cpp" />
-    <ClCompile Include="Source\Audio\Audio.cpp" />
-    <ClCompile Include="Source\Audio\AudioResource.cpp" />
-    <ClCompile Include="Source\Audio\AudioSource.cpp" />
     <ClCompile Include="Source\BasicShader.cpp" />
     <ClCompile Include="Source\Cage.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
@@ -239,9 +233,9 @@
     <ClCompile Include="Source\Gfx2DSandbox.cpp" />
     <ClCompile Include="Source\Grid2DRenderer.cpp" />
     <ClCompile Include="Source\InputMouse.cpp" />
-    <ClCompile Include="Source\KeyInput.cpp" />
     <ClCompile Include="Source\Key.cpp" />
     <ClCompile Include="Source\Mathf.cpp" />
+    <ClCompile Include="Source\KeyInput.cpp" />
     <ClCompile Include="Source\ModelRenderer.cpp" />
     <ClCompile Include="Source\LambertShader.cpp" />
     <ClCompile Include="Source\ModelResource.cpp" />
@@ -282,6 +276,7 @@
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\space_division_raycast.cpp" />
     <ClCompile Include="Source\Sprite.cpp" />
+    <ClCompile Include="Source\StageEditer.cpp" />
     <ClCompile Include="Source\TetroEditerMode.cpp" />
     <ClCompile Include="Source\TetroEditerUI.cpp" />
     <ClCompile Include="Source\Tetromino.cpp" />

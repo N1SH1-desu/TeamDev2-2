@@ -6,6 +6,7 @@
 #include"PlayerManager.h"
 #include"Scene/stage.h"
 #include "PortalManager.h"
+#include "FetchModelFromSceneAsset.h"
 
 #include"space_division_raycast.h"
 
@@ -18,6 +19,8 @@
 	this->state = State::Idle;
 	this->HP = 30;
 	PlayAnimation("Falling", true);
+
+	position.x = 1.0;
 }
 
  Player::~Player() {
@@ -25,7 +28,7 @@
 }
 
 
-void Player::Update(float elapsedTime)
+void Player::Update(float elapsedTime, SceneModel* scenemodel)
 {
 	tt = elapsedTime;
 	InputMove();

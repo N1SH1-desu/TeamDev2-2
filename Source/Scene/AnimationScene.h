@@ -9,6 +9,8 @@
 #include "stage.h"
 #include "FetchModelFromSceneAsset.h"
 #include "stage.h"
+#include "KeyInput.h"
+#include "TetroEditerMode.h"
 
 class AnimationScene : public Scene
 {
@@ -76,4 +78,7 @@ private:
 
 	//add_by_nikaidio
 	std::unique_ptr<AudioSource>      game_bgm_;
+
+	Input::KeyInput keyinput;
+	TetroEditerMode EditerMode;
 };

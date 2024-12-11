@@ -7,6 +7,7 @@
 #include "Model.h"
 #include "KeyInput.h"
 #include "TetroEditerMode.h"
+#include "StageEditer.h"
 
 
 class ProjectScreenScene : public Scene
@@ -47,4 +48,5 @@ private:
 	std::vector<Object>					objs;
 	Input::KeyInput keyInput;
 	TetroEditerMode editerMode;
+	Stage::StageTerrain terrain;
 };

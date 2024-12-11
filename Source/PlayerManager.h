@@ -7,6 +7,7 @@
 #include "Model.h"
 #include"ModelRenderer.h"
 #include"Sprite.h"
+#include "FetchModelFromSceneAsset.h"
 
 #include"player.h"
 #include<vector>
@@ -21,7 +22,7 @@ public:
 		static PlayerManager instance;
 		return instance;
 	}
-	void Update(float elapsedTime);
+	void Update(float elapsedTime, SceneModel* scenemodel);
 
 	void Register(Player* player);
 

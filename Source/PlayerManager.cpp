@@ -9,11 +9,11 @@ PlayerManager::PlayerManager()
 	sprite = std::make_unique<Sprite>(device);
 }
 
-void PlayerManager::Update(float elapsedTime) {
+void PlayerManager::Update(float elapsedTime, SceneModel* scenemodel) {
 
 	for (Player* player : players) 
 	{
-		player->Update(elapsedTime);
+		player->Update(elapsedTime, scenemodel);
 		player->UpdateAnimation(elapsedTime);
 	}
 

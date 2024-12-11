@@ -7,6 +7,7 @@
 #include "FreeCameraController.h"
 #include "Model.h"
 #include"Mathf.h"
+#include "FetchModelFromSceneAsset.h"
 
 
 //player
@@ -27,7 +28,7 @@ public:
 	// ƒWƒƒƒ“ƒv“ü—Íˆ—
 	bool InputJump();
 
-	void Update(float elapsedTime);
+	void Update(float elapsedTime, SceneModel* scenemodel);
 
 	DirectX::XMFLOAT3 GetPosition() { return position; }
 	void SetPosition(const DirectX::XMFLOAT3& position) { this->position = position; }
@@ -88,7 +89,7 @@ public:
 
 
 	DirectX::XMFLOAT3					position = { 0, 5, 0 };
-	DirectX::XMFLOAT3					angle = { 0, 0, 0 };
+	DirectX::XMFLOAT3					angle = { 0.01, 0, 0 };
 	DirectX::XMFLOAT3					scale = { 0.01f, 0.01f, 0.01f };
 
 	DirectX::XMFLOAT3					velocity = { 0, 0, 0 };
