@@ -4,6 +4,7 @@
 
 #include<sstream>
 #include<algorithm>
+#include<functional>
 
 #include"Graphics.h"
 #include"ShapeRenderer.h"
@@ -66,6 +67,97 @@ namespace quad_tree_calc {
     }
 }
 
+//ソート
+namespace quad_tree_sort
+{
+    //クイックソート（今回は安定性の高いものを採用したいので不採用）
+    template <class type>
+    inline void QuickSort(vector<type>& vec, int left, int right,
+        std::function<bool(const type&, const type&)>compare)
+    {
+        if (right < 0)return;
+        if (left >= right)return;
+
+        const type& pivot = vec[right];
+        int partition_index = left;
+
+        for (int i = left; i < right; i++)
+        {
+            if (compare(vec[i], pivot))
+            {
+                std::swap(vec[i], vec[partition_index]);
+                ++partition_index;
+            }
+        }
+
+        //ピボットを正しい位置に移動
+        std::swap(vec[partition_index], vec[right]);
+
+        //再帰的にノード
+        QuickSort(vec, left, partition_index - 1, compare);
+        QuickSort(vec,  partition_index + 1,right, compare);
+
+    }
+
+    //マージソート
+    //
+    template <class type>
+    inline void MergeSort(std::vector<type>& vec, int left, int right,
+        std::function<bool(const type&,const type&)> compare
+    )
+    {
+        if (left >= right)return;
+
+        int mid = left + (right - left) / 2;
+
+        //devide
+        {
+            //左半分をソート
+            MergeSort(vec, left, mid, compare);
+            //右半分をソート
+            MergeSort(vec, mid + 1, right, compare);
+        }
+        //マージ(下の処理)conquer
+        Merge(vec, left, mid, right, compare);
+    }
+    //マージソート内で呼び出すマージ処理(conquer)
+    template<class type>
+    void Merge(std::vector<type>& vec, int left, int mid, int right,
+        std::function<bool(const type&, const type&)> compare
+    )
+    {
+        //左右の部分配列を作成
+        std::vector<type> vec_left(vec.begin() + left, vec.begin() + mid + 1);
+        std::vector<type> vec_right(vec.begin() + mid + 1, vec.begin() + right + 1);
+
+        int left_index = 0, right_index = 0, merge_index = left;
+
+        //左右配列を比較しながらマージ
+        while (left_index < vec_left.size() && right_index < vec_right.size())
+        {
+            //比較結果がfalseなら左側の要素を優先する(逆順を防ぐ)
+            if (compare(vec_left[left_index], vec_right[right_index]))
+            {
+                vec[merge_index++] = vec_left[left_index++];
+            }
+            else
+            {
+                vec[merge_index++] = vec_right[right_index++];
+            }
+        }
+
+        //左側の残りをコピー
+        while (left_index < vec_left.size())
+        {
+            vec[merge_index++] = vec_left[left_index++];
+        }
+        //右側の残りをコピー
+        while (right_index < vec_right.size())
+        {
+            vec[merge_index++] = vec_right[right_index++];
+        }
+    }
+}
 
 SpaceDivisionRayCast::SpaceDivisionRayCast()
 {
@@ -183,21 +275,32 @@ SpaceDivisionRayCast::SpaceDivisionRayCast()
 
     //四分木空間のエリアをモデルディビジョンに保存する
     {
-        int node_size = quad_tree_nodes_.size();
+        //深度ごとにソートする
+        int nodes_size = quad_tree_nodes_.size();
         QuadTreeNode* quad_tree = quad_tree_nodes_.data();
-        for (int node_i = 0; node_i < node_size; node_i++)
-        {
-            for (int j = 0; j < node_size - 1; j++)
-            {
-                if (quad_tree[j].depth > quad_tree[j + 1].depth)
-                {
-                    std::swap(quad_tree[j], quad_tree[j + 1]);
-                }
-            }
-        }
-        for (int i = 0; i < node_size; i++) {
+        ////バブルソート-------------------------------------------------
+        //for (int node_i = 0; node_i < nodes_size; node_i++)
+        //{
+        //    for (int j = 0; j < nodes_size - 1; j++)
+        //    {
+        //        if (quad_tree[j].depth > quad_tree[j + 1].depth)
+        //        {
+        //            std::swap(quad_tree[j], quad_tree[j + 1]);
+        //        }
+        //    }
+        //}
+        ////クイックソート(安定性があまりない為不採用)
+        //quad_tree_sort::QuickSort<QuadTreeNode>(quad_tree_nodes_, 0, (nodes_size - 1),
+        //    [](const QuadTreeNode& a, const QuadTreeNode& b) {return a.depth <= b.depth; }//比較条件
+        //);
+        ////マージソート(安定性があるため採用)
+        quad_tree_sort::MergeSort<QuadTreeNode>(quad_tree_nodes_, 0, nodes_size - 1,
+            [](const QuadTreeNode& a, const QuadTreeNode& b) {return a.depth <= b.depth; }
+        );
+        for (int i = 0; i < nodes_size; i++) {
             model_divisions_.areas.emplace_back(quad_tree[i].area);
         }
+
     }
 
     size_t triangles_size = model_divisions_.triangles.size();
@@ -411,7 +514,7 @@ void SpaceDivisionRayCast::DebugDraw(RenderContext&rc)
     {
         if (draw_box_ == i)
         {
-            boxColor = { 0,0,0,1 };
+            boxColor = { 0,0,1,1 };
             polygonColor = { 1,1,1,1 };
         }
         else
@@ -420,8 +523,7 @@ void SpaceDivisionRayCast::DebugDraw(RenderContext&rc)
             polygonColor = { 0, 0, 1, 1 };
         }
         //エリアに保存されているトライアングル情報を出す
-        if (!all_draw_)
-        {
+        
             ////モデルにあるすべての頂点情報とエリアにある頂点情報を確認する
             ////有るものだけを描画する
             //const CollisionMesh::Triangle* triangle = model_divisions_.triangles.data();
@@ -434,24 +536,10 @@ void SpaceDivisionRayCast::DebugDraw(RenderContext&rc)
             //    primitiveRenderer->AddVertex(triangle[areas_triangle[areas_triangle_index]].positions[2], polygonColor);
             //}
             
-        }
         shape_renderer->DrawBox(area[i].bounding_box.Center, boxAngle, area[i].bounding_box.Extents, boxColor);
     }
 
-    //////コチラはモデルから取り出した全ての三角形を描画する
-    ////// 三角形ポリゴン描画
-    //if (all_draw_)
-    //{
-    //    //polygonColor = { 1,1,1,1 };
-    //    //size_t size = model_divisions_[model].triangles.size();
-    //    //CollisionMesh::Triangle* triangle = model_divisions_[model].triangles.data();
-    //    //for (size_t i = 0; i < size; i++)
-    //    //{
-    //    //    primitiveRenderer->AddVertex(triangle[i].positions[0], polygonColor);
-    //    //    primitiveRenderer->AddVertex(triangle[i].positions[1], polygonColor);
-    //    //    primitiveRenderer->AddVertex(triangle[i].positions[2], polygonColor);
-    //    //}
-    //}
+
 
     primitiveRenderer->Render(dc, rc.camera->GetView(), rc.camera->GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
     shape_renderer->Render(dc, rc.camera->GetView(), rc.camera->GetProjection());
@@ -473,7 +561,6 @@ void SpaceDivisionRayCast::DrowImgui()
 
     if (ImGui::Begin("SpaceDivision"))
     {
-        if (ImGui::Button("all_draw_"))all_draw_ = !all_draw_;
 
         ImGui::InputInt("draw_box", &draw_box_);
 
