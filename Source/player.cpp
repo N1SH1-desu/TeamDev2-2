@@ -26,7 +26,7 @@
 }
 
 
-void Player::Update(float elapsedTime, SceneModel* scenemodel)
+void Player::Update(float elapsedTime)
 {
 	tt = elapsedTime;
 	InputMove();

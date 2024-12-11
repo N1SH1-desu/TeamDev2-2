@@ -28,7 +28,7 @@ public:
 	// ƒWƒƒƒ“ƒv“ü—Íˆ—
 	bool InputJump();
 
-	void Update(float elapsedTime, SceneModel* scenemodel);
+	void Update(float elapsedTime);
 
 	DirectX::XMFLOAT3 GetPosition() { return position; }
 	void SetPosition(const DirectX::XMFLOAT3& position) { this->position = position; }

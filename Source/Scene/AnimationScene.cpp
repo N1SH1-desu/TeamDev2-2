@@ -58,9 +58,6 @@ void AnimationScene::Initialize()
 
 	Stage::Instance().SelectStage(StageNumber);
 
-	sceneModel = std::make_unique<SceneModel>("Data/Model/TetrisBlock/scene.mdl");
-	sceneScale = { 0.1f, 0.1f, 0.1f };
-
 	pause = false;
 	Pause::Instance().SetPause(pause);
 	ID2D1DeviceContext* dc_2D = Graphics::Instance().GetGraphics2D()->GetContext();
@@ -142,17 +139,9 @@ void AnimationScene::Update(float elapsedTime)
 	DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();
 
 	RECT viewport = { 0, 0, static_cast<LONG>(Graphics::Instance().GetScreenWidth()), static_cast<LONG>(Graphics::Instance().GetScreenHeight()) };
-	
-	scenePosition = SetBlockPosFromMousePos(Grid2DRenderer::grid_size, viewport, Projection, View, World);
 
-	{
-		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(sceneScale.x, sceneScale.y, sceneScale.z);
-		DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f);
-		DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(scenePosition.x, scenePosition.y, scenePosition.z);
-		DirectX::XMStoreFloat4x4(&sceneTransform, S * R * T);
-	}
 
-	PlayerManager::Instance().Update(elapsedTime, sceneModel.get());
+	PlayerManager::Instance().Update(elapsedTime);
 	cube.UpdateTransform();
 	cube2.UpdateTransform();
 	timer += elapsedTime;
@@ -213,8 +202,6 @@ void AnimationScene::Render(float elapsedTime)
 	KeyManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
 	PortalManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
 	Pause::Instance().Render(elapsedTime);
-
-	sceneModel->SelectedBlockRender(rc, modelRenderer, sceneTransform, 0u, ShaderId::Lambert);
 
 	EditerMode.Render(rc, dc_2D, modelRenderer);
 }

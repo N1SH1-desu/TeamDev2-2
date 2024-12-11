@@ -22,7 +22,7 @@ public:
 		static PlayerManager instance;
 		return instance;
 	}
-	void Update(float elapsedTime, SceneModel* scenemodel);
+	void Update(float elapsedTime);
 
 	void Register(Player* player);
 
