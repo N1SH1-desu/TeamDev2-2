@@ -8,6 +8,8 @@
 #include "PortalManager.h"
 #include "FetchModelFromSceneAsset.h"
 
+#include"space_division_raycast.h"
+
  Player::Player(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale, DirectX::XMFLOAT3 angle) 
  {
 	model = new Model("./Data/Model/UnityChan/UnityChan.mdl");
@@ -74,16 +76,18 @@ void Player::Update(float elapsedTime, TerrainStage::StageTerrain& terrain)
 	// トランスフォーム更新処理
 	UpdateTransform(elapsedTime);
 
-	for (int i = 0; i < PortalManager::Instance().GetObjectCount(); i++)
-	{
-		auto portal = PortalManager::Instance().GetObject_(i);
+	//for (int i = 0; i < PortalManager::Instance().GetObjectCount(); i++)
+	//{
+	//	auto portal = PortalManager::Instance().GetObject_(i);
 
-		DirectX::XMFLOAT3 outPosition;
-		if (Collision::InteresectCylinderVsCylinder(position, radius, height, portal->GetPosition(), portal->GetRadius(), portal->GetHeight(), outPosition) && portal->Enabled())
-		{
-			PlayerManager::Instance().Remove(this);
-		}
-	}
+	//	DirectX::XMFLOAT3 outPosition;
+	//	if (Collision::InteresectCylinderVsCylinder(position, radius, height, portal->GetPosition(), portal->GetRadius(), portal->GetHeight(), outPosition) && portal->Enabled())
+	//	{
+	//		PlayerManager::Instance().Remove(this);
+	//	}
+	//}
+
+	
 }
 void Player::PlayAnimation(int index, bool loop)
 {

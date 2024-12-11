@@ -6,6 +6,7 @@
 #include<memory>
 
 #include"Sprite.h"
+#include"Audio/Audio.h"
 
 class Clear
 {
@@ -27,6 +28,8 @@ private:
     bool flag_ = false;
 
     Microsoft::WRL::ComPtr<ID3D11SamplerState> sampler_state_;
+
+    std::unique_ptr<AudioSource>    sound_;
 public:
     Clear();
     ~Clear() = default;

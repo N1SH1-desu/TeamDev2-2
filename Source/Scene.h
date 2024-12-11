@@ -1,5 +1,7 @@
 #pragma once
 #include "InputMouse.h"
+#include "Audio/Audio.h"
+
 
 // ƒV[ƒ“Šî’ê
 class Scene
@@ -27,4 +29,5 @@ public:
 protected:
 	InputMouse* refInputMouse;
 	bool ready = false;
+
 };

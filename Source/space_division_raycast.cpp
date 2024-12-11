@@ -10,6 +10,7 @@
 #include"ShapeRenderer.h"
 #include"PrimitiveRenderer.h"
 
+//四分木で使う計算
 namespace quad_tree_calc {
     //四分木の最大の深さにおける分割数の計算
     inline constexpr uint64_t MaxSplit(const uint64_t depth)
@@ -383,6 +384,7 @@ bool SpaceDivisionRayCast::RayCast(
     float distance = DirectX::XMVectorGetX(DirectX::XMVector3Length(vec));
 
     if (distance <= 0.0f)return false;
+    if (model_divisions_.triangles.size() <= 0)return false;
 
             ////小さいAABBとレイの交差判定を取る
             //const CollisionMesh& collision_mesh = model_divisions_[model];
