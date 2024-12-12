@@ -11,6 +11,8 @@ class TetroEditerMode
 public:
 	TetroEditerMode() = default;
 
+	Tetromino::TetrominoCollider::TetroCollideArray GetTetroCollideArray() { return tetroEditer.GetCollider().GetTetroCollidePlaced(); }
+
 	void Initialize(ID3D11Device* device, ID2D1DeviceContext* d2dContext);
 	void Update(float elapsedTime, POINTS mousePos, const Input::KeyInput& keyInput, const TerrainStage::StageTerrain::StageArray& stageCollision);
 	void Render(RenderContext rc, ID2D1DeviceContext* d2dContext, ModelRenderer* mRenderer);
@@ -20,7 +22,7 @@ private:
 	TetroEditerUI editerUI;
 	std::unique_ptr<Grid2DRenderer>	gridRenderer;
 
-	std::unique_ptr<SceneModel> tetroBlockModels;
+	std::shared_ptr<SceneModel> tetroBlockModels;
 
 	bool EditerMode = false;
 };

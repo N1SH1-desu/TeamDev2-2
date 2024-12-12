@@ -68,9 +68,8 @@ void ProjectScreenScene::Update(float elapsedTime)
 	DirectX::XMMATRIX View = DirectX::XMLoadFloat4x4(&camera.GetView());
 	DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();
 
-	//stage.position = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size, viewport, Projection, View, World);
+	unityChan.Update(elapsedTime, terrain.GetStagePlaced(), editerMode.GetTetroCollideArray());
 
-	// ステージ行列更新処理
 	{
 		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(stage.scale.x, stage.scale.y, stage.scale.z);
 		DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(stage.angle.x, stage.angle.y, stage.angle.z);
@@ -106,7 +105,9 @@ void ProjectScreenScene::Render(float elapsedTime)
 
 	terrain.Render(rc, modelRenderer);
 
-	//editerMode.Render(rc, d2dContext, modelRenderer);
+	unityChan.Render(rc, modelRenderer);
+
+	editerMode.Render(rc, d2dContext, modelRenderer);
 }
 
 // GUI描画処理

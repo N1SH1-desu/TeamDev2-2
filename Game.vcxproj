@@ -128,6 +128,7 @@
     <ClInclude Include="External\ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="External\ImGuizmo\ImSequencer.h" />
     <ClInclude Include="External\SphereCast\Include\SphereCast.h" />
+    <ClInclude Include="Source\AutoDrivenPlayer.h" />
     <ClInclude Include="Source\Audio\Audio.h" />
     <ClInclude Include="Source\Audio\AudioResource.h" />
     <ClInclude Include="Source\Audio\AudioSource.h" />
@@ -218,6 +219,7 @@
     <ClCompile Include="External\ImGuizmo\ImGradient.cpp" />
     <ClCompile Include="External\ImGuizmo\ImGuizmo.cpp" />
     <ClCompile Include="External\ImGuizmo\ImSequencer.cpp" />
+    <ClCompile Include="Source\AutoDrivenPlayer.cpp" />
     <ClCompile Include="Source\Audio\Audio.cpp" />
     <ClCompile Include="Source\Audio\AudioResource.cpp" />
     <ClCompile Include="Source\Audio\AudioSource.cpp" />
