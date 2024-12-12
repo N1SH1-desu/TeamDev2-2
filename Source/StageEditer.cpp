@@ -1,6 +1,6 @@
 #include "StageEditer.h"
 
-void Stage::StageTerrain::Initialize(StageNumber number, const int offset, const int xAxisMax, const int yAxisMax)
+void TerrainStage::StageTerrain::Initialize(StageNumber number, const int offset, const int xAxisMax, const int yAxisMax)
 {
     terrainModels = std::make_shared<SceneModel>("Data/Model/Stage/Terrains.mdl");
 
@@ -8,11 +8,20 @@ void Stage::StageTerrain::Initialize(StageNumber number, const int offset, const
         {
             switch (number)
             {
-            case Stage::Stage1:
+            case TerrainStage::Stage1:
                 return StageData<Stage1>::data;
                 break;
-            case Stage::Stage2:
+            case TerrainStage::Stage2:
+                return StageData<Stage2>::data;
                 break;
+            case TerrainStage::Stage3:
+                return StageData<Stage3>::data;
+                break;
+            case TerrainStage::Stage4:
+                return StageData<Stage4>::data;
+                break;
+            case Stage5:
+                return StageData<Stage5>::data;
             default:
                 break;
             }
@@ -26,24 +35,34 @@ void Stage::StageTerrain::Initialize(StageNumber number, const int offset, const
             {
                 switch (type)
                 {
-                case Stage::TerrainBlockType::GrassSingle:
+                case TerrainStage::TerrainBlockType::GrassSingle:
                     return Terrain<TerrainBlockType::GrassSingle>::filed;
                     break;
-                case Stage::TerrainBlockType::Grass1x2:
+                case TerrainStage::TerrainBlockType::Grass1x2:
                     return Terrain<TerrainBlockType::Grass1x2>::field;
                     break;
-                case Stage::TerrainBlockType::Grass1x3:
+                case TerrainStage::TerrainBlockType::Grass1x3:
                     return Terrain<TerrainBlockType::Grass1x3>::field;
                     break;
-                case Stage::TerrainBlockType::Grass1x4:
+                case TerrainStage::TerrainBlockType::Grass1x4:
                     return Terrain<TerrainBlockType::Grass1x4>::field;
                     break;
 
-                case Stage::TerrainBlockType::DirtSingle:
+                case TerrainStage::TerrainBlockType::DirtSingle:
                     return Terrain<TerrainBlockType::DirtSingle>::field;
                     break;
-                case Stage::TerrainBlockType::Dirt1x2:
+                case TerrainStage::TerrainBlockType::Dirt1x2:
                     return Terrain<TerrainBlockType::Dirt1x2>::field;
+                    break;
+                case TerrainStage::TerrainBlockType::Dirt1x3:
+                    return Terrain<TerrainBlockType::Dirt1x3>::field;
+                    break;
+                case TerrainStage::TerrainBlockType::Dirt1x4:
+                    return Terrain<TerrainBlockType::Dirt1x4>::field;
+                    break;
+
+                case TerrainStage::TerrainBlockType::TNone:
+                    return Terrain<TerrainBlockType::TNone>::field;
                     break;
                 }
         };
@@ -52,7 +71,7 @@ void Stage::StageTerrain::Initialize(StageNumber number, const int offset, const
 
         for (int col = 0; col < tArray.size(); col++)
         {
-            if (tArray[col] != 0)
+            if (tArray[col] > 0)
             {
                 if (dataEle.top < ROW_LENGHT && (dataEle.left + col) < COL_LENGHT)
                 {
@@ -90,7 +109,7 @@ void Stage::StageTerrain::Initialize(StageNumber number, const int offset, const
     }
 }
 
-void Stage::StageTerrain::Render(RenderContext& rc, ModelRenderer* mR)
+void TerrainStage::StageTerrain::Render(RenderContext& rc, ModelRenderer* mR)
 {
     terrainModels->RenderCommitedBlocks(rc, mR, ShaderId::Lambert, true);
 }

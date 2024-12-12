@@ -48,5 +48,5 @@ private:
 	std::vector<Object>					objs;
 	Input::KeyInput keyInput;
 	TetroEditerMode editerMode;
-	Stage::StageTerrain terrain;
+	TerrainStage::StageTerrain terrain;
 };

@@ -9,6 +9,8 @@
 #include "FetchModelFromSceneAsset.h"
 
 #include"space_division_raycast.h"
+#include "PortalManager.h"
+
 
  Player::Player(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale, DirectX::XMFLOAT3 angle) 
  {
@@ -19,8 +21,6 @@
 	this->state = State::Idle;
 	this->HP = 30;
 	PlayAnimation("Falling", true);
-
-	position.x = 1.0;
 }
 
  Player::~Player() {
@@ -28,40 +28,19 @@
 }
 
 
-void Player::Update(float elapsedTime, SceneModel* scenemodel)
+void Player::Update(float elapsedTime, TerrainStage::StageTerrain& terrain)
 {
 	tt = elapsedTime;
 	InputMove();
-	before_state = state;
-
-	switch (state)
+	
+	if (onGround)
 	{
-	case State::Idle:
-		position.y -= velocity.y;
-		wal = 0.03f;
-		if (RayGround(Stage::Instance().GetCollisionTransform(), Stage::Instance().GetCollisionModel()))
-		{
-			PlayAnimation("Run", true);
-			state = Run;
-		}
-		break;
-
-	case State::Run:
-		if (RayGround(Stage::Instance().GetCollisionTransform(), Stage::Instance().GetCollisionModel())) {
-		position.x -= moveSpeed * elapsedTime;
-		onGround;
-		}
-		else {
-		position.y -= velocity.y;
-		}
-		break;
-
-	case State::Jump:
-		position.y += wal;
-		break;
-	case State::EndJump:
-		position.x -= moveSpeed * elapsedTime;
-		break;
+		position.x += moveSpeed * elapsedTime;
+		PlayAnimation("Run", true);
+	}
+	else
+	{
+		PlayAnimation("Falling", true);
 	}
 
 	if (PC)
@@ -69,21 +48,24 @@ void Player::Update(float elapsedTime, SceneModel* scenemodel)
 		PoisonC(elapsedTime);
 	}
 
+	UpdateVerticalMove(terrain, elapsedTime);
+
 	// トランスフォーム更新処理
 	UpdateTransform(elapsedTime);
 
-	//for (int i = 0; i < PortalManager::Instance().GetObjectCount(); i++)
-	//{
-	//	auto portal = PortalManager::Instance().GetObject_(i);
+	for (int i = 0; i < PortalManager::Instance().GetObjectCount(); i++)
+	{
+		auto portal = PortalManager::Instance().GetObject_(i);
 
-	//	DirectX::XMFLOAT3 outPosition;
-	//	if (Collision::InteresectCylinderVsCylinder(position, radius, height, portal->GetPosition(), portal->GetRadius(), portal->GetHeight(), outPosition) && portal->Enabled())
-	//	{
-	//		PlayerManager::Instance().Remove(this);
-	//	}
-	//}
-
+		DirectX::XMFLOAT3 outPosition;
+		if (Collision::InteresectCylinderVsCylinder(position, radius, height, portal->GetPosition(), portal->GetRadius(), portal->GetHeight(), outPosition) && portal->Enabled())
+		{
+			PlayerManager::Instance().Remove(this);
+		}
+	}
 	
+
+	Clear_Judge();
 }
 void Player::PlayAnimation(int index, bool loop)
 {
@@ -198,13 +180,9 @@ void Player::UpdateAnimation(float elapsedTime)
 	model->UpdateTransform();
 }
 
-
-
 // トランスフォーム更新処理
 void Player::UpdateTransform(float elapsedTime)
 {
-	velocity.y = gravity * elapsedTime;
-
 		// 行列計算
 		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
 		DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(angle.x, angle.y, angle.z);
@@ -354,22 +332,48 @@ void Player::PoisonC(float elapsedTime)
 	}
 }
 
-bool Player::RayGround(DirectX::XMFLOAT4X4 transform, Model* model)
+
+void Player::UpdateVerticalMove(TerrainStage::StageTerrain& StageTerrain, float elapsedTime)
 {
+	velocity.y -= gravity * elapsedTime;
+	float moveY = velocity.y * elapsedTime;
+	onGround = false;
 
-	const DirectX::XMFLOAT3 s = { position.x,position.y + 0.5f,position.z };
-	const DirectX::XMFLOAT3 e = { position.x,position.y - 0.3f,position.z };
-
-	DirectX::XMFLOAT3 p, n;
-
-	//if (Collision::RayCast(s, e, transform, model, p, n))
-	if (SpaceDivisionRayCast::Instance().RayCast(s, e, p, n))
+	if (velocity.y < 0.0f)
 	{
-		// 交点のY座標をプレイヤーに位置に設定する
-		velocity.y = 0;
-		position.y = p.y;
-		return onGround = true;
-	}
-	return onGround=false;
-}
+		DirectX::XMFLOAT3 start, end;
+		start = end = position;
 
+		start.y += 0.5f;
+		end.y += moveY;
+
+		auto TerrainModel = StageTerrain.GetTerrainModels();
+
+		DirectX::XMFLOAT3 hitPosition, hitNormal;
+
+		for (auto& Transform : StageTerrain.GetTerrainAndWorlds())
+		{
+			if (Collision::RayCast(start, end, Transform.second, TerrainModel->GetSceneModels().at(Transform.first).get(), hitPosition, hitNormal))
+			{
+				position.y = hitPosition.y;
+				velocity.y = 0.0f;
+				moveY = 0.0f;
+				onGround = true;
+			}
+		}
+	}
+
+	position.y += moveY;
+}
+void Player::Clear_Judge()
+{
+	for (int i = 0; i < PortalManager::Instance().GetObjectCount(); i++)
+	{
+		auto portal = PortalManager::Instance().GetObject_(i);
+
+		if (Collision::InteresectCylinderVsCylinder(position, radius, height, portal->GetPosition(), portal->GetRadius(), portal->GetHeight(), DirectX::XMFLOAT3(0, 0, 0)))
+		{
+			PlayerManager::Instance().Remove(this);
+		}
+	}
+}

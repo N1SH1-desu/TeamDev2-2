@@ -27,6 +27,7 @@ public:
 	// •`‰æˆ—
 	void Render(float elapsedTime) override;
 
+	void ObjectSetting(int StageNum);
 
 	// GUI•`‰æˆ—
 	//void DrawGUI() override;
@@ -37,6 +38,7 @@ private:
 
 	FreeCameraController				cameraController;
 
+	DirectX::XMFLOAT3 Generatepos;
 	struct Object
 	{
 		DirectX::XMFLOAT3		position = { 0, 0, 0 };
@@ -83,4 +85,5 @@ private:
 
 	Input::KeyInput keyinput;
 	TetroEditerMode EditerMode;
+	TerrainStage::StageTerrain terrain;
 };

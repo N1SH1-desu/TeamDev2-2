@@ -37,7 +37,7 @@ ProjectScreenScene::ProjectScreenScene()
 
 	editerMode.Initialize(device, d2dContext);
 
-	terrain.Initialize(Stage::Stage1);
+	terrain.Initialize(TerrainStage::Stage1);
 }
 
 // XVˆ—
@@ -61,6 +61,9 @@ void ProjectScreenScene::Update(float elapsedTime)
 
 	}
 
+	keyInput.Update();
+	POINTS mousePos = refInputMouse->GetPosition();
+	editerMode.Update(elapsedTime, mousePos, keyInput, terrain.GetStagePlaced());
 	DirectX::XMMATRIX Projection = DirectX::XMLoadFloat4x4(&camera.GetProjection());	
 	DirectX::XMMATRIX View = DirectX::XMLoadFloat4x4(&camera.GetView());
 	DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();

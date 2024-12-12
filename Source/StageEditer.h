@@ -2,12 +2,15 @@
 #include <array>
 #include "FetchModelFromSceneAsset.h"
 
-namespace Stage
+namespace TerrainStage
 {
 	enum StageNumber
 	{
 		Stage1,
 		Stage2,
+		Stage3,
+		Stage4,
+		Stage5,
 	};
 
 	enum class TerrainBlockType
@@ -22,7 +25,7 @@ namespace Stage
 		Dirt1x3,
 		Dirt1x4,
 
-		TNone,
+		TNone = -1,
 	};
 
 	enum TerrainElementType
@@ -89,6 +92,11 @@ namespace Stage
 	{
 		static constexpr TerrainArray field = { TET_DirtLC, TET_DirtMid, TET_DirtMid, TET_DirtRC };
 	};
+	template<>
+	struct Terrain<TerrainBlockType::TNone>
+	{
+		static constexpr TerrainArray field = { TET_None };
+	};
 
 	struct TerrainData
 	{
@@ -96,6 +104,9 @@ namespace Stage
 		unsigned int top = { 0};
 		unsigned int left = { 0};
 	};
+
+	using TerrainDataArray = std::array<TerrainData, 20>;
+
 	template<StageNumber>
 	struct StageData
 	{
@@ -104,9 +115,75 @@ namespace Stage
 	template<>
 	struct StageData<StageNumber::Stage1>
 	{
-		static constexpr std::array<TerrainData, 2> data = {{
-			{TerrainBlockType::Grass1x3, 3, 2},
-			{TerrainBlockType::Dirt1x2, 4, 2},
+		static constexpr TerrainDataArray data = {{
+			{TerrainBlockType::Grass1x3, 1, 13},
+			{TerrainBlockType::Grass1x4, 2, 0},
+			{TerrainBlockType::Dirt1x3, 5, 6},
+			{TerrainBlockType::Dirt1x3, 7, 0},
+			{TerrainBlockType::Dirt1x2, 7, 14},
+		}};
+	};
+	template<>
+	struct StageData<StageNumber::Stage2>
+	{
+		static constexpr TerrainDataArray data = {{
+			{TerrainBlockType::Grass1x4, 2, 5},
+			{TerrainBlockType::GrassSingle, 4, 0},
+			{TerrainBlockType::Dirt1x2, 5, 0},
+			{TerrainBlockType::Grass1x3, 4, 13},
+			{TerrainBlockType::Dirt1x3, 6, 5},
+			{TerrainBlockType::Dirt1x3, 8, 0},
+			{TerrainBlockType::Dirt1x2, 8, 14},
+		}};
+	};
+	template<>
+	struct StageData<StageNumber::Stage3>
+	{
+		static constexpr TerrainDataArray data = {{
+			{TerrainBlockType::Grass1x3, 2, 5},
+			{TerrainBlockType::Grass1x2, 4, 0},
+			{TerrainBlockType::Dirt1x4, 5, 0},
+			{TerrainBlockType::GrassSingle, 3, 12},
+			{TerrainBlockType::DirtSingle, 4, 12},
+			{TerrainBlockType::Dirt1x3, 5, 10},
+			{TerrainBlockType::Grass1x3, 7, 6},
+			{TerrainBlockType::Grass1x3, 8, 0},
+			{TerrainBlockType::Grass1x3, 8, 13},
+		}};
+	};
+	template<>
+	struct StageData<StageNumber::Stage4>
+	{
+		static constexpr TerrainDataArray data = {{
+			{TerrainBlockType::Grass1x3, 1, 0},
+			{TerrainBlockType::Grass1x2, 1, 10},
+			{TerrainBlockType::Grass1x2, 3, 14},
+			{TerrainBlockType::Grass1x2, 4, 0},
+			{TerrainBlockType::Dirt1x2, 5, 0},
+			{TerrainBlockType::Dirt1x2, 6, 0},
+			{TerrainBlockType::Grass1x3, 5, 10},
+			{TerrainBlockType::DirtSingle, 6, 12},
+			{TerrainBlockType::DirtSingle, 7, 12},
+			{TerrainBlockType::Grass1x4, 8, 5},
+		}};
+	};
+	template<>
+	struct StageData<StageNumber::Stage5>
+	{
+		static constexpr TerrainDataArray data = { {
+			{TerrainBlockType::Grass1x3, 1, 0},
+			{TerrainBlockType::DirtSingle, 2, 0},
+			{TerrainBlockType::Dirt1x3, 3, 0},
+			{TerrainBlockType::Grass1x2, 1, 13},
+			{TerrainBlockType::DirtSingle, 2, 14},
+			{TerrainBlockType::GrassSingle, 2, 6},
+			{TerrainBlockType::Dirt1x2, 3, 6},
+			{TerrainBlockType::Grass1x3, 5, 2},
+			{TerrainBlockType::DirtSingle, 6, 3},
+			{TerrainBlockType::Dirt1x3, 7, 2},
+			{TerrainBlockType::Grass1x3, 7, 7},
+			{TerrainBlockType::Grass1x3, 5, 12},
+			{TerrainBlockType::Dirt1x3, 8, 13},
 		}};
 	};
 
@@ -121,12 +198,17 @@ namespace Stage
 		std::shared_ptr<SceneModel> terrainModels;
 
 	public:
+		using StageArray = std::array<std::array<TerrainElementType, COL_LENGHT>, ROW_LENGHT>;
 		StageTerrain() = default;
 
 		void Initialize(StageNumber number, const int offset = 8.0f, const int xAxisMax = 60.0f, const int yAxisMax = 32.0f);
 
-		std::array<std::array<TerrainElementType, COL_LENGHT>, ROW_LENGHT> GetStagePlaced() { return stagePlaced; }
+		StageArray GetStagePlaced() const { return stagePlaced; }
 
 		void Render(RenderContext& rc, ModelRenderer* mR);
+
+		//プレイヤーの方でSceneModel参照するために追記 間違ってたらごめん
+		SceneModel* GetTerrainModels() { return terrainModels.get(); }
+		std::vector<std::pair<UINT, DirectX::XMFLOAT4X4>>& GetTerrainAndWorlds() { return terrainAndWorlds; }
 	};
 }

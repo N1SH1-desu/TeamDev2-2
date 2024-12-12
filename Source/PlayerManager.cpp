@@ -2,6 +2,7 @@
 #include"Collision.h"
 #include "imgui.h"
 #include"Graphics.h"
+#include "clear.h"
 
 PlayerManager::PlayerManager()
 {
@@ -9,11 +10,16 @@ PlayerManager::PlayerManager()
 	sprite = std::make_unique<Sprite>(device);
 }
 
-void PlayerManager::Update(float elapsedTime, SceneModel* scenemodel) {
+void PlayerManager::Initialize()
+{
+	generate = false;
+}
+
+void PlayerManager::Update(float elapsedTime, TerrainStage::StageTerrain& terrain) {
 
 	for (Player* player : players) 
 	{
-		player->Update(elapsedTime, scenemodel);
+		player->Update(elapsedTime, terrain);
 		player->UpdateAnimation(elapsedTime);
 	}
 
@@ -34,6 +40,9 @@ void PlayerManager::Update(float elapsedTime, SceneModel* scenemodel) {
 		DirectX::XMFLOAT3 start = { player->position.x, player->position.y + 1.0f, player->position.z };
 		DirectX::XMFLOAT3 end = { player->position.x, player->position.y + player->velocity.y - 0.05f, player->position.z };
 	}
+
+	if (GetPlayerCount() <= 0 && generate)
+		Clear::Instance().SetClearFlag(true);
 }
 
 void PlayerManager::Render(ModelRenderer* modelRenderer,RenderContext& rc, ShaderId ID) 
@@ -85,7 +94,9 @@ void PlayerManager::Render(ModelRenderer* modelRenderer,RenderContext& rc, Shade
 }
 
 
-void PlayerManager::Register(Player* player) {
+void PlayerManager::Register(Player* player) 
+{
+	generate = true;
 	players.emplace_back(player);
 }
 
