@@ -1,6 +1,9 @@
 #include "Gfx2D.h"
 #include <assert.h>
 
+#pragma comment(lib,"D2d1.lib") 
+
+
 bool Graphics2D::instanced = false;
 
 Graphics2D::Graphics2D(ID3D11Device* device) :

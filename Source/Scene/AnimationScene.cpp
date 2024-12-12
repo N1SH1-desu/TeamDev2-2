@@ -69,15 +69,7 @@ void AnimationScene::Initialize()
 
 	sceneModel = std::make_unique<SceneModel>("Data/Model/TetrisBlock/scene.mdl");
 	sceneScale = { 0.1f, 0.1f, 0.1f };
-	//add_by_nikaido_iichiko
-	SpaceDivisionRayCast::Instance().Load(Stage::Instance().GetCollisionModel());
 
-	pause = false;
-	Pause::Instance().SetPause(pause);
-	Pause::Instance().SetStageNum(StageNumber);
-
-	//audio
-	game_bgm_ = Audio::Instance().LoadAudioSource("./Data/Audio/game.wav");
 
 	pause = false;
 	Pause::Instance().SetPause(pause);
@@ -96,6 +88,18 @@ void AnimationScene::Initialize()
 	ObjectSetting(StageNumber);
 	PlayerManager::Instance().Initialize();
 	//audio
+	game_bgm_ = Audio::Instance().LoadAudioSource("./Data/Audio/game.wav");
+
+	pause = false;
+	Pause::Instance().SetPause(pause);
+	//ID2D1DeviceContext* dc_2D = Graphics::Instance().GetGraphics2D()->GetContext();
+
+	EditerMode.Initialize(device, dc_2D);
+
+
+	//add_by_nikaido_iichiko
+	//SpaceDivisionRayCast::Instance().Load(stage->GetModel());
+
 	//game_bgm_ = Audio::Instance().LoadAudioSource("./Data/Audio/game.wav");
 
 	Clear::Instance().Initialize();
@@ -188,11 +192,19 @@ void AnimationScene::Update(float elapsedTime)
 	PortalManager::Instance().Update(elapsedTime);
 	Pause::Instance().Update(elapsedTime);
 
-	POINTS mousePos = InputMouse::Instance().GetPosition();
-	keyinput.Update();
-	EditerMode.Update(elapsedTime, mousePos, keyinput, terrain.GetStagePlaced());
+	//if (GetAsyncKeyState('P') & 0x01)
+	//POINTS mousePos = InputMouse::Instance().GetPosition();
+	//keyinput.Update();
+	//EditerMode.Update(elapsedTime, mousePos, keyinput, terrain.GetStagePlaced());
 
 	Clear::Instance().Update(elapsedTime);
+
+	if (keyinput.GetKeyStatus('P') == Input::Release)
+	{
+		POINTS mousePos = InputMouse::Instance().GetPosition();
+		keyinput.Update();
+		//EditerMode.Update(elapsedTime, mousePos, keyinput);
+	}
 
 	//if (keyinput.GetKeyStatus('P') == Input::Release)
 	//{
@@ -242,6 +254,8 @@ void AnimationScene::Render(float elapsedTime)
 	Pause::Instance().Render(elapsedTime);
 
 	sceneModel->SelectedBlockRender(rc, modelRenderer, sceneTransform, 0u, ShaderId::Lambert);
+	//SpaceDivisionRayCast::Instance().DebugDraw(rc);
+
 	EditerMode.Render(rc, dc_2D, modelRenderer);
 
 	terrain.Render(rc, modelRenderer);
