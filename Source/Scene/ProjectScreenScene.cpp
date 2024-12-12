@@ -87,7 +87,7 @@ void ProjectScreenScene::Render(float elapsedTime)
 	PrimitiveRenderer* primitiveRenderer = Graphics::Instance().GetPrimitiveRenderer();
 	ShapeRenderer* shapeRenderer = Graphics::Instance().GetShapeRenderer();
 	EndlessGridRenderer* gridRenderer = Graphics::Instance().GetEndlessGridRenderer();
-	//ID2D1DeviceContext* d2dContext = Graphics::Instance().GetGfx2D()->GetContext();
+	ID2D1DeviceContext* d2dContext = Graphics::Instance().GetGraphics2D()->GetContext();
 
 	// ƒ‚ƒfƒ‹•`‰æ
 	RenderContext rc;

@@ -13,14 +13,14 @@ class AutoDrivenPlayer
 public:
     AutoDrivenPlayer();
 
-    void Update(float elapsedTime, const Stage::StageTerrain::StageArray stagePlaced, const Tetromino::TetrominoCollider::TetroCollideArray tetroPlaced);
+    void Update(float elapsedTime, const TerrainStage::StageTerrain::StageArray stagePlaced, const Tetromino::TetrominoCollider::TetroCollideArray tetroPlaced);
 
     void Render(RenderContext& rc, ModelRenderer* mR);
 
 private:
     bool MoveForward(float elapsedTime);
 
-    void Falling(float elapsedTime, const Stage::StageTerrain::StageArray stagePlaced, const Tetromino::TetrominoCollider::TetroCollideArray tetroPlaced);
+    void Falling(float elapsedTime, const TerrainStage::StageTerrain::StageArray stagePlaced, const Tetromino::TetrominoCollider::TetroCollideArray tetroPlaced);
 
     void UpdateTransform();
 

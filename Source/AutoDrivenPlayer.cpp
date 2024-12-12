@@ -10,7 +10,7 @@ AutoDrivenPlayer::AutoDrivenPlayer()
     model = std::make_unique<Model>("Data/Model/UnityChan/UnityChan.mdl");
 }
 
-void AutoDrivenPlayer::Update(float elapsedTime, const Stage::StageTerrain::StageArray stagePlaced, const Tetromino::TetrominoCollider::TetroCollideArray tetroPlaced)
+void AutoDrivenPlayer::Update(float elapsedTime, const TerrainStage::StageTerrain::StageArray stagePlaced, const Tetromino::TetrominoCollider::TetroCollideArray tetroPlaced)
 {
     switch (state)
     {
@@ -62,7 +62,7 @@ bool AutoDrivenPlayer::MoveForward(float elapsedTime)
     return false;
 }
 
-void AutoDrivenPlayer::Falling(float elapsedTime, const Stage::StageTerrain::StageArray stagePlaced, const Tetromino::TetrominoCollider::TetroCollideArray tetroPlaced)
+void AutoDrivenPlayer::Falling(float elapsedTime, const TerrainStage::StageTerrain::StageArray stagePlaced, const Tetromino::TetrominoCollider::TetroCollideArray tetroPlaced)
 {
     velocityY -= veloManagement.gravity * elapsedTime;
     float moveY = velocityY * elapsedTime;
