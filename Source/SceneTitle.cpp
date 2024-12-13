@@ -20,11 +20,13 @@ void SceneTitle::Initialize()
 	Interval = 0.0f;
 
 	Name = std::make_unique<Sprite>(device, "./Data/Sprite/MinionsQuest.png");
+
+	this->audio_bgm_ = Audio::Instance().LoadAudioSource("./Data/Audio/title.wav");
 }
 
 void SceneTitle::Update(float elapsedTime)
 {
-	//this->audio_bgm_->Play(true);
+	this->audio_bgm_->Play(true);
 
 	function& func = function::getInstance();
 	InputMouse& input = InputMouse::Instance();
@@ -34,7 +36,7 @@ void SceneTitle::Update(float elapsedTime)
 	if (func.Click_Colision(DirectX::XMFLOAT2(550, 480), DirectX::XMFLOAT2(168, 88)) && input.IsLBottonDowned())
 	{ 
 		if (Interval > 0.5f) SceneManager::Instance().ChangeScene(new SceneStageSelect);
-		//this->audio_bgm_->Stop();
+		this->audio_bgm_->Stop();
 	}
 }
 

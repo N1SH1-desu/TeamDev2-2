@@ -108,6 +108,8 @@ void AnimationScene::Initialize()
 // 更新処理
 void AnimationScene::Update(float elapsedTime)
 {
+	keyinput.Update();
+
 	// カメラ更新処理
 	cameraController.Update();
 	cameraController.SyncControllerToCamera(Camera::Instance());
@@ -192,25 +194,23 @@ void AnimationScene::Update(float elapsedTime)
 	PortalManager::Instance().Update(elapsedTime);
 	Pause::Instance().Update(elapsedTime);
 
-	//if (GetAsyncKeyState('P') & 0x01)
-	//POINTS mousePos = InputMouse::Instance().GetPosition();
-	//keyinput.Update();
-	//EditerMode.Update(elapsedTime, mousePos, keyinput, terrain.GetStagePlaced());
+	POINTS mousePos = InputMouse::Instance().GetPosition();
+	EditerMode.Update(elapsedTime, mousePos, keyinput, terrain.GetStagePlaced());
 
 	Clear::Instance().Update(elapsedTime);
 
-	if (keyinput.GetKeyStatus('P') == Input::Release)
-	{
-		POINTS mousePos = InputMouse::Instance().GetPosition();
-		keyinput.Update();
-		//EditerMode.Update(elapsedTime, mousePos, keyinput);
-	}
-
 	//if (keyinput.GetKeyStatus('P') == Input::Release)
 	//{
-	//	pause = !pause;
-	//	Pause::Instance().SetPause(pause);
+	//	POINTS mousePos = InputMouse::Instance().GetPosition();
+	//	keyinput.Update();
+	//	//EditerMode.Update(elapsedTime, mousePos, keyinput);
 	//}
+
+	if (keyinput.GetKeyStatus('P') == Input::Release)
+	{
+		pause = !pause;
+		Pause::Instance().SetPause(pause);
+	}
 }
 
 // 描画処理
