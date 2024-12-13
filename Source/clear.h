@@ -39,6 +39,7 @@ public:
         return instance_;
     }
 
+    void Initialize();
     //マウスの位置が欲しいので引数に入れている
     void Update(float elapsedTime);
     void Render(float elapsedTime);

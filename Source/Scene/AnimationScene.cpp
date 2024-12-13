@@ -12,15 +12,25 @@
 #include "SceneTitle.h"
 #include "KeyManager.h"
 #include "PortalManager.h"
+
+#include "clear.h"
+
 //add_by_nikaido
 #include"pause.h"
 #include"space_division_raycast.h"
 
 bool pause = false;
 
+
 AnimationScene::AnimationScene(int StageNum) : StageNumber(StageNum)
 {
 	EffectManager::instance().Initialize();
+}
+
+AnimationScene::~AnimationScene()
+{
+	PlayerManager::Instance().Clear();
+	SpaceDivisionRayCast::Instance().Clear();
 }
 
 void AnimationScene::Initialize()
@@ -37,10 +47,13 @@ void AnimationScene::Initialize()
 		1000.0f								// ファークリップ
 	);
 	Camera::Instance().SetLookAt(
-		{ 0, 0, 27 },		// 視点
-		{ 0, 1, 0 },		// 注視点
+		{ 0, 0, -20 },		// 視点
+		{ 0, 0, 0 },		// 注視点
 		{ 0, 1, 0 }			// 上ベクトル
 	);
+
+	Camera::Instance().SetOrthoGraphic(128.0f, 72.0f, 0.1f, 1000.0f);
+
 	cameraController.SyncCameraToController(Camera::Instance());
 	
 	timer = 0;
@@ -54,42 +67,61 @@ void AnimationScene::Initialize()
 	cube2.angle = { 0, 0, 0 };
 	cube2.scale = { 2, 2, 2 };
 
-	Stage::Instance().SelectStage(StageNumber);
-
 	sceneModel = std::make_unique<SceneModel>("Data/Model/TetrisBlock/scene.mdl");
 	sceneScale = { 0.1f, 0.1f, 0.1f };
+
+
+	pause = false;
+	Pause::Instance().SetPause(pause);
+	ID2D1DeviceContext* dc_2D = Graphics::Instance().GetGraphics2D()->GetContext();
+
+	EditerMode.Initialize(device, dc_2D);
+	terrain.Initialize(static_cast<TerrainStage::StageNumber>(StageNumber));
+
+
 	//add_by_nikaido_iichiko
 	SpaceDivisionRayCast::Instance().Load(Stage::Instance().GetCollisionModel());
 
 	pause = false;
 	Pause::Instance().SetPause(pause);
 	Pause::Instance().SetStageNum(StageNumber);
-
+	ObjectSetting(StageNumber);
+	PlayerManager::Instance().Initialize();
 	//audio
 	game_bgm_ = Audio::Instance().LoadAudioSource("./Data/Audio/game.wav");
-}
 
-AnimationScene::~AnimationScene() 
-{
-	PlayerManager::Instance().Clear();
-	SpaceDivisionRayCast::Instance().Clear();
+	pause = false;
+	Pause::Instance().SetPause(pause);
+	//ID2D1DeviceContext* dc_2D = Graphics::Instance().GetGraphics2D()->GetContext();
+
+	EditerMode.Initialize(device, dc_2D);
+
+
+	//add_by_nikaido_iichiko
+	//SpaceDivisionRayCast::Instance().Load(stage->GetModel());
+
+	//game_bgm_ = Audio::Instance().LoadAudioSource("./Data/Audio/game.wav");
+
+	Clear::Instance().Initialize();
 }
 
 // 更新処理
 void AnimationScene::Update(float elapsedTime)
 {
+	keyinput.Update();
+
 	// カメラ更新処理
 	cameraController.Update();
 	cameraController.SyncControllerToCamera(Camera::Instance());
 	//player->Update(elapsedTime);
 
-	game_bgm_->Play(true);
+	//game_bgm_->Play(true);
 
 	//// トランスフォーム更新処理
 	//UpdateTransform(elapsedTime);
-	if (timer > 1&& Co < 9)
+	if (timer > 1&& Co < 5)
 	{
-		PlayerManager::Instance().Register(new Player(DirectX::XMFLOAT3(0.0f, 5, 0), DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f), DirectX::XMFLOAT3(0.0f, -90.0f, 0.0f)));
+		PlayerManager::Instance().Register(new Player(Generatepos, DirectX::XMFLOAT3(0.04f, 0.04f, 0.04f), DirectX::XMFLOAT3(0.0f, 90.0f, 0.0f)));
 		timer = 0;
 		Co++;
 	}
@@ -151,19 +183,30 @@ void AnimationScene::Update(float elapsedTime)
 		DirectX::XMStoreFloat4x4(&sceneTransform, S * R * T);
 	}
 
-	PlayerManager::Instance().Update(elapsedTime);
+	PlayerManager::Instance().Update(elapsedTime, terrain);
 	cube.UpdateTransform();
 	cube2.UpdateTransform();
 	timer += elapsedTime;
 
 	TrapManager::Instance().Update(elapsedTime);
 	EffectManager::instance().Update(elapsedTime);
-	Stage::Instance().Update(elapsedTime);
 	KeyManager::Instance().Update(elapsedTime);
 	PortalManager::Instance().Update(elapsedTime);
 	Pause::Instance().Update(elapsedTime);
 
-	if (GetAsyncKeyState('P') & 0x01)
+	POINTS mousePos = InputMouse::Instance().GetPosition();
+	EditerMode.Update(elapsedTime, mousePos, keyinput, terrain.GetStagePlaced());
+
+	Clear::Instance().Update(elapsedTime);
+
+	//if (keyinput.GetKeyStatus('P') == Input::Release)
+	//{
+	//	POINTS mousePos = InputMouse::Instance().GetPosition();
+	//	keyinput.Update();
+	//	//EditerMode.Update(elapsedTime, mousePos, keyinput);
+	//}
+
+	if (keyinput.GetKeyStatus('P') == Input::Release)
 	{
 		pause = !pause;
 		Pause::Instance().SetPause(pause);
@@ -179,6 +222,9 @@ void AnimationScene::Render(float elapsedTime)
 	ModelRenderer* modelRenderer = Graphics::Instance().GetModelRenderer();
 	//Grid2DRenderer* grid2dRenderer = Graphics::Instance().GetGrid2DRenderer();
 	//Graphics2D* gfx2D = Graphics::Instance().GetGraphics2D();
+
+	Graphics2D* gfx2D = Graphics::Instance().GetGraphics2D();
+	ID2D1DeviceContext* dc_2D = Graphics::Instance().GetGraphics2D()->GetContext();
 
 	//// モデル描画
 	RenderContext rc;
@@ -202,148 +248,66 @@ void AnimationScene::Render(float elapsedTime)
 	//primitiveRenderer->Render(dc, Camera::Instance().GetView(), Camera::Instance().GetProjection(), D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
 	EffectManager::instance().Render(Camera::Instance().GetView(), Camera::Instance().GetProjection());
-	Stage::Instance().Render(elapsedTime, rc);
 	TrapManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
 	KeyManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
 	PortalManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
 	Pause::Instance().Render(elapsedTime);
 
 	sceneModel->SelectedBlockRender(rc, modelRenderer, sceneTransform, 0u, ShaderId::Lambert);
-	SpaceDivisionRayCast::Instance().DebugDraw(rc);
+	//SpaceDivisionRayCast::Instance().DebugDraw(rc);
+
+	EditerMode.Render(rc, dc_2D, modelRenderer);
+
+	terrain.Render(rc, modelRenderer);
+
+	Clear::Instance().Render(elapsedTime);
 }
 
-//// GUI描画処理
-//void AnimationScene::DrawGUI()
-//{
-//
-//	if (ImGui::Begin(u8"アニメーション", nullptr, ImGuiWindowFlags_None))
-//	{
-//		ImGui::Text(u8"移動操作：WASD");
-//		ImGui::Text(u8"ジャンプ操作：Space");
-//		ImGui::Spacing();
-//
-//		const char* stateName = "";
-//		ImGui::LabelText("State", stateName);
-//		ImGui::InputFloat("velocity",);
-//
-//		ImGui::End();
-//	}
-//}
+void AnimationScene::ObjectSetting(int StageNum)
+{
+	PortalManager::Instance().Clear();
+	KeyManager::Instance().Clear();
 
-//// アニメーション再生
-//void AnimationScene::PlayAnimation(int index, bool loop)
-//{
-//	animationPlaying = true;
-//	animationLoop = loop;
-//	animationIndex = index;
-//	animationSeconds = 0.0f;
-//}
-//
-//void AnimationScene::PlayAnimation(const char* name, bool loop)
-//{
-//	int index = 0;
-//	const std::vector<ModelResource::Animation>& animations = player->model->GetResource()->GetAnimations();
-//	for (const ModelResource::Animation& animation : animations)
-//	{
-//		if (animation.name == name)
-//		{
-//			PlayAnimation(index, loop);
-//			return;
-//		}
-//		++index;
-//	}
-//}
+	switch (StageNum)
+	{
+	case 0:
+		Generatepos = { -60.0f, 30.0f, 0.0f };
 
+		PortalManager::Instance().Register(new Portal("Data/Model/portal/portal.mdl", DirectX::XMFLOAT3(60.0f, -20.0f, 0.0f), DirectX::XMFLOAT3(0.03f, 0.03f, 0.03f)));
+		KeyManager::Instance().Register(new Key("Data/Model/key/key.mdl", DirectX::XMFLOAT3(60.0f, 28.0f, 0.0f), DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f)));
+		KeyManager::Instance().Register(new Key("Data/Model/key/key.mdl", DirectX::XMFLOAT3(-60.0f, -20.0f, 0.0f), DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f)));
+		break;
 
-// アニメーション更新処理
-//void AnimationScene::UpdateAnimation(float elapsedTime)
-//{
-//	if (animationPlaying) {
-//
-//		float blendRate = 1.0f;
-//		if (animationSeconds < animationBlendSecondsLength) {
-//			blendRate = animationSeconds / animationBlendSecondsLength;
-//			blendRate *= blendRate;
-//		}
-//
-//		std::vector<Model::Node>& nodes = player->model->GetNodes();
-//
-//		//指定のアニメーションデータを取得
-//		const std::vector<ModelResource::Animation>& animations = player->model->GetResource()->GetAnimations();
-//		const ModelResource::Animation& animation = animations.at(animationIndex);
-//
-//		//時間経過
-//		animationSeconds += elapsedTime;
-//
-//		//再生時間が終端時間を超えたら
-//		if (animationSeconds >= animation.secondsLength) {
-//			if (animationLoop) {
-//				animationSeconds -= animation.secondsLength;
-//			}
-//			else {
-//				animationPlaying = false;
-//				animationSeconds = animation.secondsLength;
-//			}
-//		}
-//		//アニメーションデータからキーフレームデータリストを取得
-//		const std::vector<ModelResource::Keyframe>& keyframes = animation.keyframes;
-//		int keyCount = static_cast<int>(keyframes.size());
-//		for (int keyIndex = 0; keyIndex < keyCount - 1; ++keyIndex)
-//		{
-//			const ModelResource::Keyframe& keyframe0 = keyframes.at(keyIndex);
-//			const ModelResource::Keyframe& keyframe1 = keyframes.at(keyIndex + 1);
-//
-//			if (animationSeconds >= keyframe0.seconds && animationSeconds < keyframe1.seconds) {
-//				float rate = (animationSeconds - keyframe0.seconds) / (keyframe1.seconds - keyframe0.seconds);
-//				int nodeCount = static_cast<int>(nodes.size());
-//				for (int nodeIndex = 0; nodeIndex < nodeCount; ++nodeIndex) {
-//
-//					const ModelResource::NodeKeyData& key0 = keyframe0.nodeKeys.at(nodeIndex);
-//					const ModelResource::NodeKeyData& key1 = keyframe1.nodeKeys.at(nodeIndex);
-//
-//					Model::Node& node = nodes[nodeIndex];
-//
-//					if (blendRate < 1.0f) {
-//						DirectX::XMVECTOR S0 = DirectX::XMLoadFloat3(&node.scale);
-//						DirectX::XMVECTOR S1 = DirectX::XMLoadFloat3(&key1.scale);
-//						DirectX::XMVECTOR R0 = DirectX::XMLoadFloat4(&node.rotate);
-//						DirectX::XMVECTOR R1 = DirectX::XMLoadFloat4(&key1.rotate);
-//						DirectX::XMVECTOR T0 = DirectX::XMLoadFloat3(&node.translate);
-//						DirectX::XMVECTOR T1 = DirectX::XMLoadFloat3(&key1.translate);
-//						DirectX::XMVECTOR S = DirectX::XMVectorLerp(S0, S1, blendRate);
-//						DirectX::XMVECTOR R = DirectX::XMQuaternionSlerp(R0, R1, blendRate);
-//						DirectX::XMVECTOR T = DirectX::XMVectorLerp(T0, T1, blendRate);
-//
-//						DirectX::XMStoreFloat3(&node.scale, S);
-//						DirectX::XMStoreFloat4(&node.rotate, R);
-//						DirectX::XMStoreFloat3(&node.translate, T);
-//
-//					}
-//					else {
-//						DirectX::XMVECTOR S0 = DirectX::XMLoadFloat3(&key0.scale);
-//						DirectX::XMVECTOR S1 = DirectX::XMLoadFloat3(&key1.scale);
-//						DirectX::XMVECTOR R0 = DirectX::XMLoadFloat4(&key0.rotate);
-//						DirectX::XMVECTOR R1 = DirectX::XMLoadFloat4(&key1.rotate);
-//						DirectX::XMVECTOR T0 = DirectX::XMLoadFloat3(&key0.translate);
-//						DirectX::XMVECTOR T1 = DirectX::XMLoadFloat3(&key1.translate);
-//						DirectX::XMVECTOR S = DirectX::XMVectorLerp(S0, S1, rate);
-//						DirectX::XMVECTOR R = DirectX::XMQuaternionSlerp(R0, R1, rate);
-//						DirectX::XMVECTOR T = DirectX::XMVectorLerp(T0, T1, rate);
-//
-//						DirectX::XMStoreFloat3(&node.scale, S);
-//						DirectX::XMStoreFloat4(&node.rotate, R);
-//						DirectX::XMStoreFloat3(&node.translate, T);
-//
-//					}
-//				}
-//				break;
-//			}
-//		}
-//	}
-//	//player->model->UpdateTransform();
-//}
+	case 1:
+		Generatepos = { -10.0f, 25.0f, 0.0f };
 
-	//}
+		PortalManager::Instance().Register(new Portal("Data/Model/portal/portal.mdl", DirectX::XMFLOAT3(-60.0f, -28.0f, 0.0f), DirectX::XMFLOAT3(0.03f, 0.03f, 0.03f)));
+		KeyManager::Instance().Register(new Key("Data/Model/key/key.mdl", DirectX::XMFLOAT3(60.0f, 4.0f, 0.0f), DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f)));
+		KeyManager::Instance().Register(new Key("Data/Model/key/key.mdl", DirectX::XMFLOAT3(-60.0f, 4.5f, 0.0f), DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f)));
+		break;
 
-	//	ImGui::End();
+	case 2:
+		Generatepos = { -15.0f, 30.0f, 0.0f };
 
+		PortalManager::Instance().Register(new Portal("Data/Model/portal/portal.mdl", DirectX::XMFLOAT3(-60.0f, -28.0f, 0.0f), DirectX::XMFLOAT3(0.03f, 0.03f, 0.03f)));
+		KeyManager::Instance().Register(new Key("Data/Model/key/key.mdl", DirectX::XMFLOAT3(25.0f, -3.0f, 0.0f), DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f)));
+		KeyManager::Instance().Register(new Key("Data/Model/key/key.mdl", DirectX::XMFLOAT3(-60.0f, 4.5f, 0.0f), DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f)));
+		break;
+
+	case 3:
+		Generatepos = { -10.0f, -25.0f, 0.0f };
+
+		PortalManager::Instance().Register(new Portal("Data/Model/portal/portal.mdl", DirectX::XMFLOAT3(-55.0f, 28.0f, 0.0f), DirectX::XMFLOAT3(0.03f, 0.03f, 0.03f)));
+		KeyManager::Instance().Register(new Key("Data/Model/key/key.mdl", DirectX::XMFLOAT3(25.0f, 28.0f, 0.0f), DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f)));
+		KeyManager::Instance().Register(new Key("Data/Model/key/key.mdl", DirectX::XMFLOAT3(-60.0f, 4.5f, 0.0f), DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f)));
+		break;
+
+	case 4:
+		Generatepos = { 40.0f, 0.0f, 0.0f };
+
+		PortalManager::Instance().Register(new Portal("Data/Model/portal/portal.mdl", DirectX::XMFLOAT3(-55.0f, 28.0f, 0.0f), DirectX::XMFLOAT3(0.03f, 0.03f, 0.03f)));
+		KeyManager::Instance().Register(new Key("Data/Model/key/key.mdl", DirectX::XMFLOAT3(52.0f, 28.0f, 0.0f), DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f)));
+		KeyManager::Instance().Register(new Key("Data/Model/key/key.mdl", DirectX::XMFLOAT3(-50.0f, 11.0f, 0.0f), DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f)));
+		break;
+	}
+}

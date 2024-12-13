@@ -263,6 +263,7 @@
     <ClCompile Include="Source\RenderState.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\Sprite.cpp" />
+    <ClCompile Include="Source\StageEditer.cpp" />
     <ClCompile Include="Source\TetroEditerMode.cpp" />
     <ClCompile Include="Source\TetroEditerUI.cpp" />
     <ClCompile Include="Source\Tetromino.cpp" />
@@ -453,6 +454,13 @@
     <FxCompile Include="Shader\LambertVS.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
+    <None Include="Shader\Basic.hlsli" />
+    <None Include="Shader\Lambert.hlsli" />
+    <None Include="Shader\Scene.hlsli" />
+    <None Include="Shader\ShapeRenderer.hlsli" />
+    <None Include="Shader\PrimitiveRenderer.hlsli" />
+    <None Include="Shader\Skinning.hlsli" />
+    <None Include="Shader\Sprite.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\Basic.hlsli" />

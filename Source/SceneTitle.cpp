@@ -14,13 +14,14 @@ enum
 void SceneTitle::Initialize()
 {
 	ID3D11Device* device = Graphics::Instance().GetDevice();
-	Title = std::make_unique<Sprite>(device, "./Data/Sprite/Title.jpg");
+	Title = std::make_unique<Sprite>(device, "./Data/Sprite/BackGround.jpg");
 	PlayButton[NORMAL] = std::make_unique<Sprite>(device, "./Data/Sprite/PlayButton.png");
 	PlayButton[HOVER] = std::make_unique<Sprite>(device, "./Data/Sprite/PlayButton_Hover.png");
-
-	audio_bgm_ = Audio::Instance().LoadAudioSource("./Data/Audio/title.wav");
-
 	Interval = 0.0f;
+
+	Name = std::make_unique<Sprite>(device, "./Data/Sprite/MinionsQuest.png");
+
+	this->audio_bgm_ = Audio::Instance().LoadAudioSource("./Data/Audio/title.wav");
 }
 
 void SceneTitle::Update(float elapsedTime)
@@ -47,7 +48,8 @@ void SceneTitle::Render(float elapsedTime)
 	dc->OMSetBlendState(renderState->GetBlendState(BlendState::Transparency), nullptr, 0xFFFFFFFF);
 	dc->OMSetDepthStencilState(renderState->GetDepthStencilState(DepthState::TestAndWrite), 0);
 
-	Title->Render(dc, 0, 0, 0, 1280, 720, 0, 1, 1, 1, 1);
+	Title->Render(dc, -100, 0, 0, 1920, 1080, 0, 1, 1, 1, 1);
+	Name->Render(dc, 0, 0, 0, 1280, 316, 0, 1, 1, 1, 1);
 
 	function& func = function::getInstance();
 

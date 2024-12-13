@@ -70,8 +70,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3d11.lib;dxgi.lib;xinput.lib;xaudio2.lib;winmm.lib;D2d1.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>.\External\SphereCast\lib\vs2019\$(PlatformTarget)\MD\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;xinput.lib;xaudio2.lib;winmm.lib;Effekseer.lib;EffekseerRendererDX11.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>.\External\SphereCast\lib\vs2019\$(PlatformTarget)\MD\$(Configuration);.\External\Effekseer170b\lib\vs2019\MT\x64\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;xinput.lib;xaudio2.lib;winmm.lib;Effekseer.lib;EffekseerRendererDX11.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\External\SphereCast\lib\vs2019\$(PlatformTarget)\MD\$(Configuration);.\External\Effekseer170b\lib\vs2019\MT\x64\$(Configuration);.\External\DirectXTex\Bin\Desktop_2022\x64\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -103,8 +103,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3d11.lib;dxgi.lib;xinput.lib;xaudio2.lib;winmm.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>.\External\SphereCast\lib\vs2019\$(PlatformTarget)\MD\$(Configuration);.\External\DirectXTex\Bin\Desktop_2022\x64\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;xinput.lib;xaudio2.lib;winmm.lib;Effekseer.lib;EffekseerRendererDX11.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>.\External\SphereCast\lib\vs2019\$(PlatformTarget)\MD\$(Configuration);.\External\Effekseer170b\lib\vs2019\MT\x64\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;xinput.lib;xaudio2.lib;winmm.lib;Effekseer.lib;EffekseerRendererDX11.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\External\SphereCast\lib\vs2019\$(PlatformTarget)\MD\$(Configuration);.\External\Effekseer170b\lib\vs2019\MT\x64\$(Configuration);.\External\DirectXTex\Bin\Desktop_2022\x64\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -239,9 +239,9 @@
     <ClCompile Include="Source\Gfx2DSandbox.cpp" />
     <ClCompile Include="Source\Grid2DRenderer.cpp" />
     <ClCompile Include="Source\InputMouse.cpp" />
-    <ClCompile Include="Source\KeyInput.cpp" />
     <ClCompile Include="Source\Key.cpp" />
     <ClCompile Include="Source\Mathf.cpp" />
+    <ClCompile Include="Source\KeyInput.cpp" />
     <ClCompile Include="Source\ModelRenderer.cpp" />
     <ClCompile Include="Source\LambertShader.cpp" />
     <ClCompile Include="Source\ModelResource.cpp" />
@@ -282,6 +282,7 @@
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\space_division_raycast.cpp" />
     <ClCompile Include="Source\Sprite.cpp" />
+    <ClCompile Include="Source\StageEditer.cpp" />
     <ClCompile Include="Source\TetroEditerMode.cpp" />
     <ClCompile Include="Source\TetroEditerUI.cpp" />
     <ClCompile Include="Source\Tetromino.cpp" />

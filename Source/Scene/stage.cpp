@@ -45,7 +45,7 @@ void Stage::Render(float elapsedTime, RenderContext& rc)
 
 	modelRenderer->Render(rc
 		, stage_.transform
-		, stage_.model.get(), ShaderId::Lambert);
+		, stage_.model.get(), ShaderId::Lambert, true);
 
 }
 

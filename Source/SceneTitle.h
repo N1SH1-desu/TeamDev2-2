@@ -20,6 +20,7 @@ public:
 private:
 	std::unique_ptr<Sprite> Title = nullptr;
 	std::unique_ptr<Sprite> PlayButton[2];
+	std::unique_ptr<Sprite> Name = nullptr;
 
 	float Interval = 0.0f;
 

@@ -9,6 +9,10 @@
 #include "stage.h"
 #include "FetchModelFromSceneAsset.h"
 #include "stage.h"
+#include "KeyInput.h"
+#include "TetroEditerMode.h"
+//add_by_nikaido
+#include"Audio/Audio.h"
 
 class AnimationScene : public Scene
 {
@@ -23,6 +27,7 @@ public:
 	// •`‰æˆ—
 	void Render(float elapsedTime) override;
 
+	void ObjectSetting(int StageNum);
 
 	// GUI•`‰æˆ—
 	//void DrawGUI() override;
@@ -33,6 +38,7 @@ private:
 
 	FreeCameraController				cameraController;
 
+	DirectX::XMFLOAT3 Generatepos;
 	struct Object
 	{
 		DirectX::XMFLOAT3		position = { 0, 0, 0 };
@@ -76,4 +82,8 @@ private:
 
 	//add_by_nikaidio
 	std::unique_ptr<AudioSource>      game_bgm_;
+
+	Input::KeyInput keyinput;
+	TetroEditerMode EditerMode;
+	TerrainStage::StageTerrain terrain;
 };

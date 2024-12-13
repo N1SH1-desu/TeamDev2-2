@@ -35,13 +35,13 @@ void SceneStageSelect::Initialize()
 	BackGround = std::make_unique<Sprite>(device, "./Data/Sprite/BackGround.jpg");
 	StageSelect = std::make_unique<Sprite>(device, "./Data/Sprite/StageSelect.png");
 
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		StageImage[i] = std::make_unique<Sprite>(device, filePath[i]);
 		StageImage_Hover[i] = std::make_unique<Sprite>(device, filePath_Hover[i]);
 	}
 
-	this->bgm_ = Audio::Instance().LoadAudioSource("./Data/Audio/select.wav");
+	//this->bgm_ = Audio::Instance().LoadAudioSource("./Data/Audio/select.wav");
 
 	Interval = 0.0f;
 }
@@ -51,19 +51,26 @@ void SceneStageSelect::Update(float elapsedTime)
 	function& func = function::getInstance();
 	InputMouse& mouse = InputMouse::Instance();
 
-	this->bgm_->Play(true);
+	//this->bgm_->Play(true);
 
 	for (int i = 0; i < 3; i++)
 	{
 		//クリック処理
-		if (Interval > 0.5f)
-			if (func.Click_Colision(DirectX::XMFLOAT2((i * DISPLAY_MARGIN) + 360, 300), DirectX::XMFLOAT2(BUTTON_SIZE, BUTTON_SIZE)) && mouse.IsLBottonDowned())
-				SceneManager::Instance().ChangeScene(new SceneLoading(new AnimationScene(i)));
+		if (Interval > 0.5f && func.Click_Colision(DirectX::XMFLOAT2((i * DISPLAY_MARGIN) + 360, 300), DirectX::XMFLOAT2(BUTTON_SIZE, BUTTON_SIZE)) && mouse.IsLBottonDowned())
+		{
+			SceneManager::Instance().ChangeScene(new SceneLoading(new AnimationScene(i)));
+			//this->bgm_->Stop();
+		}
+	}
 
+	for (int i = 0; i < 2; i++)
+	{
 		//クリック処理
-		if (Interval > 0.5f)
-			if (func.Click_Colision(DirectX::XMFLOAT2((i * DISPLAY_MARGIN) + 360, 500), DirectX::XMFLOAT2(BUTTON_SIZE, BUTTON_SIZE)) && mouse.IsLBottonDowned())
-				SceneManager::Instance().ChangeScene(new SceneLoading(new AnimationScene(i + 3)));
+		if (Interval > 0.5f && func.Click_Colision(DirectX::XMFLOAT2((i * DISPLAY_MARGIN) + 360, 500), DirectX::XMFLOAT2(BUTTON_SIZE, BUTTON_SIZE)) && mouse.IsLBottonDowned())
+		{
+			SceneManager::Instance().ChangeScene(new SceneLoading(new AnimationScene(i + 3)));
+			//this->bgm_->Stop();
+		}
 	}
 }
 
@@ -87,7 +94,10 @@ void SceneStageSelect::Render(float elapsedTime)
 		if (func.Click_Colision(DirectX::XMFLOAT2((i * DISPLAY_MARGIN) + 360, 300), DirectX::XMFLOAT2(BUTTON_SIZE, BUTTON_SIZE)))
 			StageImage_Hover[i]->Render(dc, (i * DISPLAY_MARGIN) + 360, 300, 0, BUTTON_SIZE, BUTTON_SIZE, 0, 1, 1, 1, 1);
 		else  StageImage[i]->Render(dc, (i * 240) + 360, 300, 0, BUTTON_SIZE, BUTTON_SIZE, 0, 1, 1, 1, 1);
+	}
 
+	for (int i = 0; i < 2; i++)
+	{
 		if (func.Click_Colision(DirectX::XMFLOAT2((i * DISPLAY_MARGIN) + 360, 500), DirectX::XMFLOAT2(BUTTON_SIZE, BUTTON_SIZE)))
 			StageImage_Hover[i + 3]->Render(dc, (i * DISPLAY_MARGIN) + 360, 500, 0, BUTTON_SIZE, BUTTON_SIZE, 0, 1, 1, 1, 1);
 		else StageImage[i + 3]->Render(dc, (i * DISPLAY_MARGIN) + 360, 500, 0, BUTTON_SIZE, BUTTON_SIZE, 0, 1, 1, 1, 1);

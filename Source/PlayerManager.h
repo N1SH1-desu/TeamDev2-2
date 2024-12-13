@@ -7,6 +7,8 @@
 #include "Model.h"
 #include"ModelRenderer.h"
 #include"Sprite.h"
+#include "FetchModelFromSceneAsset.h"
+#include "StageEditer.h"
 
 #include"player.h"
 #include<vector>
@@ -21,7 +23,10 @@ public:
 		static PlayerManager instance;
 		return instance;
 	}
-	void Update(float elapsedTime);
+
+	void Initialize();
+
+	void Update(float elapsedTime, TerrainStage::StageTerrain& terrain);
 
 	void Register(Player* player);
 
@@ -38,7 +43,7 @@ public:
 	void Render(ModelRenderer* modelRenderer,RenderContext& rc, ShaderId ID);
 
 
-
+	bool generate = false;
 private:
 	std::vector<Player*> players;
 	std::set<Player*> remove;
