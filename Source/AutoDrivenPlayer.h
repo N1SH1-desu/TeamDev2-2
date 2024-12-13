@@ -38,7 +38,7 @@ private:
     {
         const float acceleration = 5.0f;
         const float moveSpeed = 5.0f;
-        const float gravity = 2.0f;
+        const float gravity = 5.0f;
         bool dirIdentify = false;
     };
     const VelocityManegement veloManagement;
