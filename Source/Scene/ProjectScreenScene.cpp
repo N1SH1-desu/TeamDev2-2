@@ -65,7 +65,7 @@ void ProjectScreenScene::Update(float elapsedTime)
 	POINTS mousePos = refInputMouse->GetPosition();
 	editerMode.Update(elapsedTime, mousePos, keyInput, terrain.GetStagePlaced());
 
-	unityChan.Update(elapsedTime, terrain.GetStagePlaced(), editerMode.GetTetroCollideArray());
+	unityChan.Update(elapsedTime, terrain.GetSceneModel(), editerMode.GetSceneModel());
 
 	{
 		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(stage.scale.x, stage.scale.y, stage.scale.z);

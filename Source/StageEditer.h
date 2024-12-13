@@ -201,6 +201,8 @@ namespace Stage
 		using StageArray = std::array<std::array<TerrainElementType, COL_LENGHT>, ROW_LENGHT>;
 		StageTerrain() = default;
 
+		const SceneModel* GetSceneModel() const { return terrainModels.get(); }
+
 		void Initialize(StageNumber number, const int offset = 8.0f, const int xAxisMax = 60.0f, const int yAxisMax = 32.0f);
 
 		StageArray GetStagePlaced() const { return stagePlaced; }
