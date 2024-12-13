@@ -11,6 +11,8 @@ class TetroEditerMode
 public:
 	TetroEditerMode() = default;
 
+	const SceneModel* GetSceneModel() const { return tetroBlockModels.get(); }
+
 	Tetromino::TetrominoCollider::TetroCollideArray GetTetroCollideArray() { return tetroEditer.GetCollider().GetTetroCollidePlaced(); }
 
 	void Initialize(ID3D11Device* device, ID2D1DeviceContext* d2dContext);

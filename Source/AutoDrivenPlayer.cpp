@@ -10,7 +10,7 @@ AutoDrivenPlayer::AutoDrivenPlayer()
     model = std::make_unique<Model>("Data/Model/UnityChan/UnityChan.mdl");
 }
 
-void AutoDrivenPlayer::Update(float elapsedTime, const TerrainStage::StageTerrain::StageArray stagePlaced, const Tetromino::TetrominoCollider::TetroCollideArray tetroPlaced)
+void AutoDrivenPlayer::Update(float elapsedTime, const SceneModel* stageSM, const SceneModel* tetroSM)
 {
     switch (state)
     {
@@ -24,7 +24,7 @@ void AutoDrivenPlayer::Update(float elapsedTime, const TerrainStage::StageTerrai
         break;
     }
 
-    Falling(elapsedTime, stagePlaced, tetroPlaced);
+    Falling(elapsedTime, stageSM, tetroSM);
 
     UpdateTransform();
 }
@@ -62,22 +62,52 @@ bool AutoDrivenPlayer::MoveForward(float elapsedTime)
     return false;
 }
 
-void AutoDrivenPlayer::Falling(float elapsedTime, const TerrainStage::StageTerrain::StageArray stagePlaced, const Tetromino::TetrominoCollider::TetroCollideArray tetroPlaced)
+void AutoDrivenPlayer::Falling(float elapsedTime, const SceneModel* stageSM, const SceneModel* tetroSM)
 {
     velocityY -= veloManagement.gravity * elapsedTime;
+
     float moveY = velocityY * elapsedTime;
 
-    constexpr float yAxisMax = 32.0f;
-    constexpr float xAxisMax = 60.0f;
-    constexpr float offset = 8.0f;
+    DirectX::XMFLOAT3 start = {
+        transformElements.position.x,
+        transformElements.position.y + 0.5f,
+        transformElements.position.z
+    };
 
-    int rowCur = static_cast<int>((transformElements.position.y - yAxisMax) / -offset);
-    int rowNext = static_cast<int>(((transformElements.position.y + moveY) - yAxisMax) / -offset);
+    DirectX::XMFLOAT3 end = {
+        transformElements.position.x,
+        transformElements.position.y - moveY,
+        transformElements.position.z
+    };
 
-    int colCur = static_cast<int>((transformElements.position.x - xAxisMax) / -offset);
+    for (auto& stageElement : stageSM->GetCommited())
+    {
+        const Model* model = stageSM->GetSceneModels()[stageElement.first].get();
+        DirectX::XMFLOAT4X4 transform = stageElement.second;
+        
+        DirectX::XMFLOAT3 p, n;
+        if (Collision::RayCast(start, end, transform, model, p, n))
+        {
+            transformElements.position.y = p.y;
+            velocityY = 0.0f;
+            moveY = 0.0f;
+        }
+    }
+    for (auto& tetroElement : tetroSM->GetCommited())
+    {
+        const Model* model = tetroSM->GetSceneModels()[tetroElement.first].get();
+        DirectX::XMFLOAT4X4 transform = tetroElement.second;
 
+        DirectX::XMFLOAT3 p, n;
+        if (Collision::RayCast(start, end, transform, model, p, n))
+        {
+            transformElements.position.y = p.y;
+            velocityY = 0.0f;
+            moveY = 0.0f;
+        }
+    }
 
-
+    transformElements.position.y += moveY;
 }
 
 void AutoDrivenPlayer::UpdateTransform()

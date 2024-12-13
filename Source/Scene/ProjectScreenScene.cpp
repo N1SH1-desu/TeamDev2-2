@@ -68,7 +68,7 @@ void ProjectScreenScene::Update(float elapsedTime)
 	DirectX::XMMATRIX View = DirectX::XMLoadFloat4x4(&camera.GetView());
 	DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();
 
-	unityChan.Update(elapsedTime, terrain.GetStagePlaced(), editerMode.GetTetroCollideArray());
+	unityChan.Update(elapsedTime, terrain.GetSceneModel(), editerMode.GetSceneModel());
 
 	{
 		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(stage.scale.x, stage.scale.y, stage.scale.z);
