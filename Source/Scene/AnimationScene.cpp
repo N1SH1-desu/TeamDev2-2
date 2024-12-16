@@ -29,8 +29,8 @@ AnimationScene::AnimationScene(int StageNum) : StageNumber(StageNum)
 
 AnimationScene::~AnimationScene()
 {
-	PlayerManager::Instance().Clear();
-	SpaceDivisionRayCast::Instance().Clear();
+	//PlayerManager::Instance().Clear();
+	//SpaceDivisionRayCast::Instance().Clear();
 }
 
 void AnimationScene::Initialize()
