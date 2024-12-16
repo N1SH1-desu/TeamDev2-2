@@ -36,6 +36,9 @@ private:
     std::unique_ptr<Sprite> pause_retry_;
     std::unique_ptr<Sprite> pause_title_;
     std::unique_ptr<Sprite> pause_key_;
+    std::unique_ptr<Sprite> pause_g_;
+    std::unique_ptr<Sprite> pause_space_;
+
     //‰æ–Ê‘S‘Ì‚ğˆÃ‚­‚·‚é‚½‚ß‚ÌlŠpŒ`
     std::unique_ptr<Sprite> pause_back_;
 
