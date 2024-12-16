@@ -134,7 +134,7 @@ void AnimationScene::Update(float elapsedTime)
 	Pause::Instance().Update(elapsedTime);
 
 	PlayerManager::Instance().Update(elapsedTime, terrain, EditerMode);
-	int a = 	KeyManager::Instance().GetObjectCount();
+	KeyManager::Instance().GetObjectCount();
 
 	Clear::Instance().Update(elapsedTime);
 
