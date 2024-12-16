@@ -9,7 +9,7 @@ void Portal::Update(float elapsedTime)
 
 bool Portal::Enabled()
 {
-	if (!KeyManager::Instance().GetObjectCount()) return true;
+	if (KeyManager::Instance().GetObjectCount() < 1) return true;
 
 	return false;
 }

@@ -15,11 +15,11 @@ void PlayerManager::Initialize()
 	generate = false;
 }
 
-void PlayerManager::Update(float elapsedTime, TerrainStage::StageTerrain& terrain) {
+void PlayerManager::Update(float elapsedTime, TerrainStage::StageTerrain& terrain, TetroEditerMode& TetroEditer) {
 
 	for (Player* player : players) 
 	{
-		player->Update(elapsedTime, terrain);
+		player->Update(elapsedTime, terrain, TetroEditer);
 		player->UpdateAnimation(elapsedTime);
 	}
 
@@ -76,20 +76,13 @@ void PlayerManager::Render(ModelRenderer* modelRenderer,RenderContext& rc, Shade
 		const float gaugeWidth = player->HP;
 		const float gaugeHeight = 5.0f;
 
-		/*sprite->Render(dc,
-			screenPosition.x - 15.0f, screenPosition.y, 0,
-			30.0f, gaugeHeight,
-			0,
-			1, 1, 1, 1
-		);
-		sprite->Render(dc,
-			screenPosition.x - 15.0f, screenPosition.y, 0,
-			gaugeWidth, gaugeHeight,
-			0,
-			1, 0, 0, 1
-		);*/
-
 		modelRenderer->Render(rc, player->transform, player->model, ID);
+
+		auto player = GetPlayer(0);
+		ImGui::Begin("Data");
+		ImGui::InputFloat3("Angle", &player->angle.x);
+		ImGui::InputFloat3("Position", &player->position.x);
+		ImGui::End();
 	}
 }
 

@@ -113,60 +113,13 @@ void AnimationScene::Update(float elapsedTime)
 	// カメラ更新処理
 	cameraController.Update();
 	cameraController.SyncControllerToCamera(Camera::Instance());
-	//player->Update(elapsedTime);
 
-	//game_bgm_->Play(true);
-
-	//// トランスフォーム更新処理
-	//UpdateTransform(elapsedTime);
-	if (timer > 1&& Co < 5)
+	if (timer > 1&& Co < 1)
 	{
-		PlayerManager::Instance().Register(new Player(Generatepos, DirectX::XMFLOAT3(0.04f, 0.04f, 0.04f), DirectX::XMFLOAT3(0.0f, 90.0f, 0.0f)));
+		PlayerManager::Instance().Register(new Player(Generatepos, DirectX::XMFLOAT3(0.04f, 0.04f, 0.04f), DirectX::XMFLOAT3(0.0f, 1.58f, 0.0f)));
 		timer = 0;
 		Co++;
 	}
-
-	//if(Collision::InteresectCylinderVsCylinder(PlayerManager::Instance().))
-
-	//当たり判定
-	for (int i = 0; i < PlayerManager::Instance().GetPlayerCount(); i++)
-	{
-		auto player = PlayerManager::Instance().GetPlayer(i);
-		DirectX::XMFLOAT3 outPosition;
-
-		float length = player->position.y - cube.position.y;
-
-	//	if (Collision::InteresectCylinderVsCylinder(player->GetPosition(), 2.0f, 2.0f, cube.position, 2.0f, 2.0f, outPosition))
-	//	{
-	//		player->turn();
-	//		//player->HitP();
-
-	//		//player->PlayAnimation("Jump", false);
-	//		//player->state = Player::State::Jump;
-	//	}
-
-	//	else
-	//	{
-			//if (Collision::InteresectCylinderVsCylinder(player->GetPosition(), 2.0f, 2.0f, cube.position, 2.0f, length, outPosition))
-			//{
-			//	player->PlayAnimation("Running", true);
-			//	player->state = Player::State::Run;
-			//}
-			//else if (player->state == Player::State::Run && !player->onGround)
-			//{
-			//	player->PlayAnimation("Jump", true);
-			//	player->state = Player::State::Idle;
-			//}
-	//	}
-
-	//	if (Collision::InteresectCylinderVsCylinder(player->GetPosition(), 2.0f, 2.0f, cube2.position, 2.0f, 2.0f, outPosition))
-	//	{
-	//		player->turn();
-	//	}
-	}
-
-	//stageの追加
-	//stage.get()->Update(elapsedTime);
 
 	DirectX::XMMATRIX Projection = DirectX::XMLoadFloat4x4(&Camera::Instance().GetProjection());
 	DirectX::XMMATRIX View = DirectX::XMLoadFloat4x4(&Camera::Instance().GetView());
@@ -182,11 +135,13 @@ void AnimationScene::Update(float elapsedTime)
 		DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(scenePosition.x, scenePosition.y, scenePosition.z);
 		DirectX::XMStoreFloat4x4(&sceneTransform, S * R * T);
 	}
-
-	PlayerManager::Instance().Update(elapsedTime, terrain);
 	cube.UpdateTransform();
 	cube2.UpdateTransform();
 	timer += elapsedTime;
+
+	POINTS mousePos = InputMouse::Instance().GetPosition();
+	keyinput.Update();
+	EditerMode.Update(elapsedTime, mousePos, keyinput, terrain.GetStagePlaced());
 
 	TrapManager::Instance().Update(elapsedTime);
 	EffectManager::instance().Update(elapsedTime);
@@ -194,8 +149,8 @@ void AnimationScene::Update(float elapsedTime)
 	PortalManager::Instance().Update(elapsedTime);
 	Pause::Instance().Update(elapsedTime);
 
-	POINTS mousePos = InputMouse::Instance().GetPosition();
-	EditerMode.Update(elapsedTime, mousePos, keyinput, terrain.GetStagePlaced());
+	PlayerManager::Instance().Update(elapsedTime, terrain, EditerMode);
+	int a = 	KeyManager::Instance().GetObjectCount();
 
 	Clear::Instance().Update(elapsedTime);
 

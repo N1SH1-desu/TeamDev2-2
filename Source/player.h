@@ -9,6 +9,7 @@
 #include"Mathf.h"
 #include "FetchModelFromSceneAsset.h"
 #include "StageEditer.h"
+#include "TetroEditerMode.h"
 
 //player
 class Player 
@@ -18,17 +19,11 @@ public:
 	~Player();
 
 
-
 	// トランスフォーム更新処理
 	void UpdateTransform(float elapsedTime);
 
-	// 移動入力処理
-	bool InputMove();
 
-	// ジャンプ入力処理
-	bool InputJump();
-
-	void Update(float elapsedTime, TerrainStage::StageTerrain& terrain);
+	void Update(float elapsedTime, TerrainStage::StageTerrain& terrain, TetroEditerMode& TetroEditer);
 
 	DirectX::XMFLOAT3 GetPosition() { return position; }
 	void SetPosition(const DirectX::XMFLOAT3& position) { this->position = position; }
@@ -45,17 +40,10 @@ public:
 
 	void UpdateAnimation(float elapsedTime);
 
-	void turn();
-
-	void Death();
-
-	void HitP();
-
-	void PoisonC(float elapsedTime);
-
 	void Clear_Judge();
 
-	void UpdateVerticalMove(TerrainStage::StageTerrain& StageTerrain, float elapsedTime);
+	void UpdateVerticalMove(TerrainStage::StageTerrain& StageTerrain, TetroEditerMode& TetroEditer, float elapsedTime);
+	void UpdateHorizontalMove(TerrainStage::StageTerrain& StageTerrain, TetroEditerMode& TetroEditer, float elapsedTime);
 
 public:
 	Model* model = nullptr;
@@ -106,7 +94,7 @@ public:
 
 	bool								hitWall = false;
 
-	float								moveSpeed = 8.0f;
+	float								moveSpeed = 5.0f;
 
 	bool								jumpC = false;
 	bool PC = false;
@@ -122,4 +110,13 @@ public:
 
 	float radius = 2.0f;
 	float height = 2.0f;
+
+	float floatingCount = 0.21f;
+
+	bool HorizonMoveFlag = false;
+
+	float ClimingSpeed = 2.0f;
+	float HitWallCount = 0.0f;
+
+	bool HitOverHead = false;
 };

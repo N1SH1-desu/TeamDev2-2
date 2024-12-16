@@ -10,6 +10,10 @@
 
 #include"space_division_raycast.h"
 #include "PortalManager.h"
+#include "clear.h"
+
+static constexpr float SCREEN_MIN = -62.0f;
+static constexpr float SCREEN_MAX = 62.0f;
 
 
  Player::Player(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scale, DirectX::XMFLOAT3 angle) 
@@ -28,42 +32,22 @@
 }
 
 
-void Player::Update(float elapsedTime, TerrainStage::StageTerrain& terrain)
+void Player::Update(float elapsedTime, TerrainStage::StageTerrain& terrain, TetroEditerMode& TetroEditer)
 {
 	tt = elapsedTime;
-	InputMove();
-	
-	if (onGround)
-	{
-		position.x += moveSpeed * elapsedTime;
-		PlayAnimation("Run", true);
-	}
-	else
-	{
-		PlayAnimation("Falling", true);
-	}
 
-	if (PC)
-	{
-		PoisonC(elapsedTime);
-	}
+	if (onGround || hitWall) floatingCount = 0.0f; else floatingCount += elapsedTime;
 
-	UpdateVerticalMove(terrain, elapsedTime);
+	if (floatingCount > 0.2f) //一定時間以上浮いている場合
+		HorizonMoveFlag = false;
+	else HorizonMoveFlag = true;
+
+
+	UpdateVerticalMove(terrain, TetroEditer, elapsedTime);
+	UpdateHorizontalMove(terrain, TetroEditer, elapsedTime);
 
 	// トランスフォーム更新処理
 	UpdateTransform(elapsedTime);
-
-	for (int i = 0; i < PortalManager::Instance().GetObjectCount(); i++)
-	{
-		auto portal = PortalManager::Instance().GetObject_(i);
-
-		DirectX::XMFLOAT3 outPosition;
-		if (Collision::InteresectCylinderVsCylinder(position, radius, height, portal->GetPosition(), portal->GetRadius(), portal->GetHeight(), outPosition) && portal->Enabled())
-		{
-			PlayerManager::Instance().Remove(this);
-		}
-	}
-	
 
 	Clear_Judge();
 }
@@ -183,167 +167,25 @@ void Player::UpdateAnimation(float elapsedTime)
 // トランスフォーム更新処理
 void Player::UpdateTransform(float elapsedTime)
 {
-		// 行列計算
-		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
-		DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(angle.x, angle.y, angle.z);
-		DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(position.x, position.y, position.z);
-		DirectX::XMStoreFloat4x4(&transform, S * R * T);
+	// 行列計算
+	DirectX::XMMATRIX S = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
+	DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(angle.x, angle.y, angle.z);
+	DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(position.x, position.y, 0.0f);
+	DirectX::XMStoreFloat4x4(&transform, S * R * T);
 }
 
-
-
-// 移動入力処理
-bool Player::InputMove()
-{
-		// 入力処理
-		float axisX = 0.0f;
-		float axisY = 0.0f;
-		/*if (GetAsyncKeyState('W') & 0x8000) axisY += 1.0f;
-		if (GetAsyncKeyState('S') & 0x8000) axisY -= 1.0f;*/
-
-		if (onGround==true)axisX -= moveSpeed;
-
-		/*if (GetAsyncKeyState('A') & 0x8000) axisX -= 1.0f;*/
-
-		// カメラの方向
-		const DirectX::XMFLOAT3& cameraFront = camera.GetFront();
-		const DirectX::XMFLOAT3& camemraRight = camera.GetRight();
-		float cameraFrontLengthXZ = sqrtf(cameraFront.x * cameraFront.x + cameraFront.z * cameraFront.z);
-		float cameraRightLengthXZ = sqrtf(camemraRight.x * camemraRight.x + camemraRight.z * camemraRight.z);
-		float cameraFrontX = cameraFront.x / cameraFrontLengthXZ;
-		float cameraFrontZ = cameraFront.z / cameraFrontLengthXZ;
-		float cameraRightX = camemraRight.x / cameraRightLengthXZ;
-		float cameraRightZ = camemraRight.z / cameraRightLengthXZ;
-
-		// 移動ベクトル
-		moveVecX = cameraFrontX * axisY + cameraRightX * axisX*tt;
-		moveVecZ = cameraFrontZ * axisY + cameraRightZ * axisX*tt;
-		float vecLength = sqrtf(moveVecX * moveVecX + moveVecZ * moveVecZ);
-
-		// 壁ずり移動処理
-		if (vecLength > 0)
-		{
-			//レイの始点と終点を求める
-			DirectX::XMFLOAT3 s = {
-			   position.x,
-			   position.y + 0.5f,
-			   position.z
-			};
-
-			DirectX::XMFLOAT3 e = {
-			   position.x + moveVecX,
-			   position.y + 0.5f,
-			   position.z + moveVecZ
-			};
-
-			DirectX::XMFLOAT3 p, n;
-			//ステージとレイキャストを行い、交点と法線を求める
-			if (Collision::RayCast(s, e, Stage::Instance().GetCollisionTransform(), Stage::Instance().GetCollisionModel(), p, n)) {
-				//交点から終点へのベクトルを求める
-				DirectX::XMVECTOR P = DirectX::XMLoadFloat3(&p);
-				DirectX::XMVECTOR E = DirectX::XMLoadFloat3(&e);
-				DirectX::XMVECTOR PE = DirectX::XMVectorSubtract(E, P);
-
-				//三角関数から終点へのベクトルを求める
-				DirectX::XMVECTOR N = DirectX::XMLoadFloat3(&n);
-				DirectX::XMVECTOR A = DirectX::XMVector3Dot(N, PE);
-				//壁までの長さを少しだけ長くなるように補正する
-				float a = -DirectX::XMVectorGetX(A) + 0.001f;
-
-				//壁ずりベクトルを求める
-				DirectX::XMVECTOR R = DirectX::XMVectorAdd(PE, DirectX::XMVectorScale(N, a));
-
-				//壁ずり後の位置を求める
-				DirectX::XMVECTOR Q = DirectX::XMVectorAdd(P, R);
-				DirectX::XMFLOAT3 q;
-				DirectX::XMStoreFloat3(&q, Q);
-
-				Walltime += tt;
-
-				if (Walltime<0.5f) {
-				PlayAnimation("Climing", true);
-				state = State::Jump;
-				}
-				else
-				{
-					turn();
-					PlayAnimation("Run", true);
-					state = State::Run;
-					Walltime = 0.0f;
-				}
-				//HitP();
-			}
-			else if (before_state == State::Jump)
-			{
-				PlayAnimation("Run", true);
-				state = State::EndJump;
-				Walltime = 0.0f;
-			}
-		}
-		else if(before_state == State::Jump)
-		{
-			PlayAnimation("Run", true);
-			state = State::Run;
-		}
-	return true;
-
-}
-
-// ジャンプ入力処理
-bool Player::InputJump()
-{
-	if (jumpC==true)
-	{
-			velocity.y = jumpSpeed;
-			velocity.x += 1.0f;
-		return true;
-	}
-	return false;
-}
-
-void Player::turn() {
-		angle.y *= -1.0f;
-		moveSpeed *= -1.0f;
-}
-
-void Player::Death()
-{
-	PlayerManager::Instance().Remove(this);
-}
-
-void Player::HitP()
-{
-	HP--;
-	if (HP < 0) {
-		Death();
-	}
-}
-
-void Player::PoisonC(float elapsedTime)
-{
-	PT += elapsedTime;
-	if (PT / 0.5f >= 1.0f)
-	{
-		HP--;
-		if (HP < 0) {
-			Death();
-		}
-		PT = 0;
-	}
-}
-
-
-void Player::UpdateVerticalMove(TerrainStage::StageTerrain& StageTerrain, float elapsedTime)
+void Player::UpdateVerticalMove(TerrainStage::StageTerrain& StageTerrain, TetroEditerMode& TetroEditer, float elapsedTime)
 {
 	velocity.y -= gravity * elapsedTime;
 	float moveY = velocity.y * elapsedTime;
 	onGround = false;
+	HitOverHead = false;
 
-	if (velocity.y < 0.0f)
+	if (velocity.y < 0.0)
 	{
 		DirectX::XMFLOAT3 start, end;
 		start = end = position;
-
+		
 		start.y += 0.5f;
 		end.y += moveY;
 
@@ -361,10 +203,101 @@ void Player::UpdateVerticalMove(TerrainStage::StageTerrain& StageTerrain, float 
 				onGround = true;
 			}
 		}
+
+		for (auto& tetroElement : TetroEditer.GetSceneModel()->GetCommited())
+		{
+			if (Collision::RayCast(start, end, tetroElement.second, TetroEditer.GetSceneModel()->GetSceneModels().at(tetroElement.first).get(), hitPosition, hitNormal))
+			{
+				position.y = hitPosition.y;
+				velocity.y = 0.0f;
+				moveY = 0.0f;
+				onGround = true;
+			}
+		}
 	}
 
-	position.y += moveY;
+	if (!HorizonMoveFlag)
+	{
+		position.y += moveY;
+		PlayAnimation("Falling", true);
+	}
+
+	if (hitWall)
+	{
+		DirectX::XMFLOAT3 start, end;
+		start = end = position;
+
+		end.y += 5.0f;
+
+		auto TerrainModel = StageTerrain.GetTerrainModels();
+
+		DirectX::XMFLOAT3 hitPosition, hitNormal;
+
+		for (auto& Transform : StageTerrain.GetTerrainAndWorlds())
+		{
+			if (Collision::RayCast(start, end, Transform.second, TerrainModel->GetSceneModels().at(Transform.first).get(), hitPosition, hitNormal))
+				HitOverHead = true;
+		}
+
+		for (auto& tetroElement : TetroEditer.GetSceneModel()->GetCommited())
+		{
+			if (Collision::RayCast(start, end, tetroElement.second, TetroEditer.GetSceneModel()->GetSceneModels().at(tetroElement.first).get(), hitPosition, hitNormal))
+				HitOverHead = true;
+		}
+
+		if (!HitOverHead)
+		{
+			position.y += ClimingSpeed * elapsedTime;
+			PlayAnimation("Climing", true);
+		}
+		else
+		{
+			angle.y *= -1;
+		}
+	}
 }
+
+
+void Player::UpdateHorizontalMove(TerrainStage::StageTerrain& StageTerrain, TetroEditerMode& TetroEditer, float elapsedTime)
+{
+	// プレイヤーの位置と向いている方向を基にレイの始点と方向を設定
+    DirectX::XMFLOAT3 start = DirectX::XMFLOAT3(position.x, position.y + 0.5f, position.z);
+    DirectX::XMFLOAT3 rayDirection(sinf(angle.y), 0.0f, cosf(angle.y));
+
+    // レイの終点を計算
+    float mx = rayDirection.x * 1.5f;
+    float mz = rayDirection.z * 1.5f;
+    DirectX::XMFLOAT3 end = DirectX::XMFLOAT3(position.x + mx, position.y + 0.5f, position.z + mz);
+
+    DirectX::XMFLOAT3 hitPosition, hitNormal;
+    hitWall = false;
+
+    // テトロエディターのオブジェクトに対してレイキャストを行う
+    for (auto& tetroElement : TetroEditer.GetSceneModel()->GetCommited())
+    {
+        if (Collision::RayCast(start, end, tetroElement.second, TetroEditer.GetSceneModel()->GetSceneModels().at(tetroElement.first).get(), hitPosition, hitNormal))  
+			hitWall = true;
+    }
+
+	//ステージに対してレイキャスト
+	auto TerrainModel = StageTerrain.GetTerrainModels();
+	for (auto& Transform : StageTerrain.GetTerrainAndWorlds())
+	{
+		if (Collision::RayCast(start, end, Transform.second, TerrainModel->GetSceneModels().at(Transform.first).get(), hitPosition, hitNormal))
+			hitWall = true;
+	}
+
+    // 壁にヒットしていない場合、プレイヤーを移動させる
+    if (HorizonMoveFlag && !hitWall)
+    {
+		PlayAnimation("Run", true);
+        position.x += (mx * moveSpeed) * elapsedTime;
+        position.z += (mz * moveSpeed) * elapsedTime;
+    }
+
+	if(position.x > SCREEN_MAX || position.x < SCREEN_MIN) angle.y *= -1;
+}
+
 void Player::Clear_Judge()
 {
 	for (int i = 0; i < PortalManager::Instance().GetObjectCount(); i++)
@@ -376,4 +309,16 @@ void Player::Clear_Judge()
 			PlayerManager::Instance().Remove(this);
 		}
 	}
+
+	for (int i = 0; i < PortalManager::Instance().GetObjectCount(); i++)
+	{
+		auto portal = PortalManager::Instance().GetObject_(i);
+
+		DirectX::XMFLOAT3 outPosition;
+		if (Collision::InteresectCylinderVsCylinder(position, radius, height, portal->GetPosition(), portal->GetRadius(), portal->GetHeight(), outPosition) && PlayerManager::Instance().GetPlayerCount() < 1 && portal->Enabled())
+		{
+			Clear::Instance().SetClearFlag(true);
+		}
+	}
+
 }
