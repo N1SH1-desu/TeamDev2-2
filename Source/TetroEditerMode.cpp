@@ -2,7 +2,7 @@
 
 void TetroEditerMode::Initialize(ID3D11Device* device, ID2D1DeviceContext* d2dContext)
 {
-	Graphics2D* gfx2d = Graphics::Instance().GetGraphics2D();
+	Graphics2D* gfx2d = Graphics::Instance().GetGfx2D();
 
 	editerUI.Initialize(device);
 

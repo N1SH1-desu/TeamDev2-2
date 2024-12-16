@@ -73,7 +73,7 @@ void AnimationScene::Initialize()
 
 	pause = false;
 	Pause::Instance().SetPause(pause);
-	ID2D1DeviceContext* dc_2D = Graphics::Instance().GetGraphics2D()->GetContext();
+	ID2D1DeviceContext* dc_2D = Graphics::Instance().GetGfx2D()->GetContext();
 
 	EditerMode.Initialize(device, dc_2D);
 	terrain.Initialize(static_cast<TerrainStage::StageNumber>(StageNumber));
@@ -223,8 +223,8 @@ void AnimationScene::Render(float elapsedTime)
 	//Grid2DRenderer* grid2dRenderer = Graphics::Instance().GetGrid2DRenderer();
 	//Graphics2D* gfx2D = Graphics::Instance().GetGraphics2D();
 
-	Graphics2D* gfx2D = Graphics::Instance().GetGraphics2D();
-	ID2D1DeviceContext* dc_2D = Graphics::Instance().GetGraphics2D()->GetContext();
+	Graphics2D* gfx2D = Graphics::Instance().GetGfx2D();
+	ID2D1DeviceContext* dc_2D = Graphics::Instance().GetGfx2D()->GetContext();
 
 	//// ƒ‚ƒfƒ‹•`‰æ
 	RenderContext rc;

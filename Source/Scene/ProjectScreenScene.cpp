@@ -11,7 +11,7 @@ ProjectScreenScene::ProjectScreenScene()
 	ID3D11Device* device = Graphics::Instance().GetDevice();
 	float screenWidth = Graphics::Instance().GetScreenWidth();
 	float screenHeight = Graphics::Instance().GetScreenHeight();
-	ID2D1DeviceContext* d2dContext = Graphics::Instance().GetGraphics2D()->GetContext();
+	ID2D1DeviceContext* d2dContext = Graphics::Instance().GetGfx2D()->GetContext();
 
 	// ƒJƒƒ‰İ’è
 	camera.SetPerspectiveFov(
