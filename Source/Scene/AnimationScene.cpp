@@ -111,7 +111,7 @@ void AnimationScene::Update(float elapsedTime)
 
 	RECT viewport = { 0, 0, static_cast<LONG>(Graphics::Instance().GetScreenWidth()), static_cast<LONG>(Graphics::Instance().GetScreenHeight()) };
 	
-	scenePosition = SetBlockPosFromMousePos(Grid2DRenderer::grid_size, viewport, Projection, View, World);
+	//scenePosition = SetBlockPosFromMousePos(Grid2DRenderer::grid_size, viewport, Projection, View, World);
 
 	{
 		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(sceneScale.x, sceneScale.y, sceneScale.z);
@@ -183,7 +183,7 @@ void AnimationScene::Render(float elapsedTime)
 	PortalManager::Instance().Render(modelRenderer, rc, ShaderId::Lambert);
 	Pause::Instance().Render(elapsedTime);
 
-	sceneModel->SelectedBlockRender(rc, modelRenderer, sceneTransform, 0u, ShaderId::Lambert);
+	//sceneModel->SelectedBlockRender(rc, modelRenderer, sceneTransform, 0u, ShaderId::Lambert);
 	EditerMode.Render(rc, dc_2D, modelRenderer);
 
 	terrain.Render(rc, modelRenderer);
