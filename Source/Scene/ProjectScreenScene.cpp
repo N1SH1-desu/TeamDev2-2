@@ -11,7 +11,7 @@ ProjectScreenScene::ProjectScreenScene()
 	ID3D11Device* device = Graphics::Instance().GetDevice();
 	float screenWidth = Graphics::Instance().GetScreenWidth();
 	float screenHeight = Graphics::Instance().GetScreenHeight();
-	ID2D1DeviceContext* d2dContext = Graphics::Instance().GetGfx2D()->GetContext();
+	ID2D1DeviceContext* d2dContext = Graphics::Instance().GetGraphics2D()->GetContext();
 
 	// カメラ設定
 	camera.SetPerspectiveFov(
@@ -68,7 +68,7 @@ void ProjectScreenScene::Update(float elapsedTime)
 	DirectX::XMMATRIX View = DirectX::XMLoadFloat4x4(&camera.GetView());
 	DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();
 
-	//stage.position = SetBlockPosFromMousePos(refInputMouse, Grid2DRenderer::grid_size, viewport, Projection, View, World);
+	unityChan.Update(elapsedTime, terrain.GetSceneModel(), editerMode.GetSceneModel());
 
 	// ステージ行列更新処理
 	{
@@ -88,7 +88,7 @@ void ProjectScreenScene::Render(float elapsedTime)
 	PrimitiveRenderer* primitiveRenderer = Graphics::Instance().GetPrimitiveRenderer();
 	ShapeRenderer* shapeRenderer = Graphics::Instance().GetShapeRenderer();
 	EndlessGridRenderer* gridRenderer = Graphics::Instance().GetEndlessGridRenderer();
-	//ID2D1DeviceContext* d2dContext = Graphics::Instance().GetGfx2D()->GetContext();
+	ID2D1DeviceContext* d2dContext = Graphics::Instance().GetGraphics2D()->GetContext();
 
 	// モデル描画
 	RenderContext rc;
@@ -105,6 +105,8 @@ void ProjectScreenScene::Render(float elapsedTime)
 	DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();
 
 	terrain.Render(rc, modelRenderer);
+
+	unityChan.Render(rc, modelRenderer);
 
 	//editerMode.Render(rc, d2dContext, modelRenderer);
 }

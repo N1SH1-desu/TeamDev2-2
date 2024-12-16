@@ -2,13 +2,13 @@
 
 void TetroEditerMode::Initialize(ID3D11Device* device, ID2D1DeviceContext* d2dContext)
 {
-	Graphics2D* gfx2d = Graphics::Instance().GetGfx2D();
+	Graphics2D* gfx2d = Graphics::Instance().GetGraphics2D();
 
 	editerUI.Initialize(device);
 
 	gridRenderer = std::make_unique<Grid2DRenderer>(d2dContext, Graphics::Instance().GetBackBuffer());
 
-	tetroBlockModels = std::make_unique<SceneModel>("Data/Model/TetrisBlock/Colors.mdl");
+	tetroBlockModels = std::make_shared<SceneModel>("Data/Model/TetrisBlock/Colors.mdl");
 }
 
 void TetroEditerMode::Update(float elapsedTime, POINTS mousePos, const Input::KeyInput& keyInput, const TerrainStage::StageTerrain::StageArray& stageCollision)

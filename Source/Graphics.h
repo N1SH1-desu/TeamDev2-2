@@ -68,7 +68,7 @@ public:
 
 	EndlessGridRenderer* GetEndlessGridRenderer() const { return endlessGridRenderer.get(); }
 
-	Graphics2D* GetGfx2D() const { return graphics2D.get(); }
+	Graphics2D* GetGraphics2D() const { return graphics2D.get(); }
 	IDXGISurface* GetBackBuffer() {
 		Microsoft::WRL::ComPtr<IDXGISurface> backBuf;
 		swapchain->GetBuffer(0, IID_PPV_ARGS(&backBuf));
