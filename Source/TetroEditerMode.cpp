@@ -39,6 +39,9 @@ void TetroEditerMode::Render(RenderContext rc, ID2D1DeviceContext* d2dContext, M
 	{
 		tetroEditer.Render(rc, mRenderer);
 	}
+
+	tetroBlockModels->RenderCommitedBlocks(rc, mRenderer, ShaderId::Lambert, true);
+
 	gridRenderer->Draw(d2dContext);
 
 	editerUI.Render(rc.deviceContext);
