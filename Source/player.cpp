@@ -53,7 +53,7 @@ void Player::Update(float elapsedTime, TerrainStage::StageTerrain& terrain, Tetr
 	{
 		auto portal = PortalManager::Instance().GetObject_(i);
 
-		if (Collision::InteresectCylinderVsCylinder(position, radius, height, portal->GetPosition(), portal->GetRadius(), portal->GetHeight(), DirectX::XMFLOAT3(0, 0, 0)))
+		if (Collision::InteresectCylinderVsCylinder(position, radius, height, portal->GetPosition(), portal->GetRadius(), portal->GetHeight(), DirectX::XMFLOAT3(0, 0, 0)) && portal->Enabled())
 		{
 			PlayerManager::Instance().Remove(this);
 		}

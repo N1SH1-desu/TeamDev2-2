@@ -3,6 +3,9 @@
 
 void Portal::Update(float elapsedTime)
 {
+	radius = 15.0f;
+	height = 15.0f;
+
 	UpdateTransform();
 	model->UpdateTransform();
 }
