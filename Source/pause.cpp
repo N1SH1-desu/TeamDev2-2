@@ -274,9 +274,6 @@ void Pause::Render(float elapsedTime)
                 base_pos_x_, base_pos_y_,
                 0,
                 1, 1, 1, 1);
-            
         }
-
-
     }
 }
