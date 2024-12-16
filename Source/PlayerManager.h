@@ -9,6 +9,7 @@
 #include"Sprite.h"
 #include "FetchModelFromSceneAsset.h"
 #include "StageEditer.h"
+#include "TetroEditerMode.h"
 
 #include"player.h"
 #include<vector>
@@ -26,7 +27,7 @@ public:
 
 	void Initialize();
 
-	void Update(float elapsedTime, TerrainStage::StageTerrain& terrain);
+	void Update(float elapsedTime, TerrainStage::StageTerrain& terrain, TetroEditerMode& TetroEditer);
 
 	void Register(Player* player);
 
