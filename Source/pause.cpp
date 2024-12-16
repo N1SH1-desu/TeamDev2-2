@@ -63,6 +63,8 @@ Pause::Pause()
     pause_title_ = std::make_unique<Sprite>(id,".\\Data\\Sprite\\back_to_title.png");
     pause_back_ = std::make_unique<Sprite>(id);
     pause_key_ = std::make_unique<Sprite>(id,".\\Data\\Sprite\\pause.png");
+    pause_g_ = std::make_unique<Sprite>(id,".\\Data\\Sprite\\pause_G_key.png");
+    pause_space_ = std::make_unique<Sprite>(id,".\\Data\\Sprite\\pause_Space_key.png");
 }
 
 void Pause::SetPause(bool flag)
@@ -83,21 +85,21 @@ void Pause::Update(float elapsedTime)
 
         bool retry_bool_pos = (
             (base_pos_x_ < mouse_pos.x && mouse_pos.x < (base_pos_x_ + base_size_x_) &&
-                ((base_pos_y_ < mouse_pos.y && mouse_pos.y < base_pos_y_ + base_size_y_)))
+                ((0 < mouse_pos.y && mouse_pos.y < 0 + base_size_y_)))
             );
         bool select_bool_pos = (
             (base_pos_x_ < mouse_pos.x && mouse_pos.x < (base_pos_x_ + base_size_x_) &&
                 (
-                    ((base_pos_y_ + base_size_y_ * 1.5f) < mouse_pos.y
-                        && mouse_pos.y < (base_pos_y_ + base_size_y_ * 1.5f) + base_size_y_)
+                    ((0 + base_size_y_ * 1.5f) < mouse_pos.y
+                        && mouse_pos.y < (0 + base_size_y_ * 1.5f) + base_size_y_)
                     )
                 )
             );
         bool title_bool_pos = (
             (base_pos_x_ < mouse_pos.x && mouse_pos.x < (base_pos_x_ + base_size_x_) &&
                 (
-                    ((base_pos_y_ + base_size_y_ * 3.f) < mouse_pos.y
-                        && mouse_pos.y < (base_pos_y_ + base_size_y_ * 3.f) + base_size_y_)
+                    ((0 + base_size_y_ * 3.f) < mouse_pos.y
+                        && mouse_pos.y < (0 + base_size_y_ * 3.f) + base_size_y_)
                     )
                 )
             );
@@ -169,6 +171,7 @@ void Pause::Render(float elapsedTime)
     static float add_scale = 0;
     static float alpha = 0;
    
+    //どちらにも使う変数なのでここに置きました。
     float pos_scale_x = base_pos_x_ + ((base_size_x_ * 0.5f) * (1.0f - add_scale));
     float pos_scale_y = base_pos_y_ + ((base_size_y_ * 0.5f) * (1.0f - add_scale));
     float size_scale_x = base_size_x_ * add_scale;
@@ -203,23 +206,38 @@ void Pause::Render(float elapsedTime)
 
         pause_retry_.get()->Render
             (dc
-                , pos_scale_x , (pos_scale_y), 0,
+                , pos_scale_x , (0), 0,
             size_scale_x*scale_[0], size_scale_y*scale_[0],
             0,
             1.f, 1.f, 1.f, 1.f);
         pause_select_.get()->Render
             (dc,
-            pos_scale_x, (pos_scale_y) +(base_size_y_ + base_size_y_ * 0.5f),0,
+            pos_scale_x, (0) +(base_size_y_ + base_size_y_ * 0.5f),0,
             size_scale_x*scale_[1], size_scale_y*scale_[1], 
             0,
             1.f, 1.f, 1.f, 1.f);
         pause_title_.get()->Render
             (dc, 
-            pos_scale_x, (pos_scale_y) +(3.0f*base_size_y_), 0,
+            pos_scale_x, (0) +(3.0f*base_size_y_), 0,
             size_scale_x*scale_[2], size_scale_y*scale_[2],
             0,
             1.f, 1.f, 1.f, 1.f);
-
+        
+        //追加、操作方法
+        pause_g_.get()->Render(
+            dc,
+            0.f+((base_size_x_ * 0.5f) * (1.0f - add_scale)), 5.f * base_pos_y_, 0,
+            size_scale_x , size_scale_y,
+            0,
+            1, 1, 1, 1
+        );
+        pause_space_.get()->Render(
+            dc,
+            base_size_x_ + ((base_size_x_ * 0.5f) * (1.0f - add_scale)), 4.f * base_pos_y_, 0,
+            size_scale_x  , size_scale_y*2.f ,
+            0,
+            1, 1, 1, 1
+        );
     }
     else
     {
@@ -249,22 +267,38 @@ void Pause::Render(float elapsedTime)
 
             pause_retry_.get()->Render
             (dc
-                , pos_scale_x, pos_scale_y, 0,
+                , pos_scale_x, 0, 0,
                 size_scale_x, size_scale_y,
                 0.f,
                 1.f, 1.f, 1.f, 1.f);
             pause_select_.get()->Render
             (dc,
-                pos_scale_x, pos_scale_y + (base_size_y_ + base_size_y_ * 0.5f), 0,
+                pos_scale_x, 0 + (base_size_y_ + base_size_y_ * 0.5f), 0,
                 size_scale_x, size_scale_y,
                 0.f,
                 1.f, 1.f, 1.f, 1.f);
             pause_title_.get()->Render
             (dc,
-                pos_scale_x, pos_scale_y + (3.0f * base_size_y_), 0,
+                pos_scale_x, 0 + (3.0f * base_size_y_), 0,
                 size_scale_x, size_scale_y,
                 0.f,
                 1.f, 1.f, 1.f, 1.f);
+
+            //追加、操作方法
+            pause_g_.get()->Render(
+                dc,
+                0.f + ((base_size_x_ * 0.5f) * (1.0f - add_scale)), 5.f * base_pos_y_, 0,
+                size_scale_x, size_scale_y,
+                0,
+                1, 1, 1, 1
+            );
+            pause_space_.get()->Render(
+                dc,
+                base_size_x_ + ((base_size_x_ * 0.5f) * (1.0f - add_scale)), 4.f * base_pos_y_, 0,
+                size_scale_x, size_scale_y * 2.f,
+                0,
+                1, 1, 1, 1
+            );
         }
         else
         {
