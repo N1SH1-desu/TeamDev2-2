@@ -77,12 +77,6 @@ void PlayerManager::Render(ModelRenderer* modelRenderer,RenderContext& rc, Shade
 		const float gaugeHeight = 5.0f;
 
 		modelRenderer->Render(rc, player->transform, player->model, ID);
-
-		auto player = GetPlayer(0);
-		ImGui::Begin("Data");
-		ImGui::InputFloat3("Angle", &player->angle.x);
-		ImGui::InputFloat3("Position", &player->position.x);
-		ImGui::End();
 	}
 }
 
