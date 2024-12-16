@@ -49,7 +49,15 @@ void Player::Update(float elapsedTime, TerrainStage::StageTerrain& terrain, Tetr
 	// トランスフォーム更新処理
 	UpdateTransform(elapsedTime);
 
-	Clear_Judge();
+	for (int i = 0; i < PortalManager::Instance().GetObjectCount(); i++)
+	{
+		auto portal = PortalManager::Instance().GetObject_(i);
+
+		if (Collision::InteresectCylinderVsCylinder(position, radius, height, portal->GetPosition(), portal->GetRadius(), portal->GetHeight(), DirectX::XMFLOAT3(0, 0, 0)))
+		{
+			PlayerManager::Instance().Remove(this);
+		}
+	}
 }
 void Player::PlayAnimation(int index, bool loop)
 {
@@ -300,25 +308,5 @@ void Player::UpdateHorizontalMove(TerrainStage::StageTerrain& StageTerrain, Tetr
 
 void Player::Clear_Judge()
 {
-	for (int i = 0; i < PortalManager::Instance().GetObjectCount(); i++)
-	{
-		auto portal = PortalManager::Instance().GetObject_(i);
-
-		if (Collision::InteresectCylinderVsCylinder(position, radius, height, portal->GetPosition(), portal->GetRadius(), portal->GetHeight(), DirectX::XMFLOAT3(0, 0, 0)))
-		{
-			PlayerManager::Instance().Remove(this);
-		}
-	}
-
-	for (int i = 0; i < PortalManager::Instance().GetObjectCount(); i++)
-	{
-		auto portal = PortalManager::Instance().GetObject_(i);
-
-		DirectX::XMFLOAT3 outPosition;
-		if (Collision::InteresectCylinderVsCylinder(position, radius, height, portal->GetPosition(), portal->GetRadius(), portal->GetHeight(), outPosition) && PlayerManager::Instance().GetPlayerCount() < 1 && portal->Enabled())
-		{
-			Clear::Instance().SetClearFlag(true);
-		}
-	}
-
+	
 }

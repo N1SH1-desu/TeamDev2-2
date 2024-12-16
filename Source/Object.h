@@ -6,7 +6,7 @@
 class Object
 {
 public:
-	Object(const char* filepath = nullptr, DirectX::XMFLOAT3 position = { 1.0, 1.0, 1.0, }, DirectX::XMFLOAT3 scale = { 1.0, 1.0, 1.0 }, DirectX::XMFLOAT3 angle = { 0, 0, 0.01 }, float radius = 0.5f, float height = 0.2f);
+	Object(const char* filepath = nullptr, DirectX::XMFLOAT3 position = { 1.0, 1.0, 1.0, }, DirectX::XMFLOAT3 scale = { 1.0, 1.0, 1.0 }, DirectX::XMFLOAT3 angle = { 0, 0, 0.01 }, float radius = 5.0f, float height = 5.0f);
 	virtual ~Object() {};
 
 	//çXêVèàóù

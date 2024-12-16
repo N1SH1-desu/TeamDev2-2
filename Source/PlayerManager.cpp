@@ -41,7 +41,7 @@ void PlayerManager::Update(float elapsedTime, TerrainStage::StageTerrain& terrai
 		DirectX::XMFLOAT3 end = { player->position.x, player->position.y + player->velocity.y - 0.05f, player->position.z };
 	}
 
-	if (GetPlayerCount() <= 0 && generate)
+	if (GetPlayerCount() < 1 && generate)
 		Clear::Instance().SetClearFlag(true);
 }
 
